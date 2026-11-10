@@ -1,0 +1,35 @@
+# Embedding profile (brain.config.EmbeddingProfile): BAAI's bge-m3, served by Ollama
+# (`ollama pull bge-m3`). Multilingual (100+ languages), 1024 dimensions, reads up to
+# 8,192 tokens. On the GPU next to qwen3.5:4b: 664 MB; ~50 ms per message.
+#
+# Chosen 2026-10-16 on the eval set (174 queries, three languages): at min_score 0.53,
+# hit rate 85%, recall 68%, noise 1.3 (all-MiniLM-L6-v2 at its best: 52%, 40%, 2.5).
+
+name = "bge-m3"
+provider = "ollama"
+model = "bge-m3"
+# 2026-10-17: with Cerveau's short replies left out of recall (short_reply_chars), 0.52
+# gives hit rate 86%, recall 72%, noise 1.4 (before: 0.53 gave 85%, 68%, 1.3).
+# 2026-10-18: with the tag signal (w_tag 0.05 for episodes), 0.53 gives hit rate 88%,
+# recall 73%, precision 46%, noise 1.1 (0.52 without tags: 87%, 73%, 42%, 1.3).
+# 2026-10-18: with activation on (w_act 0.05), 0.53 gives hit rate 90%, recall 79%,
+# precision 42%, noise 1.5; 0.54 would cut the noise to 1.2 but drop follow-ups in
+# python -m evals.turns from 88% to 81%, so 0.53 stays.
+min_score = 0.53
+# For the search_memory tool: lower, since the model asked explicitly (at 0.45 the
+# eval set's hit rate is 95%, with more noise that the tool's result limit absorbs).
+search_min_score = 0.45
+# Fact deduplication, from `python -m evals.fact_pairs` (2026-10-17): rewordings score
+# 0.92 to 0.99, but an update can reach 0.96 ("launches Nov 14" vs "Dec 5"), so only
+# 0.97 and above is taken as the same without asking the model. Updates worded
+# loosely, as the model really writes them, go down to 0.60, so the model is asked
+# from 0.55 (some unrelated pairs reach 0.61; the model calls those distinct).
+fact_same_score = 0.97
+fact_related_score = 0.55
+# Tags (2026-10-17): same topics scored 0.71 to 0.93 (coding/programming 0.87,
+# salud/health 0.92), different ones up to 0.79 (job/career); above all of those.
+tag_same_score = 0.83
+# A message matches a tag from 0.50 (2026-10-18): questions scored a median 0.51
+# against the tags of the episodes they should find, 0.42 against the others.
+tag_match_score = 0.50
+max_tokens = 8192

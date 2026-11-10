@@ -1,0 +1,39 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}People &amp; things{% endblock %}
+
+{% block sheet %}
+<div class="page-head">
+  <h1 class="page-title">People &amp; things</h1>
+  <p class="page-text">The names Cerveau learned from what you said. When a message names one, Cerveau recalls what mentions it.</p>
+</div>
+
+{% include "cerveau/memory/_filters.html" with placeholder="A name or alias" %}
+
+{% if page.object_list %}
+  <ul class="cards">
+    {% for e in page.object_list %}
+      <li class="card{% if e.status != 'A' %} card--muted{% endif %}">
+        <a class="card-title" href="{% url 'cerveau:entity' e.pk %}">{{ e.name }}</a>
+        <p class="card-meta">
+          {{ e.type|default:"thing" }} · {{ e.mention_count }} mention{{ e.mention_count|pluralize }}
+          {% if e.status == "I" %}<span class="badge badge--aside">Set aside</span>{% endif %}
+          {% if e.status == "Z" %}<span class="badge badge--forgotten">Forgotten</span>{% endif %}
+        </p>
+        {% if e.aliases %}<p class="card-aliases">also {{ e.aliases|join:", " }}</p>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% include "cerveau/memory/_pages.html" %}
+{% else %}
+  <div class="blank">
+    {% if query or kind or status != "active" %}
+      <p class="blank-title">Nothing here.</p>
+      <p>No name matches this filter.</p>
+    {% else %}
+      <p class="blank-title">No names yet.</p>
+      <p>When a conversation ends, Cerveau notes the people, places, and projects you named.</p>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

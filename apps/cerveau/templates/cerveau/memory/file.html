@@ -1,0 +1,74 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}{{ file.title|default:file.filename }}{% endblock %}
+
+{% block sheet %}
+<p class="crumb"><a href="{% url 'cerveau:files' %}">Files</a></p>
+
+<div class="page-head">
+  <h1 class="page-title page-title--fact">{{ file.title|default:file.filename }}</h1>
+  <p class="page-text">
+    A{{ file.pk }} · {{ file.filename }} · {{ file.size_bytes|filesizeformat }}
+    {% if file.page_count %} · {{ file.page_count }} page{{ file.page_count|pluralize }}{% endif %}
+    {% if file.shared_at %} · shared <time datetime="{{ file.shared_at|date:'c' }}" data-format="date">{{ file.shared_at|date:"D, M j" }}</time>{% endif %}
+    {% include "cerveau/memory/_reading.html" with file=file %}
+  </p>
+  {% if file.extraction_status == "failed" %}<p class="notice">{{ file.extraction_error }}</p>{% endif %}
+  {% if has_original and file.status != "Z" %}
+    <p class="file-open"><a class="btn" href="{% url 'cerveau:file_original' file.pk %}">Open the original</a></p>
+  {% endif %}
+  {% include "cerveau/memory/_status.html" with item=file kind="attachment" noun="file" %}
+</div>
+
+{% if file.summary_short %}
+  <section class="block">
+    <h2 class="block-title">What it is</h2>
+    <p>{{ file.summary_short }}</p>
+    {% if file.summary_long and file.summary_long != file.summary_short %}
+      <details class="aside"><summary>More</summary><p>{{ file.summary_long }}</p></details>
+    {% endif %}
+    {% if tags %}
+      <dl class="facets">
+        <dt>Topics</dt>
+        <dd>{% for t in tags %}<span class="chip">{{ t.name }}</span>{% endfor %}</dd>
+      </dl>
+    {% endif %}
+  </section>
+{% endif %}
+
+<section class="block">
+  <h2 class="block-title">Shared in</h2>
+  <ol class="mentions">
+    {% for m in shared_in %}
+      <li>
+        <p class="line-label">
+          <time datetime="{{ m.created_at|date:'c' }}" data-format="datetime">{{ m.created_at|date:"D, M j H:i" }}</time>
+          · <a href="{% url 'cerveau:episode' m.episode_id %}#m{{ m.pk }}">{{ m.episode.title|default:"Untitled conversation" }}</a>
+        </p>
+        <p class="mention-text">{{ m.content|truncatechars:300 }}</p>
+      </li>
+    {% empty %}
+      <li class="muted">The conversation it was shared in is gone.</li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% if chunks %}
+  <section class="block">
+    <h2 class="block-title">Passages <span class="muted">({{ chunks|length }})</span></h2>
+    <p class="muted">What Cerveau can recall from it, a few at a time.</p>
+    <ol class="passages">
+      {% for c in chunks %}
+        <li class="passage">
+          <p class="line-label">
+            {{ forloop.counter }}
+            {% if c.page_start %} · p.{{ c.page_start }}{% if c.page_end and c.page_end != c.page_start %}-{{ c.page_end }}{% endif %}{% endif %}
+            {% if c.heading %} · {{ c.heading }}{% endif %}
+          </p>
+          <p class="passage-text">{{ c.text|linebreaksbr }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+  </section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}Lens{% endblock %}
+
+{% block sheet %}
+<div class="page-head">
+  <h1 class="page-title">Lens</h1>
+  <p class="page-text">
+    Ask anything, and see which memories it would bring back, and why: each one's score
+    against the two thresholds. Same search as the conversation, nothing hidden.
+  </p>
+</div>
+
+<form method="get" class="lens-form" role="search">
+  <label class="visually-hidden" for="lens-q">A question for Cerveau</label>
+  <input id="lens-q" name="q" type="search" value="{{ query }}" placeholder="Who asked me to be best man?" autocomplete="off" autofocus>
+  <button type="submit" class="btn btn--solid">Look</button>
+  <label class="lens-option">
+    <input type="checkbox" name="current" value="1"{% if include_current %} checked{% endif %}>
+    Include the conversation going on now (automatic recall leaves it out: it's already in the prompt)
+  </label>
+</form>
+
+<ul class="legend" aria-label="How to read the scores">
+  <li><span class="tick tick--auto"></span>Recalled before every reply at {{ min_score|floatformat:2 }} and above</li>
+  <li><span class="tick tick--search"></span>Found when Cerveau searches, at {{ search_min_score|floatformat:2 }} and above</li>
+  <li>Cerveau's short replies (under {{ short_reply_chars }} characters) are left out, as in a real turn</li>
+  <li class="legend-model">{{ embedding }}</li>
+</ul>
+
+{% if error %}
+  <div class="blank blank--error">
+    <p class="blank-title">The embedding model didn't answer.</p>
+    <p>{{ error }}</p>
+    <p>Check that Ollama is running, then try again.</p>
+  </div>
+{% elif query %}
+  {% if period %}
+    <p class="named">Asked about <strong>{{ period.label }}</strong>: only memories from then, all of them recalled, whatever their score (a real turn does the same).</p>
+  {% endif %}
+  {% if named %}
+    <p class="named">Names in your question:
+      {% for e in named %}<a class="chip chip--link" href="{% url 'cerveau:entity' e.id %}">{{ e.name }}</a>{% endfor %}
+      <span class="muted">(memories mentioning them get a boost)</span>
+    </p>
+  {% endif %}
+  {% if topics %}
+    <p class="named">Topics close to your question:
+      {% for tag, similarity in topics %}<span class="chip">{{ tag.name }} <span class="muted">{{ similarity|floatformat:2 }}</span></span>{% endfor %}
+      <span class="muted">(conversations with these tags get a small boost)</span>
+    </p>
+  {% endif %}
+  {% if on_mind %}
+    <p class="named">On my mind with this question:
+      {% for m in on_mind %}<span class="chip chip--mind" style="--glow: {{ m.value|floatformat:2 }};">{{ m.name }} <span class="muted">{{ m.value|floatformat:2 }}</span></span>{% endfor %}
+      <span class="muted">(memories about them get a small boost; <a href="{% url 'cerveau:mind' %}">what's on my mind now</a>)</span>
+    </p>
+  {% endif %}
+  {% if rows %}
+    <ol class="lens">
+      {% for row in rows %}
+        <li class="lens-row{% if not row.searchable %} lens-row--below{% endif %}">
+          <div class="score" style="--score: {{ row.percent }}%; --auto: {{ min_score|floatformat:2 }}; --search: {{ search_min_score|floatformat:2 }};"
+               role="img" aria-label="Score {{ row.score|floatformat:2 }}">
+            <span class="score-fill"></span>
+            <span class="score-tick score-tick--search"></span>
+            <span class="score-tick score-tick--auto"></span>
+          </div>
+          <div class="lens-main">
+            <p class="line-label">
+              <span class="score-value">{{ row.score|floatformat:2 }}</span>
+              {% if row.automatic and not row.current %}<span class="badge badge--auto">recalled</span>
+              {% elif row.searchable %}<span class="badge badge--search">search finds it</span>
+              {% else %}<span class="badge">below both</span>{% endif %}
+              {% if row.current %}<span class="badge badge--now">this conversation</span>{% endif %}
+              <span class="line-id">{{ row.memory_id }}</span>
+              {% if row.candidate.kind.value == "episode" %}episode summary{% elif row.candidate.kind.value == "fact" %}fact{% elif row.candidate.kind.value == "attachment" %}{{ row.candidate.label }}{% else %}{% if row.candidate.role.value == "assistant" %}Cerveau{% else %}you{% endif %}{% endif %}
+              {% if row.candidate.at %}· <time datetime="{{ row.candidate.at|date:'c' }}" data-format="date">{{ row.candidate.at|date:"D, M j" }}</time>{% endif %}
+              {% if row.candidate.lexical %}· name match{% endif %}
+              {% if row.candidate.keyword %}· exact term{% endif %}
+              {% if row.candidate.activation %}· on my mind{% endif %}
+            </p>
+            <p class="lens-text">{{ row.candidate.text|truncatechars:280 }}</p>
+            {% if row.candidate.kind.value == "fact" %}
+              <p class="lens-link"><a href="{% url 'cerveau:fact' row.candidate.id %}">Open the fact</a></p>
+            {% elif row.candidate.kind.value == "attachment" %}
+              <p class="lens-link"><a href="{% url 'cerveau:file' row.candidate.parent_id %}">Open the file</a></p>
+            {% elif row.candidate.episode_id %}
+              <p class="lens-link"><a href="{% url 'cerveau:episode' row.candidate.episode_id %}{% if row.candidate.kind.value == 'message' %}#m{{ row.candidate.id }}{% endif %}">{{ row.episode_title|default:"Untitled conversation" }}</a></p>
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <div class="blank">
+      {% if period %}
+        <p class="blank-title">Nothing from then.</p>
+        <p>No conversation took place in {{ period.label }}. Cerveau would say it doesn't remember that time.</p>
+      {% else %}
+        <p class="blank-title">Nothing at all.</p>
+        <p>No memory is embedded with {{ embedding }} yet. Run <code>python manage.py embed_memory</code>.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endif %}
+{% endblock %}

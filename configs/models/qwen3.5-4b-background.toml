@@ -1,0 +1,23 @@
+# Background profile for qwen3.5:4b: consolidation, running summaries, facts.
+# Same model and context window as the chat profile, so Ollama doesn't reload it;
+# only the temperature differs (measured 2026-10-17: at 0.7, the fact judge gave
+# different answers for the same pair).
+
+# Model profile (brain.config.ModelProfile) for Ollama's qwen3.5:4b, sized for a
+# 6 GB GPU (RTX 3060 Laptop). Measured with Ollama 0.40.4: 16,384 tokens of context
+# stays 100% on the GPU (3.6 GB); 32,768 spills to the CPU.
+
+name = "qwen3.5:4b"
+provider = "ollama"
+context_window = 16384
+output_reserve = 1536
+memory_budget = 8000
+chars_per_token = 4.0
+supports_tools = true
+# A reasoning model: thinking is off for speed (2.4s vs 4.6s for a one-line answer),
+# and its tokens would count against output_reserve.
+think = false
+
+[options]
+# Low: extraction and judging should give the same answer twice.
+temperature = 0.2

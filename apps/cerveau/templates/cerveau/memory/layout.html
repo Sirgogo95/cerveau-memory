@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% block page_title %}Memory{% endblock %} · Cerveau{% endblock %}
+
+{% block head %}
+  <meta name="color-scheme" content="light dark">
+  <link rel="preload" href="{% static 'cerveau/vendor/fonts/hanken-grotesk.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'cerveau/base.css' %}">
+  <link rel="stylesheet" href="{% static 'cerveau/memory.css' %}">
+  {# Replies render as sanitized Markdown, as in the chat; vendored, nothing from the internet. #}
+  <script src="{% static 'cerveau/vendor/marked.umd.js' %}" defer></script>
+  <script src="{% static 'cerveau/vendor/purify.min.js' %}" defer></script>
+  <script src="{% static 'cerveau/markdown.js' %}" defer></script>
+  <script src="{% static 'cerveau/time.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="memory">
+  <header class="bar">
+    <div class="brand">
+      <span class="neuron" aria-hidden="true"></span>
+      <a class="wordmark" href="{% url 'cerveau:chat' %}" title="Back to the conversation">cerveau</a>
+    </div>
+    <nav aria-label="Memory">
+      <ul class="nav">
+        <li><a href="{% url 'cerveau:timeline' %}"{% if tab == "timeline" %} aria-current="page"{% endif %}>Timeline</a></li>
+        <li><a href="{% url 'cerveau:facts' %}"{% if tab == "facts" %} aria-current="page"{% endif %}>Facts</a></li>
+        <li><a href="{% url 'cerveau:entities' %}"{% if tab == "entities" %} aria-current="page"{% endif %}>People &amp; things</a></li>
+        <li><a href="{% url 'cerveau:files' %}"{% if tab == "files" %} aria-current="page"{% endif %}>Files</a></li>
+        <li><a href="{% url 'cerveau:mind' %}"{% if tab == "mind" %} aria-current="page"{% endif %}>On my mind</a></li>
+        <li><a href="{% url 'cerveau:lens' %}"{% if tab == "lens" %} aria-current="page"{% endif %}>Lens</a></li>
+      </ul>
+    </nav>
+    <p class="meta"><a href="{% url 'cerveau:chat' %}">Back to chat</a></p>
+  </header>
+
+  <main class="sheet">
+    {% block sheet %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

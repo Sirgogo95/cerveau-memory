@@ -1,0 +1,60 @@
+{
+  "scenario": "work",
+  "conversations": [
+    {"name": "invoice crash, then the fix",
+     "turns": [
+       {"text": "The monthly invoice task crashed again last night.", "expect": ["dup_invoice"]},
+       {"text": "What did I change to fix it the first time?", "expect": ["dup_invoice", "dup_invoice:4"]}
+     ]},
+    {"name": "portal update, then the date",
+     "turns": [
+       {"text": "Priya wants a status update on the customer portal.", "expect": ["release_update", "release_plan"]},
+       {"text": "When is it launching now?", "expect": ["release_update", "release_update:0"]}
+     ]},
+    {"name": "Marta's PR, then where to comment",
+     "turns": [
+       {"text": "Marta pinged me about her dashboard pull request.", "expect": ["marta"]},
+       {"text": "Where did she want the comments?", "expect": ["marta"]}
+     ]},
+    {"name": "Ines's review, then the ordering",
+     "turns": [
+       {"text": "I'm starting Ines's review today.", "expect": ["ines_review"]},
+       {"text": "What ordering was I going to suggest?", "expect": ["ines_review"]}
+     ]},
+    {"name": "slow admin, then the fix",
+     "turns": [
+       {"text": "The invoices page in the admin is slow again.", "expect": ["admin_slow:0", "admin_slow:2"]},
+       {"text": "What fixed it last time?", "expect": ["admin_slow:2"]}
+     ]},
+    {"name": "staging down, then the cause",
+     "turns": [
+       {"text": "Staging went down again this morning.", "expect": ["staging_deploy"]},
+       {"text": "Was it the disk filling up like last time?", "expect": ["staging_deploy"]}
+     ]},
+    {"name": "invoice crash, then Rust",
+     "turns": [
+       {"text": "The monthly invoice task crashed again last night.", "expect": ["dup_invoice"]},
+       {"text": "Unrelated: what's a good way to start learning Rust?", "switch": true, "reject": ["dup_invoice", "dup_invoice:0"]}
+     ]},
+    {"name": "portal login, then the cause",
+     "turns": [
+       {"text": "People are stuck on the portal login page again.", "expect": ["portal_login:0", "portal_login:4"]},
+       {"text": "What was causing the loop last time?", "expect": ["portal_login:4"]}
+     ]},
+    {"name": "billing migrations, then the fix",
+     "turns": [
+       {"text": "The billing migrations are failing again.", "expect": ["migration"]},
+       {"text": "How did we get around it before?", "expect": ["migration"]}
+     ]},
+    {"name": "Cerveau ranking, then the vectors",
+     "turns": [
+       {"text": "I'm rethinking how Cerveau ranks its memories.", "expect": ["cerveau_design"]},
+       {"text": "And where are the vectors stored again?", "expect": ["postgres"]}
+     ]},
+    {"name": "slow admin, then Stripe",
+     "turns": [
+       {"text": "The invoices page in the admin is slow again.", "expect": ["admin_slow:0", "admin_slow:2"]},
+       {"text": "Separate question: who owns the Stripe integration for the launch?", "switch": true, "expect": ["release_plan"], "reject": ["admin_slow:0", "admin_slow:2"]}
+     ]}
+  ]
+}

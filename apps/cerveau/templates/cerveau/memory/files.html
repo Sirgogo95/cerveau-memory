@@ -1,0 +1,45 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}Files{% endblock %}
+
+{% block sheet %}
+<div class="page-head">
+  <h1 class="page-title">Files</h1>
+  <p class="page-text">What you shared in the chat. Cerveau reads each file into passages and recalls the right ones when you ask, never the whole file.</p>
+</div>
+
+{% include "cerveau/memory/_filters.html" with placeholder="A file name or words in its summary" %}
+
+{% if page.object_list %}
+  <ul class="files">
+    {% for f in page.object_list %}
+      <li class="file{% if f.status != 'A' %} file--muted{% endif %}">
+        <span class="file-kind" aria-hidden="true">{{ f.extension }}</span>
+        <div class="file-main">
+          <a class="file-title" href="{% url 'cerveau:file' f.pk %}">{{ f.title|default:f.filename }}</a>
+          <p class="file-meta">
+            {% if f.title %}{{ f.filename }} · {% endif %}
+            {% if f.page_count %}{{ f.page_count }} page{{ f.page_count|pluralize }} · {% endif %}
+            {% if f.shared_at %}<time datetime="{{ f.shared_at|date:'c' }}" data-format="date">{{ f.shared_at|date:"D, M j" }}</time>{% endif %}
+            {% include "cerveau/memory/_reading.html" with file=f %}
+            {% if f.status == "I" %}<span class="badge badge--aside">Set aside</span>{% endif %}
+            {% if f.status == "Z" %}<span class="badge badge--forgotten">Forgotten</span>{% endif %}
+          </p>
+          {% if f.summary_short %}<p class="file-summary">{{ f.summary_short }}</p>{% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% include "cerveau/memory/_pages.html" %}
+{% else %}
+  <div class="blank">
+    {% if query or status != "active" %}
+      <p class="blank-title">Nothing here.</p>
+      <p>No file matches this filter.</p>
+    {% else %}
+      <p class="blank-title">No files yet.</p>
+      <p>Attach a file in the chat (the paperclip, or drop it on the page): a PDF, a Word document, notes, or code. Cerveau reads it and remembers what's in it.</p>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

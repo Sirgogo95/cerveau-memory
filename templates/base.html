@@ -1,0 +1,18 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Cerveau{% endblock %}</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% comment %}
+    The debug banner and annotation script are auto-injected before </body> by
+    kernel.base_app.middleware (DebugBannerMiddleware / AnnotationScriptMiddleware),
+    dev-only, no manual include needed.
+  {% endcomment %}
+  {% block content %}{% endblock %}
+</body>
+</html>

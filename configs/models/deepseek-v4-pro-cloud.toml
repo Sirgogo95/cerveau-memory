@@ -1,0 +1,17 @@
+# deepseek-v4-pro on Ollama Cloud (https://ollama.com; needs OLLAMA_API_KEY in .env).
+# For evaluation only: a stronger grader than gpt-oss:120b, from another model family
+# than either answering model (qwen3.5:4b, gpt-oss:120b). On three hard cases it
+# agreed with kimi-k3 where gpt-oss was lenient ("a cup" for the gold answer "pots"),
+# in less than half kimi-k3's time. The chat stays local; nothing in the app uses it.
+
+name = "deepseek-v4-pro:0813"
+provider = "ollama"
+base_url = "https://ollama.com"
+context_window = 65536
+output_reserve = 4096
+memory_budget = 8000
+chars_per_token = 4.0
+supports_tools = false
+
+[options]
+temperature = 0

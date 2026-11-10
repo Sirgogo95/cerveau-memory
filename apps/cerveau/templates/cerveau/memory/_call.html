@@ -1,0 +1,11 @@
+{# One memory-tool call: what it looked for, what came back (open for the full result). #}
+<details class="call">
+  <summary>
+    <span class="call-label">{{ call.label }}</span>
+    <span class="call-meta">
+      {% if call.error %}error{% elif call.found is not None %}{{ call.found }} found{% endif %}
+      · {{ call.duration_ms }} ms
+    </span>
+  </summary>
+  <pre class="call-result">{{ call.pretty }}</pre>
+</details>

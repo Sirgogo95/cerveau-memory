@@ -1,0 +1,5 @@
+{% comment %}A file's reading state as a badge, when it isn't simply read. Context: file.{% endcomment %}
+{% if file.extraction_status == "pending" %}<span class="badge badge--now">Being read</span>
+{% elif file.extraction_status == "failed" %}<span class="badge badge--forgotten" title="{{ file.extraction_error }}">Couldn't be read</span>
+{% elif file.extraction_status == "unsupported" %}<span class="badge">Not readable</span>
+{% elif not file.title %}<span class="badge badge--now">Being summarized</span>{% endif %}

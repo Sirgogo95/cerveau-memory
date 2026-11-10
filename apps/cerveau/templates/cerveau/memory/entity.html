@@ -1,0 +1,43 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}{{ entity.name }}{% endblock %}
+
+{% block sheet %}
+<p class="crumb"><a href="{% url 'cerveau:entities' %}">People &amp; things</a></p>
+
+<div class="page-head">
+  <h1 class="page-title">{{ entity.name }}</h1>
+  <p class="page-text">
+    {{ entity.type|default:"thing" }} · N{{ entity.pk }} · {{ mention_total }} mention{{ mention_total|pluralize }}
+  </p>
+  {% include "cerveau/memory/_status.html" with item=entity kind="entity" noun="name" %}
+</div>
+
+{% if entity.aliases %}
+  <section class="block">
+    <h2 class="block-title">Also called</h2>
+    <p>{% for alias in entity.aliases %}<span class="chip">{{ alias }}</span>{% endfor %}</p>
+  </section>
+{% endif %}
+
+<section class="block">
+  <h2 class="block-title">Where it comes up</h2>
+  {% if mentions %}
+    <ol class="mentions">
+      {% for m in mentions %}
+        <li>
+          <p class="line-label">
+            <time datetime="{{ m.created_at|date:'c' }}" data-format="datetime">{{ m.created_at|date:"D, M j H:i" }}</time>
+            · <a href="{% url 'cerveau:episode' m.episode_id %}#m{{ m.pk }}">{{ m.episode.title|default:"Untitled conversation" }}</a>
+            {% if m.episode.status != "A" %}<span class="badge">{{ m.episode.get_status_display|lower }}</span>{% endif %}
+          </p>
+          <p class="mention-text">{{ m.content|truncatechars:320 }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+    {% if mention_total > mentions|length %}<p class="muted">Showing the latest {{ mentions|length }}.</p>{% endif %}
+  {% else %}
+    <p class="muted">No message mentions it any more.</p>
+  {% endif %}
+</section>
+{% endblock %}

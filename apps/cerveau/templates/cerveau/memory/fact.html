@@ -1,0 +1,55 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}Fact{% endblock %}
+
+{% block sheet %}
+<p class="crumb"><a href="{% url 'cerveau:facts' %}">Facts</a></p>
+
+<div class="page-head">
+  <h1 class="page-title page-title--fact">{{ fact.statement }}</h1>
+  <p class="page-text">
+    F{{ fact.pk }} · {{ fact.type }} ·
+    learned <time datetime="{{ fact.learned_at|date:'c' }}" data-format="date">{{ fact.learned_at|date:"D, M j" }}</time>
+    {% if fact.times_confirmed > 1 %} · confirmed {{ fact.times_confirmed }} times, last <time datetime="{{ fact.last_confirmed_at|date:'c' }}" data-format="date">{{ fact.last_confirmed_at|date:"D, M j" }}</time>{% endif %}
+    {% if fact.episode %} · from <a href="{% url 'cerveau:episode' fact.episode_id %}">{{ fact.episode.title|default:"a conversation" }}</a>{% endif %}
+  </p>
+  {% if fact.superseded_by_id %}
+    <p class="notice">Replaced by <a href="{% url 'cerveau:fact' fact.superseded_by_id %}">a newer fact</a>: kept as history, no longer recalled.</p>
+  {% endif %}
+  {% include "cerveau/memory/_status.html" with item=fact kind="fact" noun="fact" %}
+</div>
+
+<section class="block">
+  <h2 class="block-title">What you said</h2>
+  {% if sources %}
+    <ol class="mentions">
+      {% for m in sources %}
+        <li>
+          <p class="line-label">
+            <time datetime="{{ m.created_at|date:'c' }}" data-format="datetime">{{ m.created_at|date:"D, M j H:i" }}</time>
+            · <a href="{% url 'cerveau:episode' m.episode_id %}#m{{ m.pk }}">{{ m.episode.title|default:"Untitled conversation" }}</a>
+          </p>
+          <p class="mention-text">{{ m.content|truncatechars:400 }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="muted">Its source messages are gone.</p>
+  {% endif %}
+</section>
+
+{% if history %}
+  <section class="block">
+    <h2 class="block-title">How it changed</h2>
+    <ol class="history">
+      {% for h in history %}
+        <li class="{% if h.superseded_by is None %}history--now{% endif %}{% if h.id == fact.pk %} history--this{% endif %}">
+          <time datetime="{{ h.learned_at|date:'c' }}" data-format="date">{{ h.learned_at|date:"D, M j" }}</time>
+          {% if h.id == fact.pk %}<span>{{ h.statement }}</span>{% else %}<a href="{% url 'cerveau:fact' h.id %}">{{ h.statement }}</a>{% endif %}
+          {% if h.superseded_by is None %}<span class="badge badge--now">current</span>{% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </section>
+{% endif %}
+{% endblock %}

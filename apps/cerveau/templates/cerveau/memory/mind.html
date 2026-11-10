@@ -1,0 +1,50 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}On my mind{% endblock %}
+
+{% block sheet %}
+<div class="page-head">
+  <h1 class="page-title">On my mind</h1>
+  <p class="page-text">
+    The topics and names Cerveau is thinking about right now: what recent messages
+    mentioned, and what usually comes up with them. Memories about them get a small
+    boost when it looks for what's relevant.
+  </p>
+</div>
+
+{% if not enabled %}
+  <div class="blank">
+    <p class="blank-title">Activation is off.</p>
+    <p>Every <code>w_act</code> in <code>configs/default.toml</code> is 0, so nothing is kept in mind between messages.</p>
+  </div>
+{% elif rows %}
+  <ol class="mind" aria-label="Strongest first">
+    {% for row in rows %}
+      <li class="mind-row" style="--value: {{ row.percent }}%; --glow: {{ row.value|floatformat:2 }};">
+        <span class="mind-dot" aria-hidden="true"></span>
+        <div class="mind-main">
+          <p class="mind-name">
+            {% if row.url %}<a href="{{ row.url }}">{{ row.name }}</a>{% else %}{{ row.name }}{% endif %}
+            <span class="mind-kind">{{ row.kind }}</span>
+          </p>
+          <div class="mind-bar" role="img" aria-label="Activation {{ row.value|floatformat:2 }}"><span></span></div>
+        </div>
+        <p class="mind-meta">
+          <span class="score-value">{{ row.value|floatformat:2 }}</span>
+          <span class="muted">{{ row.updated_at|timesince }} ago</span>
+        </p>
+      </li>
+    {% endfor %}
+  </ol>
+  <p class="mind-note">
+    Each message fades what it doesn't mention by {{ turn_decay }}%, and everything halves every
+    {{ half_life|floatformat:"-1" }} hours, so a topic left alone is gone in a few messages, and by the next
+    morning. A message on a new subject starts fresh. Values here are faded to now.
+  </p>
+{% else %}
+  <div class="blank">
+    <p class="blank-title">Nothing on my mind.</p>
+    <p>Mention a person or a topic in the chat, and it shows up here, along with what usually comes with it. It fades when the conversation moves on.</p>
+  </div>
+{% endif %}
+{% endblock %}

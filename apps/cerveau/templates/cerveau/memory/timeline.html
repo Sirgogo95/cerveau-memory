@@ -1,0 +1,55 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}Timeline{% endblock %}
+
+{% block sheet %}
+<div class="page-head">
+  <h1 class="page-title">Timeline</h1>
+  <p class="page-text">Every conversation Cerveau keeps, newest first. Open one to see what it learned from it.</p>
+</div>
+
+{% include "cerveau/memory/_filters.html" with placeholder="Words in a title, summary, or message" %}
+
+{% if page.object_list %}
+  <ol class="timeline">
+    {% for episode in page.object_list %}
+      <li class="episode{% if episode.status != 'A' %} episode--muted{% endif %}">
+        <div class="episode-when">
+          <time datetime="{{ episode.started_at|date:'c' }}" data-format="date">{{ episode.started_at|date:"D, M j" }}</time>
+          <span class="episode-hours">
+            <time datetime="{{ episode.started_at|date:'c' }}">{{ episode.started_at|date:"H:i" }}</time>{% if episode.ended_at %} to <time datetime="{{ episode.ended_at|date:'c' }}">{{ episode.ended_at|date:"H:i" }}</time>{% endif %}
+          </span>
+        </div>
+        <div class="episode-main">
+          <a class="episode-title" href="{% url 'cerveau:episode' episode.pk %}">
+            {% if episode.title %}{{ episode.title }}{% elif episode.pk == current_id %}This conversation (still going){% else %}Untitled conversation{% endif %}
+          </a>
+          <div class="badges">
+            {% if episode.pk == current_id %}<span class="badge badge--now">Now</span>{% endif %}
+            {% if not episode.consolidated_at and episode.ended_at %}<span class="badge">Not consolidated yet</span>{% endif %}
+            {% if episode.status == "I" %}<span class="badge badge--aside">Set aside</span>{% endif %}
+            {% if episode.status == "Z" %}<span class="badge badge--forgotten">Forgotten</span>{% endif %}
+          </div>
+          {% if episode.summary_short %}<p class="episode-summary">{{ episode.summary_short }}</p>{% endif %}
+          <p class="episode-facts">
+            {{ episode.message_count }} message{{ episode.message_count|pluralize }}
+            {% if episode.search_count %} · {{ episode.search_count }} memory search{{ episode.search_count|pluralize:"es" }}{% endif %}
+            {% for et in episode.episode_tags.all %}<span class="chip">{{ et.tag.name }}</span>{% endfor %}
+          </p>
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
+  {% include "cerveau/memory/_pages.html" %}
+{% else %}
+  <div class="blank">
+    {% if query or status != "active" %}
+      <p class="blank-title">Nothing here.</p>
+      <p>No conversation matches this filter.</p>
+    {% else %}
+      <p class="blank-title">No memories yet.</p>
+      <p>Talk to Cerveau, and the conversations it keeps will appear here.</p>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

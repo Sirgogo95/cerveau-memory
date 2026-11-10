@@ -1,0 +1,324 @@
+{
+  "name": "languages",
+  "episodes": [
+    {
+      "key": "dog",
+      "tags": ["pets", "animal care", "fear"],
+      "messages": [
+        ["user", "We adopted a dog last week, a brown mixed breed we named Canela."],
+        ["assistant", "Congratulations! How is she settling in?"],
+        ["user", "Well, but she's scared of thunder, she hides under the bed during storms."],
+        ["assistant", "That's common. A quiet, covered space and calm voices help during storms."]
+      ],
+      "summary": "The user adopted a brown mixed-breed dog named Canela; she is scared of thunder and hides under the bed.",
+      "entities": [{"name": "Canela", "type": "animal"}]
+    },
+    {
+      "key": "padre",
+      "tags": ["birthday", "celebration", "family"],
+      "messages": [
+        ["user", "Mi papá cumple 70 años el 3 de marzo y queremos hacerle una fiesta sorpresa en Santiago."],
+        ["assistant", "¡Qué bonito! ¿Ya tienen un lugar pensado?"],
+        ["user", "Sí, la casa de mi tía. Él no sabe nada, así que no se lo digas a nadie."],
+        ["assistant", "Tranquilo, es un secreto."]
+      ],
+      "summary": "El papá del usuario cumple 70 años el 3 de marzo; le preparan una fiesta sorpresa en Santiago, en la casa de la tía.",
+      "entities": [{"name": "Santiago", "type": "place"}]
+    },
+    {
+      "key": "cours",
+      "tags": ["music", "education", "learning"],
+      "messages": [
+        ["user", "Je commence un cours de piano le mardi soir, au conservatoire près de chez moi."],
+        ["assistant", "Super ! Vous avez déjà joué d'un instrument ?"],
+        ["user", "Non, jamais. Je veux pouvoir jouer une valse de Chopin d'ici un an."],
+        ["assistant", "C'est un bel objectif pour une première année."]
+      ],
+      "summary": "L'utilisateur commence des cours de piano le mardi soir au conservatoire; objectif: jouer une valse de Chopin d'ici un an.",
+      "entities": [{"name": "Chopin", "type": "person"}]
+    },
+    {
+      "key": "diet",
+      "tags": ["health", "diet", "cholesterol"],
+      "messages": [
+        ["user", "I've stopped eating red meat since September, mostly for my cholesterol."],
+        ["assistant", "That can make a real difference. Are you replacing it with fish or legumes?"],
+        ["user", "Lots of lentils and chickpeas, and fish twice a week."],
+        ["assistant", "A balanced approach."]
+      ],
+      "summary": "The user stopped eating red meat in September for their cholesterol; eats lentils, chickpeas, and fish twice a week.",
+      "entities": []
+    },
+    {
+      "key": "chat",
+      "tags": ["animal care", "dog and cat care", "neighborly help"],
+      "messages": [
+        ["user", "Ma voisine, Mme Lefèvre, part deux semaines en Martinique et elle m'a demandé de m'occuper de son chat, Moustache."],
+        ["assistant", "C'est gentil de votre part. Qu'est-ce qu'il faut savoir sur lui ?"],
+        ["user", "Il mange deux fois par jour : des croquettes le matin et une demi-boîte de pâtée le soir."],
+        ["assistant", "D'accord. Et pour la litière ?"],
+        ["user", "Litière tous les deux jours. Et surtout ne jamais lui donner de lait, il est intolérant au lactose, il a été très malade la dernière fois."],
+        ["assistant", "Noté : pas de lait pour Moustache."],
+        ["user", "Elle revient le 2 novembre, je lui rends les clés ce jour-là."],
+        ["assistant", "Parfait, je m'en souviendrai."]
+      ],
+      "summary": "L'utilisateur garde Moustache, le chat de sa voisine Mme Lefèvre, partie en Martinique jusqu'au 2 novembre; croquettes le matin, pâtée le soir, litière tous les deux jours, jamais de lait (intolérant au lactose).",
+      "entities": [
+        {"name": "Moustache", "type": "animal"},
+        {"name": "Mme Lefèvre", "type": "person", "aliases": ["Lefèvre", "ma voisine"]},
+        {"name": "Martinique", "type": "place"}
+      ]
+    },
+    {
+      "key": "mama",
+      "tags": ["family", "celebration", "travel"],
+      "messages": [
+        ["user", "My mom is retiring in June after 32 years teaching at the same elementary school."],
+        ["assistant", "That's a huge milestone. Are you planning something for her?"],
+        ["user", "My brothers and I are taking her to dinner at Mesón de la Cava in Santo Domingo on June 20th."],
+        ["assistant", "A beautiful spot. Will it be just family?"],
+        ["user", "Family plus a few of her old colleagues. She knows about this one, it's not a surprise, she picked the date herself."],
+        ["assistant", "Good, no secrets to keep this time."],
+        ["user", "We're also chipping in for a trip to Spain for her, she's always wanted to see Seville."],
+        ["assistant", "What a lovely gift."]
+      ],
+      "summary": "The user's mother retires in June after 32 years as an elementary school teacher; family dinner at Mesón de la Cava in Santo Domingo on June 20 (not a surprise, she chose the date); the siblings are giving her a trip to Seville.",
+      "entities": [
+        {"name": "Mesón de la Cava", "type": "place"},
+        {"name": "Santo Domingo", "type": "place"},
+        {"name": "Seville", "type": "place", "aliases": ["Sevilla"]}
+      ]
+    },
+    {
+      "key": "guitarra",
+      "tags": ["music", "family", "education"],
+      "messages": [
+        ["user", "Le estoy pagando las clases de guitarra a mi sobrino Mateo, tiene 12 años."],
+        ["assistant", "¡Qué buen tío! ¿Dónde las toma?"],
+        ["user", "En una academia en Los Prados, los jueves a las 4 de la tarde. Son 3,500 pesos al mes."],
+        ["assistant", "¿Y le está gustando?"],
+        ["user", "Muchísimo. Ya se sabe 'Bachata Rosa' de Juan Luis Guerra y me la tocó el domingo."],
+        ["assistant", "¡Qué emoción! Empezar con Juan Luis Guerra es buena señal."]
+      ],
+      "summary": "El usuario paga las clases de guitarra de su sobrino Mateo (12 años): academia en Los Prados, los jueves a las 4 de la tarde, 3,500 pesos al mes; ya toca 'Bachata Rosa' de Juan Luis Guerra.",
+      "entities": [
+        {"name": "Mateo", "type": "person", "aliases": ["mi sobrino"]},
+        {"name": "Los Prados", "type": "place"},
+        {"name": "Juan Luis Guerra", "type": "person"}
+      ]
+    },
+    {
+      "key": "analisis",
+      "tags": ["health", "cholesterol", "medical appointment"],
+      "messages": [
+        ["user", "Mon médecin, le Dr Ferreira, veut que je refasse une prise de sang pour vérifier mon cholestérol."],
+        ["assistant", "C'est une bonne idée de suivre l'évolution. C'est prévu quand ?"],
+        ["user", "Le 12 novembre à 7h30, au laboratoire Amadita de l'avenida Lincoln."],
+        ["assistant", "Il faut être à jeun ?"],
+        ["user", "Oui, douze heures sans manger, donc pas de dîner après 19h30 la veille."],
+        ["assistant", "Je vous le rappellerai la veille."],
+        ["user", "Il a aussi dit que si le LDL est encore au-dessus de 160, il me mettra sous statines."],
+        ["assistant", "Espérons que les changements d'alimentation suffiront."]
+      ],
+      "summary": "Prise de sang demandée par le Dr Ferreira pour contrôler le cholestérol: le 12 novembre à 7h30 au laboratoire Amadita (avenida Lincoln), à jeun depuis douze heures; statines si le LDL dépasse encore 160.",
+      "entities": [
+        {"name": "Dr Ferreira", "type": "person", "aliases": ["Ferreira", "mon médecin"]},
+        {"name": "Amadita", "type": "place"}
+      ]
+    },
+    {
+      "key": "carro",
+      "tags": ["transportation", "car repair", "personal finance"],
+      "messages": [
+        ["user", "El carro me dejó tirado ayer en la Autopista Duarte, tuve que llamar una grúa."],
+        ["assistant", "¡Qué mal rato! ¿Ya sabes qué tiene?"],
+        ["user", "Lo llevé donde Ramón, el mecánico de siempre. Dice que es la bomba de gasolina."],
+        ["assistant", "¿Te dio un presupuesto?"],
+        ["user", "18,000 pesos con la mano de obra. Me lo entrega el viernes."],
+        ["assistant", "Mientras tanto, ¿cómo te vas a mover?"],
+        ["user", "Mi cuñado me presta su yipeta hasta el viernes."],
+        ["assistant", "Menos mal."]
+      ],
+      "entities": [
+        {"name": "Ramón", "type": "person", "aliases": ["el mecánico"]},
+        {"name": "Autopista Duarte", "type": "place"}
+      ]
+    },
+    {
+      "key": "trabajo",
+      "tags": ["career", "job hunting", "work-life balance"],
+      "messages": [
+        ["user", "Necesito desahogarme sobre el trabajo, ha sido una semana larguísima."],
+        ["assistant", "Aquí estoy. Cuéntame qué pasó."],
+        ["user", "Mira, llevo casi seis años en el banco y cada vez es peor. Desde que fusionaron los departamentos en marzo, hago el trabajo de dos personas y nadie habla de subirme el sueldo. Esta semana tuvimos auditoría interna y me quedé hasta las diez de la noche tres días seguidos, revisando conciliaciones que ni siquiera eran mías. El tapón de la Churchill a esa hora es un infierno, llego a la casa sin ganas de nada, ni de cocinar ni de hablar con nadie. Los fines de semana me la paso durmiendo para recuperarme y siento que se me está yendo la vida en una oficina sin ventanas. Lo peor es que me gusta lo que hago, los números, el análisis, pero no así. Hace un mes un antiguo compañero de la universidad me llamó para decirme que en su empresa buscaban un analista financiero, y yo le dije que lo iba a pensar sin muchas ganas. Hice las entrevistas casi por curiosidad: una con recursos humanos, otra con el gerente de finanzas y una última con el director general, que me cayó muy bien porque habló más de cómo trabaja el equipo que de metas imposibles. Me preocupaba mudarme lejos de mis papás, sobre todo ahora que mi papá va a cumplir setenta, y también dejar el seguro médico del banco, que es bueno. Lo hablé con mi mamá y me dijo que no me quedara en un sitio solo por miedo. También hice números: el alquiler allá es más caro, pero no tendría que gastar tanto en gasolina ni comer en la calle todos los días. Pensé en pedir un aumento primero, para ver si el banco reaccionaba, pero ya lo pedí dos veces y siempre me dicen que en el próximo trimestre. Ayer por la tarde me llegó la oferta formal por correo con todos los detalles del seguro, las vacaciones y el horario, que es de ocho a cinco y sin trabajar los sábados. Al final lo decidí anoche: acepto la oferta de la empresa de energía solar en Punta Cana, con un salario de 145,000 pesos al mes, y empiezo el 1 de diciembre."],
+        ["assistant", "Felicidades por tomar la decisión. Se nota que lo pensaste con calma y que no fue un impulso."],
+        ["user", "Gracias. Lo que más me preocupa es decírselo a mi jefa, Carmen. Ella me ha apoyado mucho todos estos años."],
+        ["assistant", "Agradécele de frente y ofrécele dejar todo bien documentado para la transición. Eso se valora."]
+      ],
+      "summary": "El usuario deja el banco (su jefa es Carmen) tras meses de horas extra; acepta la oferta de una empresa de energía solar en Punta Cana, 145,000 pesos al mes, y empieza el 1 de diciembre.",
+      "entities": [
+        {"name": "Carmen", "type": "person", "aliases": ["mi jefa"]},
+        {"name": "Punta Cana", "type": "place"}
+      ]
+    },
+    {
+      "key": "voyage",
+      "tags": ["travel", "family", "holiday planning"],
+      "messages": [
+        ["user", "Je prépare enfin mon voyage pour aller voir ma sœur Gabriela à Montréal pour Noël."],
+        ["assistant", "Quelle belle nouvelle ! Où en êtes-vous de l'organisation ?"],
+        ["user", "Ça fait des années que je dis que je vais y aller et que je repousse. Gabriela vit là-bas depuis 2019, elle travaille comme infirmière à l'hôpital Sainte-Justine et elle a maintenant un petit appartement sur le Plateau, avec une chambre d'amis qu'elle me garde depuis longtemps. Le plus long, ça a été le visa canadien : j'ai déposé la demande en juin, il a fallu fournir des relevés bancaires, une lettre de mon employeur, la lettre d'invitation de Gabriela, la prise des empreintes au centre de Santo Domingo, et ensuite attendre presque trois mois sans nouvelles. Je l'ai enfin reçu début septembre, j'ai crié dans la cuisine. Ensuite il y a eu la question des vêtements, parce que je n'ai absolument rien pour le froid. Ma sœur m'a dit qu'il peut faire moins vingt en décembre, et moi je trouve qu'il fait froid quand il fait vingt degrés à Jarabacoa. Elle va me prêter un manteau, mais je dois acheter des bottes, des gants et un bonnet. Ma mère prépare déjà une valise entière de choses à lui apporter : du café Santo Domingo, du dulce de leche, du casabe, des cigares pour son copain, et bien sûr une bouteille de Brugal. J'ai comparé les prix pendant des semaines : il y avait un vol avec escale à Miami moins cher, mais avec neuf heures d'attente, et un autre via Toronto qui arrivait à minuit. J'ai aussi hésité sur les dates, parce que je voulais être là pour le réveillon sans manquer le premier de l'an avec elle. Bref, j'ai réservé hier soir : vol direct Air Canada depuis Las Américas le 18 décembre à 6h10 du matin, et retour le 3 janvier."],
+        ["assistant", "Tout est en place, alors. Pensez à garder une tenue chaude dans votre bagage à main pour l'arrivée."],
+        ["user", "Gabriela veut m'emmener patiner au parc La Fontaine, moi qui n'ai jamais vu de neige !"],
+        ["assistant", "Une première neige et une première patinoire la même semaine, c'est un beau programme."]
+      ],
+      "summary": "L'utilisateur va voir sa sœur Gabriela (infirmière, sur le Plateau) à Montréal pour Noël: visa canadien obtenu en septembre, vol direct Air Canada depuis Las Américas le 18 décembre à 6h10, retour le 3 janvier; elle veut l'emmener patiner au parc La Fontaine.",
+      "entities": [
+        {"name": "Gabriela", "type": "person", "aliases": ["ma sœur"]},
+        {"name": "Montréal", "type": "place", "aliases": ["Montreal"]},
+        {"name": "Las Américas", "type": "place"},
+        {"name": "Air Canada", "type": "organization"}
+      ]
+    },
+    {
+      "key": "lease",
+      "tags": ["housing", "negotiation", "legal"],
+      "messages": [
+        ["user", "I need to vent about my apartment situation and figure out what to do."],
+        ["assistant", "Go ahead, I'm listening."],
+        ["user", "So, I've been in this apartment in Naco for almost three years and it was great at first, but this year everything went downhill. In February a new family moved in upstairs and they have two teenagers who play basketball in the living room, I swear, at eleven at night. I've talked to them twice, nicely, and it gets better for a week and then it starts again. Then the water pressure: since the building added two floors, the shower on my side barely drips in the mornings, and the cistern runs out at least once a week. The building administrator keeps saying they're going to install a bigger pump, but it's been five months. On top of that, the rent went up by 8,000 pesos in July, with a one-line message on WhatsApp, no explanation. I started looking at other places, mostly in Piantini and Evaristo Morales, and also thinking about whether it makes sense to stay in the city at all, given everything going on with work. The problem was the lease: it runs until next August, and there's a clause that says if I leave early I have to pay two months of rent as a penalty, which would be more than 100,000 pesos. My cousin, who's a lawyer, read it and said the clause is valid, so I couldn't just walk away. I was dreading the conversation because the landlord, Mr. Peña, is an older man who doesn't like changes and takes forever to answer anything. Anyway, the good news: I went to see Mr. Peña on Monday, explained everything calmly, the noise, the water, the rent increase, and he agreed in writing that I can leave before the lease ends without paying the two-month penalty, as long as I give him notice by January 15."],
+        ["assistant", "That's a great outcome. Make sure you keep that written agreement somewhere safe."],
+        ["user", "I saved his email in a folder called 'apartamento'. My deposit is 60,000 pesos and I want it back in full."],
+        ["assistant", "Take dated photos of every room before you hand over the keys."]
+      ],
+      "summary": "The user's landlord, Mr. Peña, agreed in writing to let them leave the Naco apartment before the lease ends without the two-month penalty, if notice is given by January 15; deposit of 60,000 pesos; problems were noise upstairs, water pressure, and a rent increase.",
+      "entities": [
+        {"name": "Mr. Peña", "type": "person", "aliases": ["Peña", "my landlord"]},
+        {"name": "Naco", "type": "place"}
+      ]
+    },
+    {
+      "key": "knee",
+      "tags": ["health", "injury", "sports"],
+      "messages": [
+        ["user", "I hurt my knee playing basketball on Sunday, it's swollen."],
+        ["assistant", "Sorry to hear that. Have you had it looked at?"],
+        ["user", "Yes, the orthopedist said it's a sprained ligament, not a tear. Thank God."],
+        ["assistant", "Good news. What's the treatment?"],
+        ["user", "Physio twice a week for a month, Mondays and Wednesdays, and no running or basketball for six weeks. Swimming is fine."],
+        ["assistant", "Swimming is a good way to stay active meanwhile."],
+        ["user", "Ice for twenty minutes three times a day, too."],
+        ["assistant", "Got it."]
+      ],
+      "entities": []
+    },
+    {
+      "key": "boda",
+      "tags": ["weddings", "friendship", "events"],
+      "messages": [
+        ["user", "Mi mejor amigo Yariel se casa el 14 de febrero en Puerto Plata y me pidió ser su padrino. I'm honored but nervous, man."],
+        ["assistant", "¡Felicidades! That's a big honor. ¿Qué te pone nervioso?"],
+        ["user", "The speech. La novia, Ashley, es de Boston, so half the guests only speak English and the other half only Spanish."],
+        ["assistant", "You could do a bilingual speech, switching languages between stories."],
+        ["user", "Sí, eso pensé. I'll open in Spanish con la historia de cuando nos conocimos en el liceo, then switch to English for the toast."],
+        ["assistant", "Great structure. Keep it under five minutes."],
+        ["user", "Also, el código de vestimenta: they want everyone in white linen, guayabera blanca para los hombres."],
+        ["assistant", "Very Caribbean, perfect for Puerto Plata."],
+        ["user", "I already ordered mine, me llega el 20 de enero."],
+        ["assistant", "Good timing, that leaves room for adjustments."]
+      ],
+      "summary": "Yariel, el mejor amigo del usuario, se casa con Ashley (de Boston) el 14 de febrero en Puerto Plata; el usuario es el padrino y dará un discurso bilingüe: empieza en español con cómo se conocieron en el liceo y hace el brindis en inglés; vestimenta de lino blanco, guayabera blanca, la suya llega el 20 de enero.",
+      "entities": [
+        {"name": "Yariel", "type": "person", "aliases": ["mi mejor amigo"]},
+        {"name": "Ashley", "type": "person"},
+        {"name": "Puerto Plata", "type": "place"},
+        {"name": "Boston", "type": "place"}
+      ]
+    },
+    {
+      "key": "sancocho",
+      "tags": ["cooking", "food", "dining"],
+      "messages": [
+        ["user", "Samedi j'invite mes collègues à dîner et je veux leur faire un vrai sancocho dominicain, como el de mi abuela."],
+        ["assistant", "Excellente idée ! Vous avez sa recette ?"],
+        ["user", "Oui, elle me l'a dictée au téléphone. Siete carnes, bueno, moi je vais en mettre trois : poulet, porc et longaniza. Yo me como solo el pollo, por el colesterol."],
+        ["assistant", "Trois viandes, c'est déjà généreux. Et pour les légumes ?"],
+        ["user", "Yuca, ñame, plátano verde, mazorca... et le secret de mi abuela : beaucoup d'auyama pour que le bouillon soit épais, et un peu d'origan dominicain à la fin."],
+        ["assistant", "Le potiron pour épaissir, c'est malin."],
+        ["user", "Une collègue, Sophie, est végétarienne. Je vais lui garder une portion sans viande, avec juste les légumes."],
+        ["assistant", "Avec du riz blanc et de l'avocat à côté, comme il se doit."],
+        ["user", "¡Claro! Y de postre, habichuelas con dulce."],
+        ["assistant", "Vos collègues vont adorer."]
+      ],
+      "summary": "Samedi, l'utilisateur prépare pour ses collègues un sancocho selon la recette de sa grand-mère: poulet, porc et longaniza; le secret est beaucoup d'auyama pour épaissir le bouillon et de l'origan dominicain à la fin; portion végétarienne pour sa collègue Sophie; dessert: habichuelas con dulce.",
+      "entities": [{"name": "Sophie", "type": "person"}]
+    }
+  ],
+  "queries": [
+    {"text": "¿Cómo se llama mi perra?", "expect": ["dog:0", "dog"]},
+    {"text": "Qu'est-ce qui fait peur à mon chien ?", "expect": ["dog:2", "dog"]},
+    {"text": "When is my dad's birthday?", "expect": ["padre:0", "padre"]},
+    {"text": "Where is the surprise party?", "expect": ["padre:0", "padre:2", "padre"]},
+    {"text": "Quand est la fête de mon père ?", "expect": ["padre:0", "padre"]},
+    {"text": "What day is my piano lesson?", "expect": ["cours:0", "cours"]},
+    {"text": "¿Qué pieza quiero tocar en el piano?", "expect": ["cours:2", "cours"]},
+    {"text": "¿Cuánto pago al mes por las clases de Matteo?", "expect": ["guitarra:2", "guitarra"]},
+    {"text": "¿Por qué dejé de comer carne?", "expect": ["diet:0", "diet"]},
+    {"text": "Que dois-je manger à la place de la viande ?", "expect": ["diet:2", "diet"]},
+    {"text": "Can I offer you a steak for dinner?", "expect": ["diet:0", "diet"]},
+    {"text": "¿Cuál es la fórmula del área de un círculo?", "expect": []},
+    {"text": "Comment dit-on 'merci' en allemand ?", "expect": []},
+    {"text": "What's the tallest mountain in the world?", "expect": []},
+    {"text": "Recomiéndame una película de ciencia ficción.", "expect": []},
+
+    {"text": "Il s'appelle comment, le chat que je garde ?", "expect": ["chat:0", "chat"], "reject": ["dog:0", "dog"]},
+    {"text": "¿Qué no le puedo dar de comer al gato de la vecina?", "expect": ["chat:4", "chat"], "reject": ["dog"]},
+    {"text": "When does my neighbor get back from her trip?", "expect": ["chat:6", "chat"]},
+    {"text": "¿Cuándo es la cena por el retiro de mi mamá?", "expect": ["mama:2", "mama"], "reject": ["padre:0", "padre"]},
+    {"text": "Is my mom's dinner supposed to be a secret?", "expect": ["mama:4", "mama"], "reject": ["padre:2"]},
+    {"text": "Quelle ville ma mère rêve-t-elle de visiter ?", "expect": ["mama:6", "mama"]},
+    {"text": "Quel jour mon neveu a-t-il sa leçon de guitare ?", "expect": ["guitarra:2", "guitarra"], "reject": ["cours:0", "cours"]},
+    {"text": "How much am I paying each month for Mateo's music lessons?", "expect": ["guitarra:2", "guitarra"]},
+    {"text": "Which song has my nephew learned so far?", "expect": ["guitarra:4", "guitarra"], "reject": ["cours:2"]},
+    {"text": "¿Qué noche de la semana voy al conservatorio?", "expect": ["cours:0", "cours"], "reject": ["guitarra:2", "guitarra"]},
+    {"text": "When do I need to go to the lab for bloodwork?", "expect": ["analisis:2", "analisis"]},
+    {"text": "¿Puedo cenar la noche antes del análisis?", "expect": ["analisis:4", "analisis"]},
+    {"text": "What happens if my LDL is still too high?", "expect": ["analisis:6", "analisis"], "reject": ["diet:0"]},
+    {"text": "Pourquoi est-ce que j'ai renoncé au bœuf et au porc ?", "expect": ["diet:0", "diet"], "reject": ["analisis:0"]},
+    {"text": "What did the mechanic say was broken on my car?", "expect": ["carro:2"]},
+    {"text": "Combien va me coûter la réparation de la voiture ?", "expect": ["carro:4"]},
+    {"text": "¿De quién es la yipeta que estoy usando?", "expect": ["carro:6"]},
+    {"text": "When is my first day at the new company?", "expect": ["trabajo:2", "trabajo"]},
+    {"text": "Quel salaire on m'offre dans mon nouveau poste ?", "expect": ["trabajo:2", "trabajo"]},
+    {"text": "Where is the job I accepted located?", "expect": ["trabajo:2", "trabajo"]},
+    {"text": "Comment s'appelle ma cheffe à la banque ?", "expect": ["trabajo:4", "trabajo"]},
+    {"text": "¿Qué día sale mi vuelo a Canadá?", "expect": ["voyage:2", "voyage"]},
+    {"text": "Which city does my sister live in?", "expect": ["voyage:0", "voyage"]},
+    {"text": "When do I fly home from Montreal?", "expect": ["voyage:2", "voyage"]},
+    {"text": "¿Hasta qué fecha tengo para avisarle al dueño del apartamento que me voy?", "expect": ["lease:2", "lease"]},
+    {"text": "Combien j'ai laissé de dépôt de garantie pour l'appartement ?", "expect": ["lease:4", "lease"]},
+    {"text": "Où ai-je rangé le courriel de mon propriétaire ?", "expect": ["lease:4"]},
+    {"text": "¿Qué me dijo el ortopeda de la rodilla?", "expect": ["knee:2"]},
+    {"text": "Est-ce que j'ai le droit de courir en ce moment ?", "expect": ["knee:4"]},
+    {"text": "Quels jours j'ai mes séances de kiné ?", "expect": ["knee:4"]},
+    {"text": "When is Yariel getting married?", "expect": ["boda:0", "boda"]},
+    {"text": "Qu'est-ce que je dois porter au mariage de mon meilleur ami ?", "expect": ["boda:6", "boda"]},
+    {"text": "Which language will I use for the toast at the wedding?", "expect": ["boda:4", "boda"]},
+    {"text": "What's my grandmother's trick for a thick sancocho broth?", "expect": ["sancocho:4", "sancocho"]},
+    {"text": "¿Cuál de mis compañeros no come carne?", "expect": ["sancocho:6", "sancocho"], "reject": ["diet:0", "diet"]},
+    {"text": "¿Qué postre voy a servir el sábado?", "expect": ["sancocho:8", "sancocho"]},
+
+    {"text": "¿Cómo se llama mi gato?", "expect": []},
+    {"text": "What's my daughter's name?", "expect": []},
+    {"text": "Quand est l'anniversaire de ma mère ?", "expect": []},
+    {"text": "¿A qué hora es mi clase de natación?", "expect": []},
+    {"text": "Did I sell my motorcycle?", "expect": []},
+    {"text": "Comment s'appelle mon dentiste ?", "expect": []},
+    {"text": "When is my sister's wedding?", "expect": []},
+    {"text": "¿Cuántos años tiene mi hermano?", "expect": []},
+    {"text": "Est-ce que j'ai acheté une maison ?", "expect": []},
+    {"text": "What's my violin teacher called?", "expect": []},
+    {"text": "Quelle est la capitale de l'Australie ?", "expect": []},
+    {"text": "How many calories are in a mango?", "expect": []}
+  ]
+}

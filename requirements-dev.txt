@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Development only: type checking (pyright, with Django type stubs built for it).
+django-types==0.24.0
+pyright==1.1.414

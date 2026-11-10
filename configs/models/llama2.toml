@@ -1,0 +1,13 @@
+# Model profile (brain.config.ModelProfile) for Ollama's llama2.
+# Its maximum context is 4,096 tokens, which leaves little room for memory.
+
+name = "llama2"
+provider = "ollama"
+context_window = 4096
+output_reserve = 768
+memory_budget = 2000
+chars_per_token = 4.0
+supports_tools = false
+
+[options]
+temperature = 0.7

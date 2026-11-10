@@ -1,0 +1,366 @@
+{
+  "name": "life",
+  "episodes": [
+    {
+      "key": "sister",
+      "tags": ["family", "education", "moving"],
+      "messages": [
+        ["user", "My sister Lucía just moved to Montreal for a nursing job."],
+        ["assistant", "That's a big move! Montreal winters are cold, so she'll want a good coat. Is she excited?"],
+        ["user", "Very, but she doesn't speak much French yet, so she's taking evening classes."],
+        ["assistant", "Evening classes are a great way to pick it up quickly, especially while working."]
+      ],
+      "summary": "The user's sister Lucía moved to Montreal for a nursing job and is taking evening French classes.",
+      "entities": [
+        {"name": "Lucía", "type": "person", "aliases": ["my sister"]},
+        {"name": "Montreal", "type": "place"}
+      ]
+    },
+    {
+      "key": "coffee",
+      "tags": ["coffee", "routine", "food"],
+      "messages": [
+        ["user", "La Cafetera on Calle El Conde is my favorite coffee place. I go every Saturday morning."],
+        ["assistant", "A Saturday ritual! What do you usually order there?"],
+        ["user", "A cortado and a pastelito de queso, always."],
+        ["assistant", "Classic combination."]
+      ],
+      "summary": "The user's favorite coffee place is La Cafetera on Calle El Conde; they go every Saturday and order a cortado with a pastelito de queso.",
+      "entities": [
+        {"name": "La Cafetera", "type": "place"},
+        {"name": "Calle El Conde", "type": "place"}
+      ]
+    },
+    {
+      "key": "knee",
+      "tags": ["health", "injury", "recovery"],
+      "messages": [
+        ["user", "I hurt my knee playing basketball last weekend. The doctor said it's a mild sprain."],
+        ["assistant", "Sorry to hear that. Rest, ice and keeping it elevated usually help with a mild sprain."],
+        ["user", "She told me no running for three weeks, so I'm switching to swimming."],
+        ["assistant", "Swimming is gentle on the knee and keeps your fitness up. Good plan."]
+      ],
+      "summary": "The user sprained their knee playing basketball; no running for three weeks, swimming instead.",
+      "entities": []
+    },
+    {
+      "key": "viaje",
+      "tags": ["travel", "whales", "planning"],
+      "messages": [
+        ["user", "Estoy planeando un viaje a Samaná con mi esposa en diciembre para ver las ballenas."],
+        ["assistant", "¡Qué buena idea! La temporada de ballenas jorobadas en Samaná va de enero a marzo, así que diciembre puede ser un poco temprano."],
+        ["user", "Ah, entonces mejor lo movemos a febrero."],
+        ["assistant", "Febrero es el mejor momento para verlas."]
+      ],
+      "summary": "El usuario planea un viaje a Samaná con su esposa para ver las ballenas; lo movió de diciembre a febrero.",
+      "entities": [
+        {"name": "Samaná", "type": "place"}
+      ]
+    },
+    {
+      "key": "cousin",
+      "tags": ["family", "moving", "health"],
+      "messages": [
+        ["user", "My cousin Marisol finally moved to Miami. She got hired as an accountant at a shipping company in Doral."],
+        ["assistant", "Congratulations to her! Doral has a big Latin community, so she might feel at home quickly. Is she going alone?"],
+        ["user", "With her two kids, Ana and Teo. Her husband stays in Santiago until his visa comes through."],
+        ["assistant", "That's a lot to manage on her own at first. Hopefully the visa process is quick."],
+        ["user", "She asked me to help her find a pediatrician who speaks Spanish."],
+        ["assistant", "In Miami that should be easy; most pediatric practices in Doral have Spanish-speaking staff. Her insurance's provider directory usually lets her filter by language."]
+      ],
+      "summary": "The user's cousin Marisol moved to Doral, Miami, with her two kids for an accountant job at a shipping company; her husband stays in Santiago until his visa arrives.",
+      "entities": [
+        {"name": "Marisol", "type": "person", "aliases": ["my cousin"]},
+        {"name": "Ana", "type": "person"},
+        {"name": "Teo", "type": "person"},
+        {"name": "Miami", "type": "place"},
+        {"name": "Doral", "type": "place"},
+        {"name": "Santiago", "type": "place"}
+      ]
+    },
+    {
+      "key": "cafe2",
+      "tags": ["coffee", "workplace", "wifi"],
+      "messages": [
+        ["user", "Found a new spot near the office, Café Malecón. Their cold brew is strong enough to get me through Monday meetings."],
+        ["assistant", "Nice find. Do you stop there before work?"],
+        ["user", "Yes, weekdays around 8. It doesn't replace my weekend place, it's just my workday stop."],
+        ["assistant", "A weekday spot and a weekend spot, that makes sense."],
+        ["user", "Only problem is the wifi is terrible, so I can't really work from there."],
+        ["assistant", "Then it's better as a quick stop than a remote office. A phone hotspot could help if you ever need it."]
+      ],
+      "entities": [
+        {"name": "Café Malecón", "type": "place"}
+      ]
+    },
+    {
+      "key": "move",
+      "tags": ["moving", "renting", "housing"],
+      "messages": [
+        ["user", "We signed the lease! We're moving from Gazcue to an apartment in Naco on the first of next month."],
+        ["assistant", "Congratulations! Naco is very central. How big is the new place?"],
+        ["user", "Three bedrooms, so I finally get a home office. Rent is 45,000 pesos a month."],
+        ["assistant", "A dedicated office will make a real difference. Do you want help with a moving checklist?"],
+        ["user", "Yes please, the movers are booked for Saturday the 1st."],
+        ["assistant", "Start by packing the rooms you use least, label boxes by room, and keep one bag with documents, chargers and a change of clothes for the first night."]
+      ],
+      "summary": "The user signed a lease on a three-bedroom apartment in Naco, moving from Gazcue, with a home office and rent of 45,000 pesos a month; movers booked for Saturday the 1st.",
+      "entities": [
+        {"name": "Gazcue", "type": "place"},
+        {"name": "Naco", "type": "place"}
+      ]
+    },
+    {
+      "key": "move2",
+      "tags": ["housing", "moving", "work-life balance"],
+      "messages": [
+        ["user", "Change of plans with the apartment. The Naco landlord backed out two days before the move because his son needed the place."],
+        ["assistant", "That's awful timing. Did you at least get the deposit back?"],
+        ["user", "Yes, he returned it. We ended up taking a place in Bella Vista instead, two bedrooms, a few blocks from Parque Mirador Sur."],
+        ["assistant", "Being that close to Mirador Sur is great for morning walks. With two bedrooms, is the office idea off?"],
+        ["user", "For now my desk is in a corner of the living room. Rent is 38,000, so at least it's cheaper."],
+        ["assistant", "Cheaper rent and a park nearby is not a bad trade. You can revisit the office later."]
+      ],
+      "summary": "The Naco apartment fell through when the landlord backed out; the user moved to a two-bedroom in Bella Vista near Parque Mirador Sur instead, rent 38,000 pesos, with a desk in the living room.",
+      "entities": [
+        {"name": "Naco", "type": "place"},
+        {"name": "Bella Vista", "type": "place"},
+        {"name": "Parque Mirador Sur", "type": "place", "aliases": ["Mirador Sur"]}
+      ]
+    },
+    {
+      "key": "dad",
+      "tags": ["health", "medical advice", "physical therapy"],
+      "messages": [
+        ["user", "My dad Ramón has been complaining about his lower back for weeks. He finally saw an orthopedist."],
+        ["assistant", "Glad he went. Lower back pain at his age is common and is often muscular or disc-related. What did they find?"],
+        ["user", "Here is the email the clinic sent, can you help me make sense of it?\n\nDear family of Mr. Ramón,\n\nThank you for choosing Centro Ortopédico del Caribe. Following the consultation on October 2 and the lumbar MRI performed on October 6, Dr. Peña has reviewed the images and prepared the following summary.\n\nFindings: The MRI shows a mild disc herniation at the L4-L5 level with slight contact with the left L5 nerve root. There is moderate age-related degeneration at L3-L4 and L5-S1, which is expected for a patient of 68 years. No fractures, no signs of infection and no narrowing of the spinal canal were found.\n\nTreatment plan: Conservative treatment is recommended at this stage. Surgery is not indicated. The plan includes physiotherapy three times per week for six weeks, focused on core strengthening and lumbar mobility; an anti-inflammatory (naproxen 500 mg twice a day with food, for ten days); and a muscle relaxant at night for the first week only. Please avoid lifting objects heavier than 5 kg, sitting for more than 45 minutes without standing up, and sleeping on very soft mattresses.\n\nWarning signs: If Mr. Ramón experiences numbness in the groin area, loss of bladder or bowel control, or sudden weakness in either leg, go to the emergency room immediately. These symptoms are rare but require urgent attention.\n\nPhysiotherapy: Our physiotherapy unit is located on the second floor of Torre B. Sessions last 50 minutes. Please bring comfortable clothing and a towel. The first session must be booked by phone at least 48 hours in advance.\n\nBilling: The MRI and the consultation were covered by his insurance plan with a copay of RD$2,400, already paid. Physiotherapy sessions require prior authorization, which our office has requested on your behalf.\n\nFollow-up: Your follow-up appointment with Dr. Peña is scheduled for Thursday, November 12 at 10:30 AM. Please arrive 20 minutes early and bring the MRI CD and the list of medications he is currently taking.\n\nKind regards,\nPatient Services\nCentro Ortopédico del Caribe"],
+        ["assistant", "In short: a mild slipped disc in the lower back that is touching a nerve a little, plus normal wear for his age. No surgery, just six weeks of physio, an anti-inflammatory for ten days, and avoiding heavy lifting and long sitting. The warning signs section is standard, but worth keeping in mind."],
+        ["user", "I'll drive him to physio on Mondays, Wednesdays and Fridays after work."],
+        ["assistant", "That's a big help. Consistency is what makes physio work, so having a fixed ride will keep him on track."]
+      ],
+      "summary": "The user's father Ramón was diagnosed with a mild disc herniation in his lower back; no surgery, six weeks of physiotherapy, and the user drives him to the sessions.",
+      "entities": [
+        {"name": "Ramón", "type": "person", "aliases": ["my dad", "my father"]},
+        {"name": "Dr. Peña", "type": "person"},
+        {"name": "Centro Ortopédico del Caribe", "type": "place"}
+      ]
+    },
+    {
+      "key": "dog",
+      "tags": ["pets", "animal care", "allergies"],
+      "messages": [
+        ["user", "Llevé a Canela al veterinario hoy. Lleva días rascándose sin parar."],
+        ["assistant", "Pobrecita. ¿El veterinario encontró pulgas o algo más?"],
+        ["user", "Pulgas no. Cree que es alergia a la comida, probablemente al pollo. Tenemos que cambiarla a un alimento a base de salmón por ocho semanas."],
+        ["assistant", "Una dieta de eliminación es la forma normal de confirmarlo. Durante ese tiempo tampoco le des premios que tengan pollo; revisa bien las etiquetas."],
+        ["user", "Uf, sus premios favoritos son de pollo. Voy a comprarle los hipoalergénicos de Royal Canin."],
+        ["assistant", "Buena decisión. Si la picazón baja en unas semanas, es una señal fuerte de que el pollo era el problema."],
+        ["user", "También le toca la vacuna de la rabia en enero."],
+        ["assistant", "Ponte un recordatorio para principios de enero así no se te pasa."]
+      ],
+      "entities": [
+        {"name": "Canela", "type": "pet", "aliases": ["my dog", "mi perra"]},
+        {"name": "Royal Canin", "type": "product"}
+      ]
+    },
+    {
+      "key": "budget",
+      "tags": ["personal finance", "ahorro", "compra de vivienda"],
+      "messages": [
+        ["user", "Ok, I want to get serious about money. Let me dump everything so you have the full picture. My salary is around 120,000 pesos a month after taxes, and Carolina makes about 85,000 from her job at the school plus some private tutoring on weekends, which varies between 8,000 and 15,000 depending on the month. Fixed costs: rent, electricity (which jumps a lot in summer because of the AC), internet and phones together around 4,500, the car loan payment of 18,700 until next August, groceries at about 25,000 if we're careful and closer to 32,000 when we're not, gas for the car around 9,000, and my mom's medicine, which I help with, about 6,000. Then there's the stuff that adds up without us noticing: eating out on Fridays, delivery when we're tired, streaming subscriptions (we have four, which is silly), and the gym membership. We also send something to Carolina's parents in San Cristóbal when they need it, usually around Christmas and when her dad has a doctor visit. Last year we had zero emergency fund when the car's transmission died, and we ended up putting 70,000 on the credit card, which took us five months to pay off with interest. I never want that again. So we already started rebuilding an emergency cushion and it's at about 90,000 now, which I think covers a bit more than a month of essentials. After a long talk on Sunday night, we decided that what we really want is our own house in the next two or three years, ideally somewhere near Carolina's work. So the goal: put away 20,000 pesos every month into a separate Banreservas savings account, untouchable, until we have 600,000 for the down payment."],
+        ["assistant", "That's a clear and realistic plan. At 20,000 a month you'd reach 600,000 in 30 months, about two and a half years, which fits your timeline. Two suggestions: keep growing the emergency fund until it covers three months of essentials, and cut the four streaming services down to one or two."],
+        ["user", "Carolina thinks we should also cancel the gym membership we never use."],
+        ["assistant", "She's right. A membership you don't use is pure leakage, and the money can go straight to the house fund."],
+        ["user", "Done, cancelled it. That's another 3,500 a month toward the house."],
+        ["assistant", "Nice. That brings you to 23,500 a month, which shortens the timeline by about four months."]
+      ],
+      "summary": "The user and his wife Carolina are saving 20,000 pesos a month in a Banreservas account toward a 600,000 peso house down payment; they cancelled an unused gym membership to add 3,500 a month.",
+      "entities": [
+        {"name": "Carolina", "type": "person", "aliases": ["my wife"]},
+        {"name": "San Cristóbal", "type": "place"},
+        {"name": "Banreservas", "type": "organization"}
+      ]
+    },
+    {
+      "key": "guitar",
+      "tags": ["music", "hobbies", "learning"],
+      "messages": [
+        ["user", "I started guitar lessons! My teacher is Andrés, Tuesdays at 6 pm in Zona Colonial."],
+        ["assistant", "Exciting! Acoustic or electric?"],
+        ["user", "Acoustic. I want to be able to play bachata, so he's starting me with basic chords and the requinto patterns."],
+        ["assistant", "Bachata guitar is a great goal. The requinto lines are tricky, so expect the first months to be mostly chords and rhythm."],
+        ["user", "My fingertips are killing me after practice."],
+        ["assistant", "That's normal for the first few weeks; calluses form with short daily practice. Fifteen minutes a day beats one long session a week."],
+        ["user", "Update: Andrés moved my lesson to Thursdays at 7 because of his new job."],
+        ["assistant", "Thursday evenings it is. Try to keep some practice early in the week so you don't go too long without playing."]
+      ],
+      "entities": [
+        {"name": "Andrés", "type": "person", "aliases": ["my guitar teacher"]},
+        {"name": "Zona Colonial", "type": "place"}
+      ]
+    },
+    {
+      "key": "mama",
+      "tags": ["family", "planning", "travel"],
+      "messages": [
+        ["user", "Estoy organizando el cumpleaños 70 de mi mamá, Altagracia. Va a ser el sábado 14 de noviembre en casa de mi tía en Baní."],
+        ["assistant", "¡Qué bonito, 70 años! ¿Cuántos invitados esperan?"],
+        ["user", "Como 40 personas. Vamos a hacer sancocho y mi prima Yesenia se encarga del bizcocho."],
+        ["assistant", "Para 40 personas van a necesitar una olla bien grande o dos. Conviene empezar temprano, el sancocho mejora con tiempo."],
+        ["user", "Lo que no sé es qué regalarle. Ella quiere ir a la Basílica de Higüey desde hace años."],
+        ["assistant", "Un viaje a Higüey sería un regalo con mucho significado. Podrían organizarlo como sorpresa y acompañarla un fin de semana."],
+        ["user", "Buena idea, se lo propongo a Lucía para que lo paguemos entre los dos."],
+        ["assistant", "Perfecto, así el regalo viene de parte de los dos hijos."]
+      ],
+      "summary": "El usuario organiza el cumpleaños 70 de su madre Altagracia el sábado 14 de noviembre en Baní, con unas 40 personas, sancocho y el bizcocho de su prima Yesenia; piensa regalarle con su hermana Lucía un viaje a la Basílica de Higüey.",
+      "entities": [
+        {"name": "Altagracia", "type": "person", "aliases": ["mi mamá", "my mom"]},
+        {"name": "Yesenia", "type": "person", "aliases": ["mi prima"]},
+        {"name": "Lucía", "type": "person", "aliases": ["mi hermana"]},
+        {"name": "Baní", "type": "place"},
+        {"name": "Higüey", "type": "place"}
+      ]
+    },
+    {
+      "key": "wedding",
+      "tags": ["weddings", "travel", "family"],
+      "messages": [
+        ["user", "Ok I'm back from Lyon and I have to tell you everything about Javier's wedding. The trip itself was long: Santo Domingo to Paris overnight, then the TGV down to Lyon, and I barely slept. Javier picked me up at Part-Dieu station looking more nervous than I've ever seen him, and he's the guy who stayed calm during our thesis defense. Camille's family is huge and very welcoming; her grandmother kept correcting my French, which honestly I needed, because after years of mostly using it for work emails my spoken French is rusty. The ceremony was at the town hall in the morning, very short and formal, the way they do civil weddings there, and then the religious part in the afternoon in a small church in Vieux Lyon with stone walls and amazing acoustics. The reception was at a farmhouse outside the city, with long wooden tables under string lights. The food was unbelievable: quenelles, a cheese course that went on forever, and a croquembouche instead of a regular cake. I gave the best man speech half in French and half in Spanish, and I was terrified, but people laughed at the right moments, especially at the story about Javier getting us lost in Jarabacoa during our first year of university. Camille's dad came up afterwards and said it was the best speech he'd heard in years, which made my night. Then the dancing started, and of course I had to teach half of Camille's cousins how to dance merengue, and by midnight the DJ was playing Juan Luis Guerra because Javier had sneaked it into the playlist. I danced so much my feet hurt for two days. We stayed until almost four in the morning. And then the real surprise: at the very end of the night, Javier and Camille pulled me aside outside and told me Camille is pregnant, due in April, and they asked me to be the baby's godfather."],
+        ["assistant", "What a weekend! Congratulations on the speech, and on being asked to be godfather, that's a huge honor. How do you feel about it?"],
+        ["user", "Honored, and a bit scared. I need to figure out if I can fly to Lyon again in April for the birth, or wait for the baptism in the summer."],
+        ["assistant", "The first weeks after a birth are usually chaotic for new parents, so the baptism might be the better moment to visit and actually spend time with them."],
+        ["user", "Yeah, we'll go for the baptism. Javier says probably in July."],
+        ["assistant", "July in Lyon is lovely. Book early, summer flights to France fill up fast."]
+      ],
+      "summary": "The user was best man at his friend Javier's wedding to Camille in Lyon; the couple asked him to be godfather of their baby, due in April, and he plans to return for the baptism around July.",
+      "entities": [
+        {"name": "Javier", "type": "person", "aliases": ["my best friend"]},
+        {"name": "Camille", "type": "person"},
+        {"name": "Lyon", "type": "place"},
+        {"name": "Vieux Lyon", "type": "place"},
+        {"name": "Paris", "type": "place"},
+        {"name": "Jarabacoa", "type": "place"}
+      ]
+    },
+    {
+      "key": "labs",
+      "tags": ["health", "diabetes", "nutrition"],
+      "messages": [
+        ["user", "Got my blood test results back. Fasting glucose 108, A1C 5.8, LDL 145, everything else normal. Should I worry?"],
+        ["assistant", "Good that you got them done; here's how to read them. Fasting glucose of 108 mg/dL: normal fasting glucose is below 100, and 100 to 125 is considered the prediabetes range, so you're in it, but at the lower end. A1C of 5.8%: this reflects your average blood sugar over the past two to three months. Below 5.7 is normal, 5.7 to 6.4 is prediabetes, and 6.5 or above on two tests is diabetes. So 5.8 agrees with the glucose: early prediabetes, not diabetes. That's actually the best time to catch it, because at this stage it's very often reversible. LDL of 145 mg/dL: LDL is the 'bad' cholesterol. For most adults without other risk factors, under 100 is optimal and 130 to 159 is borderline high. Diet, exercise and weight changes typically lower it by 10 to 20 percent, and your doctor will look at your overall risk (blood pressure, family history, smoking) before thinking about statins. What helps most for both numbers: cutting sugary drinks and juices is the single highest-impact change, because liquid sugar spikes glucose fast. Then refined carbs such as white rice, white bread and pastries; you don't have to eliminate them, but smaller portions and pairing them with beans, vegetables or protein help. Regular exercise matters a lot too: about 150 minutes a week of brisk walking, swimming or cycling improves insulin sensitivity within weeks, even before any weight changes. Sleep and stress also play a role, since poor sleep raises glucose. Losing even 5 to 7 percent of body weight, if you have weight to lose, cuts the risk of progressing to diabetes by more than half in large studies. Most importantly, ask your doctor about repeating the A1C in three months; if it stays at 5.7 or above after those changes, that's the point to discuss whether a medication like metformin makes sense."],
+        ["user", "Dr. Jiménez said the same thing, retest in January. She wants me to cut sugary drinks first."],
+        ["assistant", "That lines up well. January gives you about three months of changes to show up in the A1C."],
+        ["user", "So no more morir soñando on Sundays, I guess. I'll switch to unsweetened iced tea."],
+        ["assistant", "A good swap. Keep the morir soñando as an occasional treat rather than a weekly habit."]
+      ],
+      "summary": "The user's blood test showed early prediabetes (fasting glucose 108, A1C 5.8) and borderline high LDL (145); Dr. Jiménez wants a retest in January and for him to cut sugary drinks first.",
+      "entities": [
+        {"name": "Dr. Jiménez", "type": "person"}
+      ]
+    },
+    {
+      "key": "lease_doc",
+      "attachments": [{"key": "lease", "file": "files/lease.md"}],
+      "messages": [
+        ["user", "Here's the lease for the Bella Vista apartment, keep it handy for me."],
+        ["assistant", "Got it, I'll keep the lease for apartment 4B."]
+      ]
+    }
+  ],
+  "queries": [
+    {"text": "How much is the security deposit for the Bella Vista apartment?", "expect": ["lease/security deposit of two months' rent"]},
+    {"text": "Can I have a cat in the new apartment?", "expect": ["lease/one cat or one small dog"]},
+    {"text": "Who pays for electricity at Bella Vista?", "expect": ["lease/Tenant pays for electricity"]},
+    {"text": "How much notice do I need to give to leave Bella Vista early?", "expect": ["lease/two months' written notice"]},
+    {"text": "When is the rent due each month?", "expect": ["lease/due on the fifth day"]},
+    {"text": "Am I allowed to rent out a room on Airbnb?", "expect": ["lease/may not sublet"]},
+    {"text": "What happens if I pay the rent late?", "expect": ["lease/late fee of 1,500 pesos"]},
+    {"text": "Who fixes the water heater if it breaks?", "expect": ["lease/the water heater"]},
+    {"text": "Is there a gym in the Torre Mirador building?", "expect": []},
+    {"text": "Remind me why I switched to \"Royal Canin\".", "expect": ["dog:4", "dog:2"]},
+    {"text": "Where does my sister live now?", "expect": ["sister:0", "sister"]},
+    {"text": "How is Lucía doing with her French?", "expect": ["sister:2", "sister"]},
+    {"text": "What job did Lucía get?", "expect": ["sister:0", "sister"]},
+    {"text": "Is Lucai liking her new city?", "expect": ["sister:0", "sister"]},
+    {"text": "What's my favorite café?", "expect": ["coffee:0", "coffee"]},
+    {"text": "What do I usually order at La Cafetera?", "expect": ["coffee:2", "coffee"]},
+    {"text": "Where should we go this Saturday morning?", "expect": ["coffee:0", "coffee:1", "coffee"]},
+    {"text": "Can I go for a run yet?", "expect": ["knee:2", "knee"]},
+    {"text": "What happened to my leg?", "expect": ["knee:0", "knee"]},
+    {"text": "When are we going to see the whales?", "expect": ["viaje:2", "viaje"]},
+    {"text": "¿Cuándo es el viaje a Samaná?", "expect": ["viaje:0", "viaje:2", "viaje"]},
+    {"text": "What's the best month to visit Samaná?", "expect": ["viaje:3", "viaje"]},
+    {"text": "Explain how recursion works in programming.", "expect": []},
+    {"text": "What's the capital of Australia?", "expect": []},
+    {"text": "Write me a haiku about autumn.", "expect": []},
+    {"text": "How many grams are in a pound?", "expect": []},
+
+    {"text": "Which relative relocated to Florida?", "expect": ["cousin:0", "cousin"], "reject": ["sister:0"]},
+    {"text": "Who in the family went abroad to work in a hospital?", "expect": ["sister:0", "sister"], "reject": ["cousin:0"]},
+    {"text": "Where is Marisol's husband staying?", "expect": ["cousin:2", "cousin"]},
+    {"text": "What favor did my cousin ask me for?", "expect": ["cousin:4"], "reject": ["mama:2"]},
+    {"text": "Which cousin is baking the cake for the party?", "expect": ["mama:2", "mama"], "reject": ["cousin:0"]},
+
+    {"text": "Where do I grab coffee on workdays?", "expect": ["cafe2:0", "cafe2:2"], "reject": ["coffee:0"]},
+    {"text": "Can I work remotely from that café by the office?", "expect": ["cafe2:4"]},
+
+    {"text": "What neighborhood do I live in now?", "expect": ["move2:2", "move2"]},
+    {"text": "How much do I pay for the apartment each month?", "expect": ["move2:4", "move2"], "reject": ["move:2"]},
+    {"text": "Do I have a separate room to work from at home?", "expect": ["move2:4", "move2"], "reject": ["move:2"]},
+    {"text": "Why didn't the Naco place work out?", "expect": ["move2:0", "move2"]},
+    {"text": "Which part of the city did we live in before the move?", "expect": ["move:0", "move"]},
+    {"text": "Is there a park close to home?", "expect": ["move2:2", "move2:3", "move2"]},
+
+    {"text": "When is my father's next doctor visit?", "expect": ["dad:2"]},
+    {"text": "What exactly is wrong with Dad's spine?", "expect": ["dad:2", "dad:3", "dad"]},
+    {"text": "Which days do I give my dad a ride to therapy?", "expect": ["dad:4"]},
+    {"text": "What does Ramón need to bring to his follow-up?", "expect": ["dad:2"]},
+    {"text": "Who in my family has back problems?", "expect": ["dad:0", "dad:2", "dad"], "reject": ["knee:0"]},
+
+    {"text": "Why does my dog keep scratching?", "expect": ["dog:2"]},
+    {"text": "What food is Canela allergic to?", "expect": ["dog:2"]},
+    {"text": "When is the dog's next shot?", "expect": ["dog:6"]},
+    {"text": "Which brand of treats did I switch my pet to?", "expect": ["dog:4"]},
+
+    {"text": "How much are we setting aside every month for the house?", "expect": ["budget:0", "budget:4", "budget"]},
+    {"text": "How big a down payment are we aiming for?", "expect": ["budget:0", "budget"]},
+    {"text": "What subscription did we drop to save money?", "expect": ["budget:2", "budget:4", "budget"]},
+    {"text": "Which bank holds the house savings?", "expect": ["budget:0", "budget"]},
+
+    {"text": "What day is my music class this week?", "expect": ["guitar:6"], "reject": ["guitar:0"]},
+    {"text": "What style am I learning to play on the guitar?", "expect": ["guitar:2"]},
+    {"text": "Why are my fingers sore?", "expect": ["guitar:4", "guitar:5"]},
+
+    {"text": "When is Mom's birthday party?", "expect": ["mama:0", "mama"]},
+    {"text": "How old is my mother turning?", "expect": ["mama:0", "mama"]},
+    {"text": "¿Qué le vamos a regalar a mami?", "expect": ["mama:4", "mama:5", "mama:6", "mama"]},
+    {"text": "Who is splitting the cost of Mom's present with me?", "expect": ["mama:6", "mama"]},
+
+    {"text": "Who asked me to be a godparent?", "expect": ["wedding:0", "wedding"]},
+    {"text": "When is Camille expecting?", "expect": ["wedding:0", "wedding"]},
+    {"text": "When am I going back to France?", "expect": ["wedding:4", "wedding"]},
+    {"text": "How did my toast go over at the reception?", "expect": ["wedding:0"]},
+    {"text": "Which friend got married recently?", "expect": ["wedding:0", "wedding"]},
+
+    {"text": "Am I diabetic?", "expect": ["labs:0", "labs:1", "labs"]},
+    {"text": "When do I need to redo my blood work?", "expect": ["labs:1", "labs:2", "labs"]},
+    {"text": "At what point would pills for my blood sugar come up?", "expect": ["labs:1"]},
+    {"text": "What drink am I giving up?", "expect": ["labs:4"]},
+    {"text": "What was my cholesterol number?", "expect": ["labs:0", "labs"]},
+    {"text": "What did my doctor tell me to cut out first?", "expect": ["labs:2", "labs"], "reject": ["dad:2"]},
+
+    {"text": "What's my brother's name?", "expect": []},
+    {"text": "When is my wife's birthday?", "expect": []},
+    {"text": "What did the vet say about my cat?", "expect": []},
+    {"text": "How is my grandmother's health?", "expect": []},
+    {"text": "What school does my son go to?", "expect": []},
+    {"text": "What's my daughter's favorite movie?", "expect": []},
+    {"text": "Where did I park the car this morning?", "expect": []},
+    {"text": "What's my blood type?", "expect": []},
+    {"text": "What did I think of the resort in Punta Cana?", "expect": []},
+    {"text": "¿Cuál es la receta tradicional del sancocho?", "expect": []},
+    {"text": "How do I convert Celsius to Fahrenheit?", "expect": []},
+    {"text": "Who won the World Series last year?", "expect": []}
+  ]
+}

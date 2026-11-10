@@ -1,0 +1,17 @@
+# Model profile (brain.config.ModelProfile) for Ollama's qwen3.5:4b, sized for a
+# 6 GB GPU (RTX 3060 Laptop). Measured with Ollama 0.40.4: 16,384 tokens of context
+# stays 100% on the GPU (3.6 GB); 32,768 spills to the CPU.
+
+name = "qwen3.5:4b"
+provider = "ollama"
+context_window = 16384
+output_reserve = 1536
+memory_budget = 8000
+chars_per_token = 4.0
+supports_tools = true
+# A reasoning model: thinking is off for speed (2.4s vs 4.6s for a one-line answer),
+# and its tokens would count against output_reserve.
+think = false
+
+[options]
+temperature = 0.7

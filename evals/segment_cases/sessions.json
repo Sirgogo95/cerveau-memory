@@ -1,0 +1,145 @@
+{
+  "sessions": [
+    {"name": "knee, then the trip",
+     "messages": [
+       {"text": "My knee is acting up again after basketball on Sunday.", "topic": "knee"},
+       {"text": "It's swollen on the inside and hurts when I go down stairs.", "topic": "knee"},
+       {"text": "Should I put ice or heat on it?", "topic": "knee"},
+       {"text": "How long do sprains like this usually take to heal?", "topic": "knee"},
+       {"text": "Ok, I'll rest it this week.", "topic": "knee"},
+       {"text": "Different subject: I'm planning a trip to Samaná in February to see the whales.", "topic": "trip"},
+       {"text": "Do you know which month is best for the humpbacks?", "topic": "trip"},
+       {"text": "We'd stay three nights, probably in Las Terrenas.", "topic": "trip"},
+       {"text": "Is the boat tour from Samaná town worth it?", "topic": "trip"}
+     ]},
+    {"name": "migration bug, then lunch",
+     "messages": [
+       {"text": "The billing migrations are failing with a circular dependency between invoices and customers.", "topic": "code"},
+       {"text": "Migration 0003 in invoices needs customers 0002, and customers 0002 needs invoices 0003.", "topic": "code"},
+       {"text": "Can I just merge them into one migration?", "topic": "code"},
+       {"text": "Or should I move the foreign key into a later migration?", "topic": "code"},
+       {"text": "Ok, moving the customer foreign key to 0004 worked, tests pass.", "topic": "code"},
+       {"text": "I'm starving. What's a quick lunch I can make with rice, eggs, and some leftover chicken?", "topic": "food"},
+       {"text": "I don't have soy sauce though.", "topic": "food"},
+       {"text": "Would a fried rice still taste good without it?", "topic": "food"},
+       {"text": "Great, making that now.", "topic": "food"}
+     ]},
+    {"name": "wedding speech, wandering inside one topic",
+     "messages": [
+       {"text": "Pedro asked me to give a speech as his best man at the wedding in Puerto Plata.", "topic": "wedding"},
+       {"text": "Half the guests only speak English because the bride is from Boston.", "topic": "wedding"},
+       {"text": "I'm thinking of telling the story of when we got lost on Pico Duarte as kids.", "topic": "wedding"},
+       {"text": "How long should a best man speech be?", "topic": "wedding"},
+       {"text": "Also, the dress code is white linen, guayaberas for the men.", "topic": "wedding"},
+       {"text": "Where can I buy a good guayabera in Santo Domingo?", "topic": "wedding"},
+       {"text": "And should I bring a gift even though I'm in the wedding party?", "topic": "wedding"},
+       {"text": "What do people usually give at Dominican weddings?", "topic": "wedding"}
+     ]},
+    {"name": "budget, then the dog, then back to money",
+     "messages": [
+       {"text": "Carolina and I want to save for a down payment on a house.", "topic": "money"},
+       {"text": "We can put away about 20,000 pesos a month right now.", "topic": "money"},
+       {"text": "The houses we like cost around 6 million pesos.", "topic": "money"},
+       {"text": "How much of a down payment do banks usually ask for here?", "topic": "money"},
+       {"text": "By the way, Canela has been scratching nonstop since yesterday.", "topic": "dog"},
+       {"text": "The vet thinks it might be a food allergy to chicken.", "topic": "dog"},
+       {"text": "We have to switch her to a salmon-based food for eight weeks.", "topic": "dog"},
+       {"text": "Are salmon dog foods expensive?", "topic": "dog"},
+       {"text": "Back to the house: should we open a separate savings account for it?", "topic": "money"},
+       {"text": "Banreservas offers 4% on fixed-term deposits, is that good?", "topic": "money"}
+     ]},
+    {"name": "un viaje, luego el trabajo",
+     "messages": [
+       {"text": "Estoy organizando el cumpleaños 70 de mi mamá en Baní para el 14 de noviembre.", "topic": "party"},
+       {"text": "Vamos a ser unas cuarenta personas, casi todos familia.", "topic": "party"},
+       {"text": "Mi prima va a hacer el bizcocho y pensamos servir sancocho.", "topic": "party"},
+       {"text": "¿Cuánto sancocho necesito para cuarenta personas?", "topic": "party"},
+       {"text": "¿Y cuántas libras de carne serían?", "topic": "party"},
+       {"text": "Cambiando de tema, mañana tengo una entrevista para un puesto de analista en una empresa de energía solar.", "topic": "job"},
+       {"text": "Es en Punta Cana, tendría que mudarme.", "topic": "job"},
+       {"text": "¿Qué preguntas suelen hacer en esas entrevistas?", "topic": "job"},
+       {"text": "¿Y cómo negocio el salario si me hacen una oferta?", "topic": "job"}
+     ]},
+    {"name": "cours de piano, puis la voisine",
+     "messages": [
+       {"text": "Je commence des cours de piano le mardi soir au conservatoire.", "topic": "piano"},
+       {"text": "Je n'ai jamais joué d'un instrument avant.", "topic": "piano"},
+       {"text": "Mon objectif est de jouer une valse de Chopin d'ici un an.", "topic": "piano"},
+       {"text": "Combien de temps faut-il pratiquer chaque jour au début ?", "topic": "piano"},
+       {"text": "Est-ce qu'un clavier numérique suffit pour commencer ?", "topic": "piano"},
+       {"text": "Autre chose : ma voisine part en Martinique et me laisse son chat Moustache.", "topic": "cat"},
+       {"text": "Il est intolérant au lactose, donc pas de lait.", "topic": "cat"},
+       {"text": "Il faut changer la litière tous les deux jours.", "topic": "cat"},
+       {"text": "Elle revient le 2 novembre.", "topic": "cat"}
+     ]},
+    {"name": "staging outage, debugging that wanders",
+     "messages": [
+       {"text": "Staging went down during Friday's deploy.", "topic": "outage"},
+       {"text": "The disk was full, almost 40 GB of gunicorn logs.", "topic": "outage"},
+       {"text": "Nobody had set up log rotation on that server.", "topic": "outage"},
+       {"text": "Andrés from infrastructure is adding logrotate now.", "topic": "outage"},
+       {"text": "Should we also send the logs to a central place instead of keeping them on disk?", "topic": "outage"},
+       {"text": "What would that cost with something like Grafana Loki?", "topic": "outage"},
+       {"text": "And how long should we keep them?", "topic": "outage"},
+       {"text": "Ok, I'll write it up for the team.", "topic": "outage"}
+     ]},
+    {"name": "cooking, then a book",
+     "messages": [
+       {"text": "I'm making my grandmother's sancocho for my coworkers on Saturday.", "topic": "food"},
+       {"text": "Her secret was a lot of cilantro and adding the auyama early so it thickens.", "topic": "food"},
+       {"text": "I need it to feed about twelve people.", "topic": "food"},
+       {"text": "Should I use chicken, pork, and longaniza, or just two meats?", "topic": "food"},
+       {"text": "Can I make it the night before?", "topic": "food"},
+       {"text": "Unrelated, I just finished reading One Hundred Years of Solitude.", "topic": "book"},
+       {"text": "The ending with the parchments blew my mind.", "topic": "book"},
+       {"text": "What should I read next by García Márquez?", "topic": "book"},
+       {"text": "Is Love in the Time of Cholera very different?", "topic": "book"}
+     ]},
+    {"name": "car trouble without announcing the switch",
+     "messages": [
+       {"text": "My car died on the Autopista Duarte yesterday and I had to call a tow truck.", "topic": "car"},
+       {"text": "Ramón, my mechanic, says it's the fuel pump.", "topic": "car"},
+       {"text": "He quoted 18,000 pesos with labor.", "topic": "car"},
+       {"text": "Is that a fair price for a fuel pump on a 2015 Corolla?", "topic": "car"},
+       {"text": "My brother-in-law is lending me his jeep until Friday.", "topic": "car"},
+       {"text": "What's the best way to learn Python if I already know some JavaScript?", "topic": "python"},
+       {"text": "I want to automate some reports at work.", "topic": "python"},
+       {"text": "Should I learn pandas right away?", "topic": "python"},
+       {"text": "Any good free course?", "topic": "python"}
+     ]},
+    {"name": "lease questions, staying on topic",
+     "messages": [
+       {"text": "My landlord in Naco keeps delaying the repairs on the water heater.", "topic": "lease"},
+       {"text": "It's been three weeks without hot water.", "topic": "lease"},
+       {"text": "The lease says urgent repairs should be done within a day.", "topic": "lease"},
+       {"text": "Can I withhold rent until he fixes it?", "topic": "lease"},
+       {"text": "What if I pay a plumber myself and deduct it?", "topic": "lease"},
+       {"text": "I'm also thinking about just leaving early.", "topic": "lease"},
+       {"text": "There's a two-month penalty for breaking the lease though.", "topic": "lease"},
+       {"text": "Would the lack of repairs let me avoid the penalty?", "topic": "lease"}
+     ]},
+    {"name": "sister moving, then her classes, then my run",
+     "messages": [
+       {"text": "My sister Lucía just moved to Montreal for a nursing job.", "topic": "sister"},
+       {"text": "She starts at the hospital next Monday.", "topic": "sister"},
+       {"text": "She's nervous about her French.", "topic": "sister"},
+       {"text": "She signed up for evening French classes.", "topic": "sister"},
+       {"text": "Do you think she'll manage with patients in French after a few months?", "topic": "sister"},
+       {"text": "I want to run a 10K in March, can you make me a training plan?", "topic": "running"},
+       {"text": "Right now I run about 3 kilometers twice a week.", "topic": "running"},
+       {"text": "My knee sometimes hurts after long runs.", "topic": "running"},
+       {"text": "Should I add strength training too?", "topic": "running"}
+     ]},
+    {"name": "release planning, one long thread",
+     "messages": [
+       {"text": "Priya set the customer portal launch for November 14.", "topic": "release"},
+       {"text": "Tomas owns the Stripe integration.", "topic": "release"},
+       {"text": "We still need a penetration test before go-live.", "topic": "release"},
+       {"text": "Securalis can't start before November 17.", "topic": "release"},
+       {"text": "So the launch will probably move to December 5.", "topic": "release"},
+       {"text": "How do I tell the client without making it sound like our fault?", "topic": "release"},
+       {"text": "Should I propose a beta for a few customers in November?", "topic": "release"},
+       {"text": "Draft me a short email to Priya about it.", "topic": "release"}
+     ]}
+  ]
+}

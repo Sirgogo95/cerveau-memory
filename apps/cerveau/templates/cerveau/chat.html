@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cerveau{% endblock %}
+
+{% block head %}
+  <meta name="color-scheme" content="light dark">
+  <link rel="preload" href="{% static 'cerveau/vendor/fonts/hanken-grotesk.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'cerveau/base.css' %}">
+  <link rel="stylesheet" href="{% static 'cerveau/chat.css' %}">
+  {# Markdown rendering for replies; vendored, the page loads nothing from the internet. #}
+  <script src="{% static 'cerveau/vendor/marked.umd.js' %}" defer></script>
+  <script src="{% static 'cerveau/vendor/purify.min.js' %}" defer></script>
+  <script src="{% static 'cerveau/markdown.js' %}" defer></script>
+  <script src="{% static 'cerveau/time.js' %}" defer></script>
+  <script src="{% static 'cerveau/chat.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="app" id="app" data-state="idle">
+  <header class="bar">
+    <div class="brand">
+      {# Glows while Cerveau thinks, brighter while it searches its memory. #}
+      <span class="neuron" aria-hidden="true"></span>
+      <h1 class="wordmark">cerveau</h1>
+    </div>
+    <p class="meta" id="episode-meta" data-model="{{ model_name }}">
+      {% if episode %}
+        <span id="episode-label">Episode {{ episode.id }}<span class="meta-since"> · since <time datetime="{{ episode.started_at|date:'c' }}" data-format="day">{{ episode.started_at|date:"D H:i" }}</time></span></span>
+      {% else %}
+        <span id="episode-label">No episode yet</span>
+      {% endif %}
+      <span class="meta-model">{{ model_name }}</span>
+      <a href="{% url 'cerveau:timeline' %}">Memory</a>
+    </p>
+  </header>
+
+  <main class="log" id="log" aria-label="Conversation">
+    <div class="log-inner" id="log-inner" aria-live="polite">
+      {% for turn in turns %}
+        {% with m=turn.message %}
+        <article class="turn turn--{{ m.role }}" data-message-id="{{ m.id }}"{% if m.pinned %} data-pinned{% endif %}{% if turn.tools %} data-tools="{{ turn.tools }}"{% endif %}>
+          <p class="turn-label">
+            {% if m.role == "assistant" %}Cerveau{% else %}You{% endif %}
+            <time datetime="{{ m.created_at|date:'c' }}">{{ m.created_at|date:"H:i" }}</time>
+            <button type="button" class="pin" aria-pressed="{% if m.pinned %}true{% else %}false{% endif %}"
+                    title="Pin: keep this in Cerveau's view for the rest of the conversation">
+              <span class="visually-hidden">Pin</span>
+              <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M9 3h6l-1 6 4 3v2H6v-2l4-3-1-6zM12 14v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </p>
+          <div class="turn-body">{{ m.content }}</div>
+          {% if turn.files %}
+            <ul class="turn-files" aria-label="Files shared">
+              {% for f in turn.files %}
+                <li class="file-chip" data-file-id="{{ f.id }}" data-status="{{ f.extraction_status }}"{% if not f.title %} data-summarizing{% endif %}>
+                  <a href="{% url 'cerveau:file' f.id %}">{{ f.title|default:f.filename }}</a>
+                  <span class="file-chip-state"></span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </article>
+        {% endwith %}
+      {% empty %}
+        <section class="empty" id="empty">
+          <p class="empty-title">What's on your mind?</p>
+          <p class="empty-text">
+            Cerveau remembers what you tell it, across conversations.
+            A long silence starts a new episode; nothing said is lost.
+          </p>
+          <div class="suggestions" aria-label="Ideas to start with">
+            <button type="button" class="suggestion" data-prompt="What did we talk about last time?">What did we talk about last time?</button>
+            <button type="button" class="suggestion" data-prompt="What do you remember about me?">What do you remember about me?</button>
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  </main>
+
+  <form class="composer" id="composer" action="{% url 'cerveau:send' %}" method="post"
+        enctype="multipart/form-data" data-status-url="{% url 'cerveau:file_status' 0 %}"
+        data-pin-url="{% url 'cerveau:pin' 0 %}"
+        data-file-url="{% url 'cerveau:file' 0 %}" data-max-mb="{{ max_attachment_mb }}">
+    {% csrf_token %}
+    <ul class="pending-files" id="pending-files" aria-label="Files to send" hidden></ul>
+    <div class="composer-box">
+      <input type="file" id="files" name="files" multiple class="visually-hidden"
+             accept=".pdf,.docx,.txt,.md,.markdown,.csv,.json,.yaml,.yml,.toml,.log,.html,.xml,.py,.js,.ts,.java,.go,.rs,.c,.cpp,.h,.cs,.rb,.php,.sql,.sh,.css">
+      <label for="files" class="attach" title="Attach files (PDF, Word, text, code)">
+        <span class="visually-hidden">Attach files</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 11.5l-8.2 8.2a5 5 0 01-7.1-7.1l8.5-8.5a3.3 3.3 0 014.7 4.7l-8.5 8.5a1.7 1.7 0 01-2.4-2.4l7.8-7.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </label>
+      <label for="text" class="visually-hidden">Message</label>
+      <textarea id="text" name="text" rows="1" placeholder="Write to Cerveau…" autocomplete="off" autofocus></textarea>
+      <button type="submit" id="send" class="send" aria-label="Send">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="composer-foot">
+      <label class="think" title="Cerveau reasons before answering: slower to start, more careful about who decided what. It can also be more willing to fill a gap, so it stays off unless you turn it on.">
+        <input type="checkbox" id="think" name="think" value="1" role="switch" autocomplete="off">
+        <span class="think-track" aria-hidden="true"></span>
+        <span>Think first</span>
+      </label>
+      <p class="hint">Enter to send · Shift+Enter for a new line · drop files to attach them</p>
+    </div>
+    <p class="composer-error" id="composer-error" role="alert" hidden></p>
+  </form>
+</div>
+{% endblock %}

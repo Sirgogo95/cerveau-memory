@@ -1,0 +1,82 @@
+{
+  "scenario": "life",
+  "conversations": [
+    {"name": "knee, then running",
+     "turns": [
+       {"text": "My knee is bothering me again.", "expect": ["knee"]},
+       {"text": "Can I still go running this weekend?", "expect": ["knee", "knee:2"]}
+     ]},
+    {"name": "knee, running, then the pool",
+     "turns": [
+       {"text": "My knee is bothering me again.", "expect": ["knee"]},
+       {"text": "Can I still go running this weekend?", "expect": ["knee", "knee:2"]},
+       {"text": "What about the pool instead?", "expect": ["knee", "knee:2"]}
+     ]},
+    {"name": "knee, then coffee",
+     "turns": [
+       {"text": "My knee is bothering me again.", "expect": ["knee"]},
+       {"text": "Anyway, where should I get coffee on Saturday?", "switch": true, "expect": ["coffee"], "reject": ["knee", "knee:0", "knee:2"]}
+     ]},
+    {"name": "dad's back, then the rides",
+     "turns": [
+       {"text": "My dad's back has been hurting more this week.", "expect": ["dad", "dad:0"]},
+       {"text": "Which days am I supposed to drive him?", "expect": ["dad", "dad:4"]}
+     ]},
+    {"name": "Lucía, then her classes",
+     "turns": [
+       {"text": "Lucía called me last night.", "expect": ["sister", "sister:0"]},
+       {"text": "How are her evening classes going?", "expect": ["sister"]}
+     ]},
+    {"name": "Lucía, coffee, then pastries",
+     "turns": [
+       {"text": "Lucía called me last night.", "expect": ["sister", "sister:0"]},
+       {"text": "By the way, I went to La Cafetera this morning.", "switch": true, "expect": ["coffee"], "reject": ["sister", "sister:0"]},
+       {"text": "Do they still make the cheese pastries?", "expect": ["coffee"], "reject": ["sister", "sister:0"]}
+     ]},
+    {"name": "the apartment, then the rent",
+     "turns": [
+       {"text": "I'm still annoyed about how the Naco apartment fell through.", "expect": ["move2", "move"]},
+       {"text": "How much rent am I paying at the new place?", "expect": ["move2"]}
+     ]},
+    {"name": "savings, then the monthly amount",
+     "turns": [
+       {"text": "Carolina and I sat down to review our savings.", "expect": ["budget"]},
+       {"text": "How much are we putting away each month?", "expect": ["budget"]}
+     ]},
+    {"name": "blood test, then the numbers",
+     "turns": [
+       {"text": "I got a reminder about my retest in January.", "expect": ["labs"]},
+       {"text": "What were my numbers last time?", "expect": ["labs", "labs:0"]}
+     ]},
+    {"name": "Lyon photos, then the baby",
+     "turns": [
+       {"text": "Javier sent me the photos from Lyon.", "expect": ["wedding"]},
+       {"text": "When is the baby due again?", "expect": ["wedding"]}
+     ]},
+    {"name": "guitar song, then the lesson day",
+     "turns": [
+       {"text": "Andrés gave me a new bachata song to practice.", "expect": ["guitar:0", "guitar:2", "guitar:6"]},
+       {"text": "What day is my lesson now?", "expect": ["guitar:6"]}
+     ]},
+    {"name": "Samaná, then the month",
+     "turns": [
+       {"text": "Quiero empezar a organizar lo de Samaná con mi esposa.", "expect": ["viaje"]},
+       {"text": "¿Para qué mes lo habíamos movido?", "expect": ["viaje"]}
+     ]},
+    {"name": "Marisol, then her husband",
+     "turns": [
+       {"text": "Marisol texted me from Miami.", "expect": ["cousin"]},
+       {"text": "Is her husband still back home?", "expect": ["cousin"]}
+     ]},
+    {"name": "Canela scratching, then the vet",
+     "turns": [
+       {"text": "Canela no para de rascarse otra vez.", "expect": ["dog:0", "dog:2"]},
+       {"text": "¿Qué dijo el veterinario que era?", "expect": ["dog:2"]}
+     ]},
+    {"name": "mom's party, then sourdough",
+     "turns": [
+       {"text": "I need to keep planning my mom's 70th birthday.", "expect": ["mama"]},
+       {"text": "Totally unrelated: how do I make a sourdough starter?", "switch": true, "reject": ["mama"]}
+     ]}
+  ]
+}

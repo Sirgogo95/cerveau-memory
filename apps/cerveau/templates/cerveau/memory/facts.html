@@ -1,0 +1,48 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}Facts{% endblock %}
+
+{% block sheet %}
+<div class="page-head">
+  <h1 class="page-title">Facts</h1>
+  <p class="page-text">Short statements you made, kept across conversations. When one changes, the new fact replaces the old, which stays as history.</p>
+</div>
+
+{% include "cerveau/memory/_filters.html" with placeholder="Words in a fact" %}
+<p class="filter-extra">
+  {% if show_history %}
+    <a href="?{% if query %}q={{ query|urlencode }}&amp;{% endif %}status={{ status }}{% if kind %}&amp;type={{ kind }}{% endif %}">Hide replaced facts</a>
+  {% else %}
+    <a href="?{% if query %}q={{ query|urlencode }}&amp;{% endif %}status={{ status }}{% if kind %}&amp;type={{ kind }}{% endif %}&amp;history=1">Show replaced facts too</a>
+  {% endif %}
+</p>
+
+{% if page.object_list %}
+  <ul class="facts">
+    {% for f in page.object_list %}
+      <li class="fact{% if f.superseded_by_id or f.status != 'A' %} fact--old{% endif %}">
+        <a class="fact-statement" href="{% url 'cerveau:fact' f.pk %}">{{ f.statement }}</a>
+        <p class="fact-meta">
+          <span class="chip">{{ f.type }}</span>
+          <time datetime="{{ f.learned_at|date:'c' }}" data-format="date">{{ f.learned_at|date:"D, M j" }}</time>
+          {% if f.times_confirmed > 1 %} · confirmed {{ f.times_confirmed }} times{% endif %}
+          {% if f.superseded_by_id %} · <span class="badge">replaced</span>{% endif %}
+          {% if f.status == "I" %} · <span class="badge badge--aside">Set aside</span>{% endif %}
+          {% if f.status == "Z" %} · <span class="badge badge--forgotten">Forgotten</span>{% endif %}
+        </p>
+      </li>
+    {% endfor %}
+  </ul>
+  {% include "cerveau/memory/_pages.html" %}
+{% else %}
+  <div class="blank">
+    {% if query or kind or status != "active" %}
+      <p class="blank-title">Nothing here.</p>
+      <p>No fact matches this filter.</p>
+    {% else %}
+      <p class="blank-title">No facts yet.</p>
+      <p>When a conversation ends, Cerveau notes the lasting things you said in it. For older conversations, run <code>python manage.py extract_facts</code>.</p>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

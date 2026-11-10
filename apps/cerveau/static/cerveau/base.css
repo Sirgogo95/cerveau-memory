@@ -1,0 +1,187 @@
+/* Cerveau's shared look: fonts, colors (day and night), the header with its
+   wordmark and neuron, focus, and motion. Used by the chat page (chat.css) and the
+   memory viewer (memory.css). One signal color, amber, is kept for memory.
+   Fonts are vendored (vendor/fonts): the pages load nothing from the internet. */
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("vendor/fonts/hanken-grotesk.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("vendor/fonts/hanken-grotesk-italic.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("vendor/fonts/instrument-serif.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("vendor/fonts/instrument-serif-italic.woff2") format("woff2");
+  font-style: italic;
+  font-display: swap;
+}
+
+/* -- Tokens: day (bone and ink) ------------------------------------------------- */
+:root {
+  --bg: #f1eee6;
+  --surface: #fbfaf6;
+  --ink: #1b2130;
+  --ink-soft: #4f5868;
+  --muted: #8a8f98;
+  --rule: rgba(27, 33, 48, 0.1);
+  --accent: #34507f;          /* your lines */
+  --signal: #a8640a;          /* memory activity */
+  --signal-soft: rgba(168, 100, 10, 0.12);
+  --danger: #b4441f;
+  --code-bg: #1b2130;
+  --code-ink: #ebe6da;
+  --glow: rgba(168, 100, 10, 0.07);
+  --shadow: 0 12px 32px -18px rgba(27, 33, 48, 0.35), 0 1px 0 rgba(27, 33, 48, 0.04);
+
+  --sans: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --mono: "Cascadia Code", "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --column: 44rem;
+}
+
+/* -- Tokens: night (deep ink and starlight) --------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1118;
+    --surface: #151b26;
+    --ink: #e7e2d6;
+    --ink-soft: #a9afbb;
+    --muted: #6c7483;
+    --rule: rgba(231, 226, 214, 0.08);
+    --accent: #87a3d6;
+    --signal: #f0b44c;
+    --signal-soft: rgba(240, 180, 76, 0.13);
+    --danger: #f08b6a;
+    --code-bg: #090c12;
+    --code-ink: #e7e2d6;
+    --glow: rgba(240, 180, 76, 0.06);
+    --shadow: 0 16px 40px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(231, 226, 214, 0.05);
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background-color: var(--bg);
+  /* A faint warm glow overhead and a fine grain: depth without decoration. */
+  background-image:
+    radial-gradient(70rem 26rem at 50% -8rem, var(--glow), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 6px; }
+
+.bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  max-width: calc(var(--column) + 4rem);
+  margin: 0 auto;
+  padding: 1.1rem 2rem 0.8rem;
+}
+
+.brand { display: flex; align-items: center; gap: 0.6rem; }
+
+.wordmark {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+/* The neuron: still at rest, breathing while Cerveau thinks, bright while it
+   searches its memory, red after a failure. */
+.neuron {
+  position: relative;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--muted);
+  transform: translateY(0.05rem);
+  transition: background 300ms ease;
+}
+.neuron::after {
+  content: "";
+  position: absolute;
+  inset: -0.35rem;
+  border-radius: 50%;
+  background: var(--signal-soft);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+[data-state="thinking"] .neuron { background: var(--signal); animation: breathe 1.6s ease-in-out infinite; }
+[data-state="searching"] .neuron { background: var(--signal); }
+[data-state="searching"] .neuron::after { opacity: 1; animation: ripple 1.1s ease-out infinite; }
+[data-state="error"] .neuron { background: var(--danger); }
+
+.meta {
+  margin: 0;
+  display: flex;
+  gap: 0.9rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.meta-model { color: var(--muted); opacity: 0.8; }
+
+
+/* Tabs and links in the header (memory viewer, and the chat page's link to it). */
+.nav { display: flex; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
+.nav a {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+.nav a:hover { color: var(--ink); background: var(--rule); }
+.nav a[aria-current="page"] { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule); }
+.meta a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+.meta a:hover { color: var(--ink); border-color: var(--signal); }
+
+/* -- Motion ------------------------------------------------------------------------- */
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes ripple { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.9); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 40rem) {
+  .bar { padding: 0.9rem 1rem 0.6rem; }
+  .meta-model, .meta-since { display: none; }
+}

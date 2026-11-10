@@ -1,0 +1,20 @@
+{% comment %}
+  Search box and status filter for a list. Context: query, status, placeholder,
+  and optionally types / kind (the entity type filter).
+{% endcomment %}
+<form method="get" class="filters" role="search">
+  <label class="visually-hidden" for="q">Filter</label>
+  <input id="q" name="q" type="search" value="{{ query }}" placeholder="{{ placeholder }}" autocomplete="off">
+  {% if types %}
+    <label class="visually-hidden" for="type">Type</label>
+    <select id="type" name="type" onchange="this.form.submit()">
+      <option value="">All types</option>
+      {% for t in types %}<option value="{{ t }}"{% if t == kind %} selected{% endif %}>{{ t }}</option>{% endfor %}
+    </select>
+  {% endif %}
+  <div class="segmented" role="group" aria-label="Status">
+    {% for value, label in status_choices %}
+      <button type="submit" name="status" value="{{ value }}"{% if value == status %} aria-pressed="true"{% endif %}>{{ label }}</button>
+    {% endfor %}
+  </div>
+</form>

@@ -1,0 +1,211 @@
+<title>Cerveau's Memory Exam</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one narrow column that reads like a scoreboard, bars as the centerpiece, the full results table below. */
+:root {
+  --bg: #f3f5f8;
+  --card: #ffffff;
+  --ink: #18212e;
+  --muted: #5b6676;
+  --rule: #dde3ea;
+  --bar: #9aa7b8;
+  --cerveau: #e3a21a;
+  --cerveau-ink: #8a5a00;
+  --ceiling: #3f7d6e;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161e; --card: #18202b; --ink: #e9edf2; --muted: #9aa5b4; --rule: #2a3442;
+    --bar: #56637a; --cerveau: #f0b43a; --cerveau-ink: #f6c766; --ceiling: #6fb8a5; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161e; --card: #18202b; --ink: #e9edf2; --muted: #9aa5b4; --rule: #2a3442;
+  --bar: #56637a; --cerveau: #f0b43a; --cerveau-ink: #f6c766; --ceiling: #6fb8a5; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+main {
+  max-width: 680px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 56px;
+  display: grid; gap: 28px;
+}
+h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 7vw, 2.9rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.01em; }
+h2 { font-size: 1.25rem; font-weight: 600; }
+p { margin: 0; max-width: 62ch; }
+.kicker { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.lede { font-size: 1.1rem; color: var(--muted); }
+.exam { background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 20px; display: grid; gap: 10px; }
+.exam q, .takeaways q { font-style: italic; quotes: "\201C" "\201D"; }
+
+.board { display: grid; gap: 14px; }
+.board .intro { color: var(--muted); font-size: 0.95rem; }
+.row { display: grid; gap: 6px; }
+.label { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.name { font-weight: 700; min-width: 0; }
+.note { color: var(--muted); font-size: 0.88rem; display: block; font-weight: 400; }
+.score { font-family: var(--display); font-weight: 800; font-size: 1.35rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.track { height: 14px; background: var(--rule); border-radius: 7px; overflow: hidden; }
+.fill { height: 100%; background: var(--bar); border-radius: 7px; }
+.row.cerveau .fill { background: var(--cerveau); }
+.row.cerveau .score { color: var(--cerveau-ink); }
+.row.ceiling .fill { background: var(--ceiling); }
+.scale { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+
+.progress { display: grid; gap: 10px; background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 20px; }
+.steps { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.steps li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+.steps li:last-child { border-bottom: 0; padding-bottom: 0; }
+.steps .pct { font-family: var(--display); font-weight: 800; font-variant-numeric: tabular-nums; color: var(--cerveau-ink); white-space: nowrap; }
+.steps .sub { color: var(--muted); font-size: 0.88rem; display: block; }
+
+.results { display: grid; gap: 12px; min-width: 0; }
+.results .intro { color: var(--muted); font-size: 0.95rem; }
+.scroll { overflow-x: auto; background: var(--card); border: 1px solid var(--rule); border-radius: 14px; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+th, td { padding: 9px 10px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; white-space: normal; min-width: 170px; }
+thead th { font-weight: 700; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: bottom; }
+tbody tr:last-child td { border-bottom: 0; }
+td .who { display: block; color: var(--muted); font-size: 0.82rem; }
+tr.cerveau td:first-child strong { color: var(--cerveau-ink); }
+td.key { font-weight: 700; }
+.pending { color: var(--muted); font-style: italic; }
+
+.takeaways { display: grid; gap: 12px; padding: 0; margin: 0; list-style: none; }
+.takeaways li { display: grid; grid-template-columns: 12px 1fr; gap: 12px; align-items: start; }
+.takeaways li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--cerveau); margin-top: 0.5em; }
+.fine { font-size: 0.88rem; color: var(--muted); display: grid; gap: 8px; border-top: 1px solid var(--rule); padding-top: 18px; }
+</style>
+
+<main>
+  <header style="display:grid; gap:12px">
+    <span class="kicker">LoCoMo memory exam · final results · October 2026</span>
+    <h1>How Cerveau's memory stacks up</h1>
+    <p class="lede">Cerveau is an AI memory system built by one person at home, running on a laptop. Here it takes the standard public memory exam, on every question, measured carefully: what a small model on a 6 GB laptop graphics card can do, next to a big cloud model.</p>
+  </header>
+
+  <section style="display:grid; gap:12px" aria-labelledby="why-h">
+    <h2 id="why-h">Why an AI needs a memory</h2>
+    <p>Most AI chat assistants forget. Close the conversation, and next time they don't know your name, your projects, or what you told them last week. Even within one long conversation, they eventually drop the oldest parts to make room.</p>
+    <p>Cerveau works more like a person with a good notebook. Everything you tell it is kept. After each conversation it writes itself a short summary and notes the important facts ("Elena is my sister", "the trip is on 14 November"). When you ask something later, it looks through its notes, picks the few that matter, and answers with them in mind.</p>
+    <p>The hard part isn't keeping everything; it's finding the right note out of thousands, at the moment you need it. That's what this exam measures.</p>
+  </section>
+
+  <section class="exam" aria-labelledby="exam-h">
+    <h2 id="exam-h">The exam</h2>
+    <p>Ten long chat histories between pairs of friends, about 600 messages each, spread over many months. Then 1,540 quiz questions about them, like <q>When did Caroline go to the support group?</q> or <q>What did Mel and her kids make at the pottery workshop?</q>, plus 446 trick questions about things that were never said. The score is the share of questions answered correctly.</p>
+    <p>It's the standard test in this field, published by researchers in 2024, so companies and labs can compare their memory systems on the same questions. Each answer is checked by an AI judge against the exam's answer key.</p>
+  </section>
+
+  <section class="board" aria-labelledby="board-h">
+    <h2 id="board-h">Questions answered right</h2>
+    <p class="intro">Graded generously: an answer on the right topic counts. The strict scores are in each note and in the full table below.</p>
+
+    <div class="row ceiling">
+      <div class="label"><span class="name">A big AI reading the whole history<span class="note">No memory system at all: a reference point (strict: 83%)</span></span><span class="score">87%</span></div>
+      <div class="track"><div class="fill" style="width:86.8%"></div></div>
+    </div>
+    <div class="row cerveau">
+      <div class="label"><span class="name">Cerveau + a big AI<span class="note">A large cloud model writes the notes and answers (strict: 76%)</span></span><span class="score">83%</span></div>
+      <div class="track"><div class="fill" style="width:82.6%"></div></div>
+    </div>
+    <div class="row cerveau">
+      <div class="label"><span class="name">Cerveau fully on a laptop<span class="note">A small free model writes the notes and answers, nothing leaves the computer (strict: 67%)</span></span><span class="score">76%</span></div>
+      <div class="track"><div class="fill" style="width:76.4%"></div></div>
+    </div>
+    <div class="scale" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+  </section>
+
+  <section class="results" aria-labelledby="results-h">
+    <h2 id="results-h">The full results</h2>
+    <p class="intro">Five setups on all 1,536 gradable questions, each answer checked by two independent AI judges (DeepSeek V4 Pro, the official one / gpt-oss 120B). Strict means the answer must give the same facts as the key; generous counts an answer on the right topic. The question types are graded strictly by the first judge.</p>
+    <div class="scroll" role="region" aria-label="Final results table" tabindex="0">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Setup</th>
+            <th scope="col">Strict</th>
+            <th scope="col">Generous</th>
+            <th scope="col">Everyday facts</th>
+            <th scope="col">Dates</th>
+            <th scope="col">Connecting the dots</th>
+            <th scope="col">Open-ended</th>
+            <th scope="col">Trick questions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Whole history in a big AI</strong><span class="who">no memory, gpt-oss 120B reads everything</span></td>
+            <td class="key">83% / 79%</td><td>87% / 87%</td><td>90%</td><td>74%</td><td>74%</td><td>73%</td><td>48%</td>
+          </tr>
+          <tr class="cerveau">
+            <td><strong>Cerveau, big AI for everything</strong><span class="who">gpt-oss 120B writes the notes and answers</span></td>
+            <td class="key">76% / 71%</td><td>83% / 81%</td><td>82%</td><td>78%</td><td>67%</td><td>49%</td><td>79%</td>
+          </tr>
+          <tr class="cerveau">
+            <td><strong>Cerveau, laptop notes, big AI answers</strong><span class="who">Gemma 4 writes the notes, gpt-oss 120B answers</span></td>
+            <td class="key">75% / 70%</td><td class="pending">not regraded</td><td>82%</td><td>75%</td><td>62%</td><td>50%</td><td>80%</td>
+          </tr>
+          <tr class="cerveau">
+            <td><strong>Cerveau, big AI notes, laptop answers</strong><span class="who">gpt-oss 120B writes the notes, Gemma 4 answers</span></td>
+            <td class="key">68% / 64%</td><td class="pending">not regraded</td><td>76%</td><td>70%</td><td>51%</td><td>32%</td><td>83%</td>
+          </tr>
+          <tr class="cerveau">
+            <td><strong>Cerveau fully on a laptop</strong><span class="who">Gemma 4 (a 4-billion-parameter class model) writes the notes and answers</span></td>
+            <td class="key">67% / 62%</td><td>76% / 77%</td><td>75%</td><td>73%</td><td>47%</td><td>28%</td><td>83%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="progress" aria-labelledby="progress-h">
+    <h2 id="progress-h">How it got here</h2>
+    <ul class="steps">
+      <li><span>First test: a laptop model reading raw messages<span class="sub">200-question practice set</span></span><span class="pct">57%</span></li>
+      <li><span>Memory organized into summaries and facts after each conversation<span class="sub">practice set, notes written by a cloud model</span></span><span class="pct">66%</span></li>
+      <li><span>Those summaries and facts say exactly when things happened<span class="sub">practice set</span></span><span class="pct">72%</span></li>
+      <li><span>Everything on the laptop: a new small model also writes the notes<span class="sub">practice set, with dates fixed in code</span></span><span class="pct">70%</span></li>
+      <li><span>The final exam, every question, fully on the laptop<span class="sub">strict; 76% graded generously</span></span><span class="pct">65%</span></li>
+      <li><span>One fix found by studying that run's mistakes: dates spelled out in the quoted messages the model reads<span class="sub">final exam again, fully on the laptop; 76% graded generously; the fix was tested on half the conversations and confirmed on the other half before the rerun</span></span><span class="pct">67%</span></li>
+    </ul>
+  </section>
+
+  <section style="display:grid; gap:14px" aria-labelledby="own-h">
+    <h2 id="own-h">On my own chats</h2>
+    <p>The exam is two friends talking. The real test is one person and an assistant, so 25 of my own ChatGPT conversations, over 14 months, went into Cerveau on the laptop, and it was asked about them: what I decided, what changed, when, and things I never said.</p>
+    <ul class="takeaways">
+      <li><span><strong>Memory is the whole difference.</strong> Without its memory the laptop model knew nothing about me beyond saying so (5 of 30 right). With it: 24 of 30 on the first set of questions, graded by me.</span></li>
+      <li><span><strong>The questions found real faults, fixed in code.</strong> Summaries in the wrong language, an old suggestion taken for my decision, never searching its memory. On 30 new questions written afterwards, Cerveau went from 16 to 21 right: suggestive on 30 questions, not conclusive.</span></li>
+      <li><span><strong>The laptop is close to a big cloud AI here.</strong> On 60 questions: 44 right fully on the laptop, 47 with a model about thirty times larger in the cloud. On the exam the gap was about 10 points.</span></li>
+      <li><span><strong>Still hard:</strong> telling what I decided from what the assistant only suggested (the small models answer <q>did I...?</q> with yes too easily), and lists gathered from several chats.</span></li>
+    </ul>
+  </section>
+
+  <section style="display:grid; gap:14px" aria-labelledby="mean-h">
+    <h2 id="mean-h">What it means</h2>
+    <ul class="takeaways">
+      <li><span><strong>A laptop gets within about 10 points of a model thirty times larger.</strong> With a free 4-billion-parameter class model on a 6 GB laptop graphics card writing and reading its notes, Cerveau scores 67% (strict); with a 120-billion-parameter cloud model doing both, 76%. A careful human check of the answers lands within a point of the judge's scores on both.</span></li>
+      <li><span><strong>A small model writes notes almost as well as a big one.</strong> With the same big AI answering, notes written by the laptop model cost only about 1 point against notes written by the cloud model 30 times its size.</span></li>
+      <li><span><strong>What the small model loses is reading the notes.</strong> On the same notes, the laptop model answers about 8 points below the big one, mostly on questions that need several notes put together. That's the next thing to improve.</span></li>
+      <li><span><strong>A memory is harder to trick.</strong> Asked about things that never happened, Cerveau says it doesn't remember about 8 times in 10. A big AI reading the whole history at once goes along with the false premise half the time.</span></li>
+      <li><span><strong>Running at home means privacy.</strong> In the fully local setup nothing leaves the computer: no company sees your conversations, it works offline, and it costs nothing to use.</span></li>
+      <li><span><strong>What's still hard:</strong> questions that need pieces from several different conversations at once, like <q>What activities has Melanie done with her family?</q>, when each activity came up on a different day. The laptop setup gets about 5 in 10 of those right, against 7 in 10 when a big AI reads everything.</span></li>
+    </ul>
+  </section>
+
+  <footer class="fine">
+    <p>Other memory systems publish LoCoMo scores too, but measured with different judges, judging prompts and answering models, and the same products' published scores vary widely from one setup to another. They aren't directly comparable with these, so they aren't shown here. Cerveau's generous scores use a rule written to match the published papers' description, not their exact wording.</p>
+    <p>Cerveau's two judges agree on 92 to 95% of answers; DeepSeek V4 Pro is the more generous by about 4 to 7 points when strict. DeepSeek V4 Pro is the official judge: on 100 answers checked by hand, it agreed with the human verdict 85 times, gpt-oss 120B 70 times, and both judges only ever erred on the strict side. A check of 833 answers of the final laptop run against the conversations themselves, with a fixed rule and in both directions, then reviewed by hand where that check overruled both judges, put it at 66.3% where DeepSeek V4 Pro said 66.9%, and the same check of the big AI setup at 76.4% where it said 76.2%, so its strict scores track a careful human reading closely. The big AI setups once in a while replied with nothing; those answers were asked again (most then answered), which raised the whole-history score from 81% to 83%. Each strict score is within about plus or minus 2.4 points.</p>
+    <p>The laptop setup scored 65% (strict) on the first full run. Its final 67% comes after one fix found by studying that run's mistakes, tested on half of the conversations and confirmed on the other half before the full rerun; so the 67% isn't a score on questions never looked at.</p>
+    <p>For this exam, which is made of conversations between two friends, Cerveau notes facts person by person; in everyday use, with one person talking to it, it uses its one-person notes. Answers were given with no randomness (temperature 0).</p>
+    <p>Newer systems report around 80%, among them SYNAPSE (a 2026 research paper) and OpenViking (ByteDance), each measured its own way. An independent audit found that about 6% of the exam's own answer key is wrong, so no system can reach 100%.</p>
+  </footer>
+</main>

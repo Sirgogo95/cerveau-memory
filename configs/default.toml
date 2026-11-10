@@ -1,0 +1,167 @@
+# Engine tuning (brain.config.EngineConfig). Fields are added as features land;
+# see docs/PIPELINE.md for what each one controls.
+
+# Silence longer than this starts a new episode.
+episode_gap_hours = 2.0
+
+# Messages of the current episode kept verbatim in the prompt. Past this, the oldest
+# summary_chunk messages are folded into the episode's running summary (by the
+# background worker), so a long session keeps its beginning in a few hundred tokens.
+recent_window = 20
+summary_chunk = 10
+
+# Recent episodes always shown in the prompt (title, dates, short summary), whatever
+# the message says: what lets "what did we talk about last?" work.
+recent_episodes = 3
+
+# Timezone for dates shown to the model. Leave unset to use this machine's timezone.
+# timezone = "America/Santo_Domingo"
+
+# Cerveau's replies shorter than this many characters ("Noted.", "Classic.") are never
+# recalled as messages: nothing to remember in them, and short generic texts crowd
+# out real memories. 0 recalls them all.
+short_reply_chars = 60
+
+# Find people, places, and projects named with a typo ("Lucai" for Lucía): only
+# capitalized words not starting a sentence, one or two letters off.
+fuzzy_names = true
+
+# Conversation-aware recall: search with the new message plus the previous
+# context_messages user messages, the k-th most recent weighted context_weight^k, so
+# a follow-up ("can I still play on Saturday?") keeps the subject of the message
+# before. Measured with python -m evals.turns (docs/ACTIVATION.md): at 0.25,
+# follow-ups found what they needed 81% of the time instead of 62%, and 1 of 7
+# topic changes brought the old subject along; 0.5 found 91% but dragged it 5 times.
+# 0 turns it off.
+context_messages = 2
+context_weight = 0.25
+
+# Carry-over: what a turn recalled stays a candidate in the next turns, its score
+# multiplied by carry_decay each turn, but only while the conversation stays on that
+# subject: the new message finds nothing scoring carry_gate or more on its own, and
+# is at least subject_similarity close to the message before. Without those two
+# conditions, carry-over dragged the old subject into 8 of the 7 topic changes'
+# results (python -m evals.turns); with them, follow-ups 81% -> 84%, no extra drag.
+# 0.95 found one more follow-up, but a memory would linger twice as long, and the
+# eval's conversations are too short to show that cost. carry_decay = 0 turns it off.
+carry_decay = 0.9
+carry_gate = 0.6
+subject_similarity = 0.42
+
+# Activation (graph of tags and entities, brain/activation.py): each turn, nodes fade
+# by activation_turn_decay and halve every activation_half_life_hours; the names and
+# topics the message matches are boosted, and activation_spread of that boost goes
+# to their neighbours (tags and entities that share episodes). A message unlike the
+# one before (subject_similarity) starts fresh. Memories gain w_act x the highest
+# value among their episode's tags and entities (w_act per source, below).
+# Measured (python -m evals.turns): alone it took follow-ups from 62% to 81% (w_act
+# 0.2), but on top of the two ideas above (w_act 0.05) it found one more follow-up
+# and dragged one more old subject into a topic change, with twice the noise on
+# unrelated questions. On since 2026-10-18 at w_act 0.05 for every source (your call:
+# the trade is small either way, and longer real conversations will tell).
+activation_turn_decay = 0.3
+activation_half_life_hours = 6.0
+activation_spread = 0.5
+
+# A change of subject starts a new episode, not only a silence: a message whose
+# similarity to the average of the episode's last drift_window user messages is under
+# drift_threshold is a strike, and drift_strikes in a row split the episode at the
+# first of them (it moves to the new episode with its reply). Messages under
+# drift_min_words, and episodes with fewer than drift_min_messages user messages,
+# aren't checked. Measured with python -m evals.segments (12 sessions, 9 topic
+# changes): comparing with the last 2 messages, no split inside a topic from 0.44 to
+# 0.50 (0.50 found all 9 changes, 0.48 found 8), 4 wrong splits at 0.52; 0.48 keeps a
+# margin. Comparing with the last 5 never got there (0.55: 6 of 9, 2 wrong). 0 turns
+# it off.
+drift_threshold = 0.48
+drift_window = 2
+
+# After a split by subject, the previous episode's last messages lead the new
+# episode's prompt: 3 on its first turn, then 2, then 1, so a wrong split still has
+# its thread in view. Not after a silence (the recent conversations cover that).
+# 0 turns it off.
+carryover_messages = 3
+
+# Pinned messages (the pin on a message in the chat) stay in the prompt after the
+# window moves past them, up to this share of the memory budget.
+pinned_share = 0.2
+
+# Share of the model's memory budget reserved for retrieved memory. What it leaves
+# unused goes to the recent messages.
+memory_share = 0.3
+
+# Deliberate recall: offer the search_memory and read_memory tools to models that
+# support tools, at most max_tool_calls per reply; each result may use
+# tool_result_share of the memory budget.
+memory_tools = true
+max_tool_calls = 3
+tool_result_share = 0.15
+
+# Facts: learn short statements the user made, at consolidation (docs/FACTS.md).
+learn_facts = true
+# At most this many facts from one conversation. 16, not 8: at 8, 43% of LoCoMo
+# sessions hit the cap; at 16 (with entity blocks of 20 below), multi-hop 53% -> 59%
+# (p = 0.04) and the 200-question sample 74% -> 78%, graded by deepseek-v4-pro.
+max_facts = 16
+
+# Retrieval per source: score = w_semantic x cosine similarity + w_lexical x name
+# match (the share of the entities named in the message that a memory mentions)
+# + w_tag x tag match (episodes: how close the message is to the episode's closest
+# matching tag) + w_act x activation + w_keyword x the share of the message's exact
+# terms (identifiers like INV-2026-00417, words in quotes) a memory contains
+# literally; at most max_items are kept. w_keyword 0.6 lets a memory holding every
+# exact term pass on that alone; measured, any weight from 0.3 to 0.8 gave the same. The threshold below which a memory is dropped (min_score)
+# depends on the embedding model, so it lives in its profile: configs/embeddings/.
+[messages]
+w_lexical = 0.4
+w_act = 0.05
+w_keyword = 0.6
+# 10, not 5: on LoCoMo (python -m evals.locomo --answer), 200 questions went from
+# 57% to 67% judged right (23 gained, 3 lost); in long conversations five messages
+# saying similar things fill 5 slots and crowd out the one holding the answer.
+max_items = 10
+
+[episodes]
+w_lexical = 0.4
+# A nudge, not a way in: measured best at 0.05 with min_score 0.53 (docs/GUIDE.md 4.8).
+w_tag = 0.05
+w_act = 0.05
+w_keyword = 0.6
+max_items = 3
+
+# Facts: short statements the user made (docs/FACTS.md). Only current ones (not
+# replaced by a newer fact) are recalled.
+[facts]
+w_lexical = 0.4
+w_act = 0.05
+w_keyword = 0.6
+max_items = 5
+
+# Passages of files the user shared (docs/ATTACHMENTS.md); at most 2 from one file
+# per turn, so a long document can't fill the memory block.
+[attachments]
+w_lexical = 0.4
+w_act = 0.05
+w_keyword = 0.6
+max_items = 3
+
+# Entity blocks (docs/features/ENTITY_PROFILES.md): when a message names a person,
+# place, or project, recall searches that entity's own facts and shows them under
+# its card, in date order. On since 2026-10-22: +8 and +7 points on LoCoMo multi-hop
+# questions (graded by deepseek-v4-pro), nothing else lower (docs/features/ENTITY_PROFILES.md).
+[entity_block]
+enabled = true
+max_entity_blocks = 2
+# 20, not 10, since max_facts went to 16: with more facts per person, a block of 10
+# lost whole answers (notes held all of the answer 127 times against 141); 20 alone,
+# with 8 facts per session, gained nothing.
+max_items = 20
+# The block's threshold, below the embedding profile's min_score (the scope already
+# says the facts are about the right entity).
+min_score_offset = -0.10
+# A second search: the block's best expand_seeds facts bring up to expand_items of
+# their closest neighbors among the entity's facts. Off: with 3 and 6, multi-hop
+# 53% -> 54% (p = 0.85), and no more whole answers in the notes; a block of 20
+# facts did no better (56%, p = 0.18).
+expand_seeds = 0
+expand_items = 0

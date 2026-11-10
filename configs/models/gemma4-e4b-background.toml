@@ -1,0 +1,16 @@
+# Background profile for gemma4:e4b: consolidation, running summaries, facts.
+# Same model and context window as the chat profile, so Ollama doesn't reload it;
+# only the temperature differs.
+
+name = "gemma4:e4b"
+provider = "ollama"
+context_window = 16384
+output_reserve = 1536
+memory_budget = 8000
+chars_per_token = 4.0
+supports_tools = true
+think = false
+
+[options]
+# Low: extraction and judging should give the same answer twice (eval runs use 0).
+temperature = 0.2

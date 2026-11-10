@@ -1,0 +1,60 @@
+{
+  "scenario": "languages",
+  "conversations": [
+    {"name": "lab next week, then fasting",
+     "turns": [
+       {"text": "Tengo que ir al laboratorio la semana que viene.", "expect": ["analisis"]},
+       {"text": "¿Tengo que ir en ayunas?", "expect": ["analisis", "analisis:4"]}
+     ]},
+    {"name": "Yariel called, then the speech",
+     "turns": [
+       {"text": "Yariel me llamó hoy.", "expect": ["boda"]},
+       {"text": "¿Cómo era que iba a organizar el discurso?", "expect": ["boda", "boda:4"]}
+     ]},
+    {"name": "Moustache, then the owner",
+     "turns": [
+       {"text": "Moustache n'a presque rien mangé ce matin.", "expect": ["chat"]},
+       {"text": "Elle revient quand, sa propriétaire ?", "expect": ["chat", "chat:6"]}
+     ]},
+    {"name": "Montreal trip, then the flight",
+     "turns": [
+       {"text": "Je commence à faire ma valise pour Montréal.", "expect": ["voyage"]},
+       {"text": "Mon vol part à quelle heure déjà ?", "expect": ["voyage"]}
+     ]},
+    {"name": "landlord replied, then the notice",
+     "turns": [
+       {"text": "Mr. Peña finally replied to my email.", "expect": ["lease"]},
+       {"text": "How much notice do I need to give him?", "expect": ["lease"]}
+     ]},
+    {"name": "last day at the bank, then the salary",
+     "turns": [
+       {"text": "Hoy fue mi último día en el banco.", "expect": ["trabajo"]},
+       {"text": "¿Cuánto me van a pagar en el trabajo nuevo?", "expect": ["trabajo"]}
+     ]},
+    {"name": "Yariel, then red meat",
+     "turns": [
+       {"text": "Yariel me llamó hoy.", "expect": ["boda"]},
+       {"text": "Cambiando de tema, ¿desde cuándo dejé la carne roja?", "switch": true, "expect": ["diet"], "reject": ["boda"]}
+     ]},
+    {"name": "knee, then the blood test",
+     "turns": [
+       {"text": "My knee is swollen again after basketball.", "expect": ["knee:0", "knee:4"]},
+       {"text": "Different thing: do I need to fast before the blood test?", "switch": true, "expect": ["analisis"], "reject": ["knee:0", "knee:4"]}
+     ]},
+    {"name": "car noise, then the cost",
+     "turns": [
+       {"text": "El carro está haciendo un ruido raro otra vez.", "expect": ["carro:0", "carro:2"]},
+       {"text": "¿Cuánto me costó la reparación la otra vez?", "expect": ["carro:4"]}
+     ]},
+    {"name": "piano, then the goal",
+     "turns": [
+       {"text": "J'ai eu mon cours de piano hier soir.", "expect": ["cours"]},
+       {"text": "C'était quoi mon objectif pour la fin de l'année ?", "expect": ["cours"]}
+     ]},
+    {"name": "nephew's guitar, then the price",
+     "turns": [
+       {"text": "Mateo tocó su primera canción completa.", "expect": ["guitarra"]},
+       {"text": "¿Cuánto estoy pagando por las clases?", "expect": ["guitarra"]}
+     ]}
+  ]
+}

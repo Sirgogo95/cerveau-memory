@@ -1,0 +1,98 @@
+{% extends "cerveau/memory/layout.html" %}
+
+{% block page_title %}{{ episode.title|default:"Conversation" }}{% endblock %}
+
+{% block sheet %}
+<p class="crumb"><a href="{% url 'cerveau:timeline' %}">Timeline</a></p>
+
+<div class="page-head">
+  <h1 class="page-title">{% if episode.title %}{{ episode.title }}{% elif is_current %}This conversation{% else %}Untitled conversation{% endif %}</h1>
+  <p class="page-text">
+    E{{ episode.pk }} ·
+    <time datetime="{{ episode.started_at|date:'c' }}" data-format="datetime">{{ episode.started_at|date:"D, M j H:i" }}</time>
+    {% if episode.ended_at %} to <time datetime="{{ episode.ended_at|date:'c' }}">{{ episode.ended_at|date:"H:i" }}</time>{% endif %}
+    · {{ turns|length }} message{{ turns|length|pluralize }}
+    {% if is_current %}<span class="badge badge--now">Now</span>{% endif %}
+  </p>
+  {% include "cerveau/memory/_status.html" with item=episode kind="episode" noun="conversation" %}
+</div>
+
+<section class="block">
+  <h2 class="block-title">What Cerveau kept</h2>
+  {% if episode.summary_short %}
+    <p class="lead">{{ episode.summary_short }}</p>
+    {% if episode.summary_long and episode.summary_long != episode.summary_short %}
+      <p class="long">{{ episode.summary_long }}</p>
+    {% endif %}
+  {% elif is_current %}
+    <p class="muted">Still going. When it ends, Cerveau writes its title, summaries, tags, and the people and things in it.</p>
+  {% else %}
+    <p class="muted">Not consolidated yet: the worker hasn't summarized it. Its messages are already searchable.</p>
+  {% endif %}
+
+  {% if tags or entities or files %}
+    <dl class="facets">
+      {% if tags %}
+        <dt>Topics</dt>
+        <dd>{% for et in tags %}<span class="chip">{{ et.tag.name }}</span>{% endfor %}</dd>
+      {% endif %}
+      {% if entities %}
+        <dt>People &amp; things</dt>
+        <dd>{% for e in entities %}<a class="chip chip--link" href="{% url 'cerveau:entity' e.pk %}">{{ e.name }}</a>{% endfor %}</dd>
+      {% endif %}
+      {% if files %}
+        <dt>Files</dt>
+        <dd>{% for f in files %}<a class="chip chip--link" href="{% url 'cerveau:file' f.pk %}">{{ f.title|default:f.filename }}</a>{% endfor %}</dd>
+      {% endif %}
+    </dl>
+  {% endif %}
+
+  {% if facts %}
+    <h3 class="block-subtitle">Facts learned from it</h3>
+    <ul class="fact-lines">
+      {% for f in facts %}
+        <li{% if f.superseded_by_id or f.status != "A" %} class="fact-lines--old"{% endif %}>
+          <a href="{% url 'cerveau:fact' f.pk %}">{{ f.statement }}</a>
+          {% if f.superseded_by_id %}<span class="badge">replaced</span>{% endif %}
+          {% if f.status == "Z" %}<span class="badge badge--forgotten">Forgotten</span>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if episode.running_summary %}
+    <details class="aside">
+      <summary>Running summary of its earlier part</summary>
+      <p>{{ episode.running_summary }}</p>
+    </details>
+  {% endif %}
+</section>
+
+<section class="block">
+  <h2 class="block-title">The conversation</h2>
+  <div class="transcript">
+    {% for turn in turns %}
+      {% with m=turn.message %}
+      <article class="line line--{{ m.role }}" id="m{{ m.pk }}">
+        <p class="line-label">
+          {% if m.role == "assistant" %}Cerveau{% else %}You{% endif %}
+          <time datetime="{{ m.created_at|date:'c' }}">{{ m.created_at|date:"H:i" }}</time>
+          <span class="line-id">M{{ m.pk }}</span>
+          {% if m.pinned %}<span class="badge badge--auto" title="Stays in Cerveau's view for the rest of the conversation">pinned</span>{% endif %}
+        </p>
+        {% for call in turn.calls %}{% include "cerveau/memory/_call.html" %}{% endfor %}
+        <div class="line-body"{% if m.role == "assistant" %} data-markdown{% endif %}>{{ m.content }}</div>
+      </article>
+      {% endwith %}
+    {% empty %}
+      <p class="muted">No messages.</p>
+    {% endfor %}
+    {% if orphan_calls %}
+      <article class="line line--assistant">
+        <p class="line-label">Searches without a reply</p>
+        {% for call in orphan_calls %}{% include "cerveau/memory/_call.html" %}{% endfor %}
+      </article>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

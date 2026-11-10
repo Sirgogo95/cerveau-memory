@@ -1,0 +1,9 @@
+# Embedding profile (brain.config.EmbeddingProfile): the original English-only model,
+# run in-process on the CPU by sentence-transformers. 384 dimensions, reads only 256
+# tokens (longer text is cut). Kept for comparison and for machines without Ollama.
+
+name = "all-MiniLM-L6-v2"
+provider = "sentence-transformers"
+model = "all-MiniLM-L6-v2"
+min_score = 0.35
+max_tokens = 256

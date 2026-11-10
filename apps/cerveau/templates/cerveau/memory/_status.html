@@ -1,0 +1,24 @@
+{% comment %}
+  Status badge and actions for one memory. Context: item (an Episode, Entity, or Tag),
+  kind ("episode", "entity", "tag"), noun (shown in the confirmation).
+{% endcomment %}
+<div class="status-row">
+  {% if item.status == "I" %}<span class="badge badge--aside">Set aside</span>
+  {% elif item.status == "Z" %}<span class="badge badge--forgotten">Forgotten</span>{% endif %}
+  <form method="post" action="{% url 'cerveau:status' kind item.pk %}" class="actions">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    {% if item.status == "A" %}
+      <button type="submit" name="action" value="set_aside" class="btn"
+              title="Not used for now; comes back if it's learned again">Set aside</button>
+      <button type="submit" name="action" value="forget" class="btn btn--danger"
+              data-confirm="Forget this {{ noun }}? Cerveau will never use it again, and won't relearn it.">Forget</button>
+    {% else %}
+      <button type="submit" name="action" value="restore" class="btn">Restore</button>
+      {% if item.status == "I" %}
+        <button type="submit" name="action" value="forget" class="btn btn--danger"
+                data-confirm="Forget this {{ noun }}? Cerveau will never use it again, and won't relearn it.">Forget</button>
+      {% endif %}
+    {% endif %}
+  </form>
+</div>

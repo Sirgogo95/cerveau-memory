@@ -1,0 +1,20 @@
+# gpt-oss:120b on Ollama Cloud (https://ollama.com; needs OLLAMA_API_KEY in .env).
+# For evaluation only: a large model to answer and grade LoCoMo questions, the
+# closest match on Ollama Cloud to the GPT-4o-mini of published runs. The chat
+# stays local; nothing in the app uses this profile.
+
+name = "gpt-oss:120b"
+provider = "ollama"
+base_url = "https://ollama.com"
+# Room for a whole LoCoMo conversation (about 26,000 tokens) in the full-context run.
+context_window = 65536
+# Its reasoning counts against the reply cap, so a generous one.
+output_reserve = 4096
+# The same memory budget as qwen3.5:4b, so the two answer from the same notes.
+memory_budget = 8000
+chars_per_token = 4.0
+supports_tools = true
+# gpt-oss always reasons, whatever think says (Ollama ignores false for it).
+
+[options]
+temperature = 0.2

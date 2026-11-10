@@ -1,0 +1,126 @@
+{
+  "name": "january",
+  "now": "2026-01-26T15:00:00+00:00",
+  "episodes": [
+    {
+      "key": "sister",
+      "messages": [
+        ["user", "My sister Lucía just moved to Montreal. She got a job as a nurse at the Jewish General Hospital."],
+        ["assistant", "That's a big move! Montreal winters are cold; is she ready?"],
+        ["user", "She bought a huge coat. She starts at the hospital next Monday."],
+        ["assistant", "Wish her luck from me."]
+      ],
+      "summary": "The user's sister Lucía moved to Montreal for a nurse job at the Jewish General Hospital.",
+      "entities": [{"name": "Lucía", "type": "person", "aliases": ["my sister"]}, {"name": "Montreal", "type": "place"}]
+    },
+    {
+      "key": "boda",
+      "messages": [
+        ["user", "Mi hermano Pedro se casa el 14 de febrero en Puerto Plata y me pidió que sea su padrino."],
+        ["assistant", "¡Felicidades! Ser padrino es un honor. ¿Ya pensaste en el discurso?"],
+        ["user", "Sí, voy a contar cuando nos perdimos en el Pico Duarte de niños."],
+        ["assistant", "Una anécdota perfecta para un brindis."]
+      ],
+      "summary": "El hermano del usuario, Pedro, se casa el 14 de febrero en Puerto Plata; el usuario será su padrino y contará la anécdota del Pico Duarte.",
+      "entities": [{"name": "Pedro", "type": "person", "aliases": ["mi hermano"]}, {"name": "Puerto Plata", "type": "place"}]
+    },
+    {
+      "key": "cafe",
+      "messages": [
+        ["user", "My favorite café is La Cafetera on Calle El Conde. I go every Saturday morning."],
+        ["assistant", "A good ritual. What do you order?"],
+        ["user", "Always a cortado and a pastelito de queso."],
+        ["assistant", "Classic."]
+      ],
+      "summary": "The user's favorite café is La Cafetera on Calle El Conde; every Saturday, a cortado and a pastelito de queso.",
+      "entities": [{"name": "La Cafetera", "type": "place"}]
+    },
+    {
+      "key": "piano",
+      "messages": [
+        ["user", "Je commence des cours de piano le mardi soir au conservatoire."],
+        ["assistant", "Super ! Vous avez un objectif ?"],
+        ["user", "Oui, jouer une valse de Chopin d'ici la fin de l'année."],
+        ["assistant", "Un bel objectif."]
+      ],
+      "summary": "L'utilisateur prend des cours de piano le mardi soir au conservatoire; objectif: une valse de Chopin d'ici la fin de l'année.",
+      "entities": [{"name": "Chopin", "type": "person"}]
+    },
+    {
+      "key": "billing",
+      "messages": [
+        ["user", "The billing project's migration keeps failing on a circular dependency between invoices and customers."],
+        ["assistant", "Split the migration so the foreign key is added in a second step."],
+        ["user", "That worked: I moved the customer foreign key to migration 0004."],
+        ["assistant", "That's the standard fix."]
+      ],
+      "summary": "The billing project's circular migration dependency was fixed by moving the customer foreign key to migration 0004.",
+      "entities": [{"name": "billing project", "type": "project"}]
+    },
+    {
+      "key": "knee",
+      "messages": [
+        ["user", "I sprained my knee playing basketball. The doctor said no running for three weeks."],
+        ["assistant", "Swimming is a gentle alternative meanwhile."],
+        ["user", "Good idea, I'll swim on Wednesdays."],
+        ["assistant", "Your knee will thank you."]
+      ],
+      "summary": "The user sprained their knee playing basketball: no running for three weeks; swimming on Wednesdays instead."
+    },
+    {
+      "key": "carro",
+      "messages": [
+        ["user", "El carro me dejó tirado; Ramón, el mecánico, dice que es la bomba de gasolina."],
+        ["assistant", "¿Cuánto te va a costar?"],
+        ["user", "18,000 pesos con la mano de obra, me lo entrega el viernes."],
+        ["assistant", "Menos mal que no es el motor."]
+      ],
+      "entities": [{"name": "Ramón", "type": "person", "aliases": ["el mecánico"]}]
+    },
+    {
+      "key": "dentist",
+      "messages": [
+        ["user", "I booked a dentist appointment with Dr. Almonte for February 2 at 10am."],
+        ["assistant", "Noted: February 2 at 10:00 with Dr. Almonte."]
+      ],
+      "summary": "The user has a dentist appointment with Dr. Almonte on February 2 at 10:00.",
+      "entities": [{"name": "Dr. Almonte", "type": "person"}]
+    }
+  ],
+  "questions": [
+    {"text": "Explain what a Python decorator is.", "kind": "general"},
+    {"text": "What's the capital of Canada?", "kind": "general", "answer": ["ottawa"]},
+    {"text": "Write a two-line poem about rain.", "kind": "general"},
+    {"text": "¿Cómo se dice 'gracias' en francés?", "kind": "general", "answer": ["merci"]},
+
+    {"text": "How long can't I run?", "kind": "in_context", "answer": ["three weeks", "3 weeks"]},
+    {"text": "¿Qué le pasa a mi carro?", "kind": "in_context", "answer": ["bomba", "gasolina"]},
+    {"text": "When is my dentist appointment?", "kind": "in_context", "answer": ["february 2", "feb 2", "2 de febrero", "february 2nd"]},
+
+    {"text": "Where does my sister live now?", "kind": "memory", "answer": ["montreal"]},
+    {"text": "What does Lucía do for work?", "kind": "memory", "answer": ["nurse", "enfermera"]},
+    {"text": "Who asked me to be the best man at his wedding?", "kind": "memory", "answer": ["pedro"]},
+    {"text": "When is Pedro's wedding?", "kind": "memory", "answer": ["february 14", "14 de febrero", "feb 14", "february 14th"]},
+    {"text": "What do I usually order on Saturday mornings?", "kind": "memory", "answer": ["cortado"]},
+    {"text": "Which night is my piano lesson?", "kind": "memory", "answer": ["tuesday", "mardi", "martes"]},
+    {"text": "What piece of music am I working towards?", "kind": "memory", "answer": ["chopin"]},
+    {"text": "How did I fix the circular migration?", "kind": "memory", "answer": ["0004", "split"]},
+    {"text": "Remind me what I told you about Lucía.", "kind": "memory", "answer": ["montreal", "nurse"]},
+    {"text": "Is anyone in my family getting married soon?", "kind": "memory", "answer": ["pedro"]},
+    {"text": "What instrument am I learning?", "kind": "memory", "answer": ["piano"]},
+    {"text": "¿En qué hospital trabaja mi hermana?", "kind": "memory", "answer": ["jewish general", "general israelita", "israelita", "general judio"]},
+    {"text": "Où est-ce que je prends mon café le samedi ?", "kind": "memory", "answer": ["cafetera"]},
+
+    {"text": "What did I decide about the mobile app?", "kind": "absent"},
+    {"text": "What's my wife's name?", "kind": "absent"},
+    {"text": "¿Qué te conté de mi viaje a Japón?", "kind": "absent"},
+    {"text": "What did we talk about in December?", "kind": "absent"},
+
+    {"text": "Who is Pedro marrying?", "kind": "near_miss"},
+    {"text": "How many guests are invited to Pedro's wedding?", "kind": "near_miss"},
+    {"text": "What's the name of the doctor who looked at my knee?", "kind": "near_miss", "wrong": ["almonte"]},
+    {"text": "What color is Lucía's new coat?", "kind": "near_miss"},
+    {"text": "¿Dónde queda el taller de Ramón?", "kind": "near_miss"},
+    {"text": "Comment s'appelle mon professeur de piano ?", "kind": "near_miss"}
+  ]
+}

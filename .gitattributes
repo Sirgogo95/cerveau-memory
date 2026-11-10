@@ -1,0 +1,3 @@
+# Vendored third-party files: keep them byte-for-byte, so their SHA-256 sums stay valid.
+apps/cerveau/static/cerveau/vendor/*.js -text
+apps/cerveau/static/cerveau/vendor/fonts/*.woff2 binary

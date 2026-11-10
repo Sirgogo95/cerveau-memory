@@ -1,0 +1,268 @@
+{
+  "name": "work",
+  "episodes": [
+    {
+      "key": "migration",
+      "tags": ["programming", "django", "database"],
+      "messages": [
+        ["user", "The Django migration on the billing project keeps failing because of a circular dependency between the invoices and customers apps."],
+        ["assistant", "Circular migration dependencies usually come from two apps referencing each other in the same migration. You can split one migration so the foreign key is added in a second step."],
+        ["user", "Splitting it worked. I moved the customer foreign key to 0004."],
+        ["assistant", "Great, that's the standard fix."]
+      ],
+      "summary": "The billing project's Django migration failed on a circular dependency between invoices and customers; fixed by moving the customer foreign key to migration 0004.",
+      "entities": [
+        {"name": "billing project", "type": "project"}
+      ]
+    },
+    {
+      "key": "marta",
+      "tags": ["work", "project management", "communication"],
+      "messages": [
+        ["user", "Marta from the data team asked me to review her pull request on the reporting dashboard before Friday."],
+        ["assistant", "Do you want help planning the review?"],
+        ["user", "No, but remind me that she prefers comments in the PR, not on Slack."],
+        ["assistant", "Noted: Marta prefers review comments in the pull request itself."]
+      ],
+      "summary": "Marta from the data team asked the user to review her reporting dashboard pull request before Friday; she prefers comments in the PR rather than on Slack.",
+      "entities": [
+        {"name": "Marta", "type": "person"},
+        {"name": "reporting dashboard", "type": "project"}
+      ]
+    },
+    {
+      "key": "postgres",
+      "tags": ["database", "postgresql", "docker"],
+      "messages": [
+        ["user", "I decided we'll use Postgres with pgvector instead of a separate vector database for Cerveau."],
+        ["assistant", "That keeps everything in one place: one backup, one connection, transactions across tables."],
+        ["user", "Exactly, and it runs in Docker on my laptop."],
+        ["assistant", "A good setup for a single-user system."]
+      ],
+      "summary": "The user chose Postgres with pgvector over a separate vector database for Cerveau, running in Docker on their laptop.",
+      "entities": [
+        {"name": "Cerveau", "type": "project"},
+        {"name": "Postgres", "type": "product"}
+      ]
+    },
+    {
+      "key": "dup_invoice",
+      "tags": ["programming", "database", "celery"],
+      "messages": [
+        ["user", "The monthly invoice job blew up again last night on the billing project. Here's the traceback from Sentry:\n\n[2026-10-01 02:00:14,882: ERROR/ForkPoolWorker-3] Task invoices.tasks.generate_monthly_invoices[8f2c1e0a-5b7d-4c11-9a3e-2d6f0b9e7a41] raised unexpected: IntegrityError('duplicate key value violates unique constraint \"invoices_invoice_number_key\"')\nTraceback (most recent call last):\n  File \"/srv/billing/venv/lib/python3.12/site-packages/django/db/backends/utils.py\", line 105, in _execute\n    return self.cursor.execute(sql, params)\npsycopg.errors.UniqueViolation: duplicate key value violates unique constraint \"invoices_invoice_number_key\"\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/srv/billing/venv/lib/python3.12/site-packages/celery/app/trace.py\", line 453, in trace_task\n    R = retval = fun(*args, **kwargs)\n  File \"/srv/billing/venv/lib/python3.12/site-packages/celery/app/trace.py\", line 736, in __protected_call__\n    return self.run(*args, **kwargs)\n  File \"/srv/billing/invoices/tasks.py\", line 58, in generate_monthly_invoices\n    invoice = build_invoice(customer, period)\n  File \"/srv/billing/invoices/services.py\", line 112, in build_invoice\n    invoice.save()\n  File \"/srv/billing/invoices/models.py\", line 87, in save\n    super().save(*args, **kwargs)\n  File \"/srv/billing/venv/lib/python3.12/site-packages/django/db/models/base.py\", line 892, in save\n    self.save_base(\n  File \"/srv/billing/venv/lib/python3.12/site-packages/django/db/models/base.py\", line 998, in save_base\n    updated = self._save_table(\n  File \"/srv/billing/venv/lib/python3.12/site-packages/django/db/models/base.py\", line 1161, in _save_table\n    results = self._do_insert(\n  File \"/srv/billing/venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py\", line 1823, in execute_sql\n    cursor.execute(sql, params)\n  File \"/srv/billing/venv/lib/python3.12/site-packages/django/db/backends/utils.py\", line 79, in execute\n    return self._execute_with_wrappers(\n  File \"/srv/billing/venv/lib/python3.12/site-packages/django/db/utils.py\", line 91, in __exit__\n    raise dj_exc_value.with_traceback(traceback) from exc_value\ndjango.db.utils.IntegrityError: duplicate key value violates unique constraint \"invoices_invoice_number_key\"\nDETAIL:  Key (number)=(INV-2026-00417) already exists."],
+        ["assistant", "The task is trying to save an invoice whose number is already taken. That usually means two processes computed the same next number at the same moment. Is the task running on more than one worker now?"],
+        ["user", "Yes, we scaled Celery from one worker to four on Tuesday."],
+        ["assistant", "That's the race: each worker reads the highest number, adds one, and two of them land on the same value. You can lock the counter row with select_for_update inside a transaction, or let the database hand out numbers."],
+        ["user", "I went with a dedicated Postgres sequence, invoice_number_seq, and call nextval in the save method."],
+        ["assistant", "Good choice. nextval is atomic, so no two workers can ever receive the same value, even outside a transaction."],
+        ["user", "Deployed it at 3pm. Tonight's run will tell."],
+        ["assistant", "Check the task results tomorrow morning and compare the invoice count with the number of active customers."],
+        ["user", "It ran clean overnight: 1,284 invoices generated, zero errors."],
+        ["assistant", "Then the race is gone. Worth adding a test that saves two invoices concurrently so it can't come back."]
+      ],
+      "summary": "The billing project's monthly invoice Celery task crashed on a duplicate invoice number (INV-2026-00417) after scaling from one worker to four; the user fixed the race with a dedicated Postgres sequence, and the next run produced 1,284 invoices with no errors.",
+      "entities": [
+        {"name": "billing project", "type": "project"},
+        {"name": "Sentry", "type": "product"},
+        {"name": "Celery", "type": "product"},
+        {"name": "Postgres", "type": "product"}
+      ]
+    },
+    {
+      "key": "portal_login",
+      "tags": ["django", "web-development", "debugging"],
+      "messages": [
+        ["user", "After upgrading the customer portal to Django 5.1, users get stuck going round in circles on the login page."],
+        ["assistant", "A redirect loop right after an upgrade often means the session cookie isn't being stored. After logging in, do you see a sessionid cookie in the browser?"],
+        ["user", "No sessionid at all, only csrftoken."],
+        ["assistant", "Then the browser is rejecting the session cookie. Compare SESSION_COOKIE_DOMAIN and SESSION_COOKIE_SECURE with the domain and scheme you're actually serving."],
+        ["user", "Found it. SESSION_COOKIE_DOMAIN was still set to .old-portal.example.com from the previous hosting."],
+        ["assistant", "That explains it: the browser silently drops a cookie scoped to a domain that doesn't match the site, so every request looks anonymous and gets sent back to login."],
+        ["user", "Changed it to .portal.example.com and people can sign in again."]
+      ],
+      "entities": [
+        {"name": "customer portal", "type": "project", "aliases": ["the portal"]},
+        {"name": "Django", "type": "product"}
+      ]
+    },
+    {
+      "key": "release_plan",
+      "tags": ["project management", "software development", "planning"],
+      "messages": [
+        ["user", "Had the planning meeting with Priya this morning about the customer portal launch."],
+        ["assistant", "How did it go? Did you settle on a date?"],
+        ["user", "She wants it live on November 14. Non negotiable, she says, because sales already promised it to two clients."],
+        ["assistant", "That's about four weeks. What's on the critical path?"],
+        ["user", "Payments. Tomas is building the Stripe integration and he's worried about webhook retries."],
+        ["assistant", "Making the webhook handlers idempotent, keyed on the Stripe event id, would make retries harmless."],
+        ["user", "We also agreed to send the nightly usage report emails with Celery beat, since we already run Celery for everything else."],
+        ["assistant", "Reusing the existing workers makes sense. Noted: launch on November 14, Tomas on Stripe, nightly reports through Celery beat."]
+      ],
+      "summary": "In a planning meeting, Priya set the customer portal launch for November 14; Tomas owns the Stripe integration, and the team chose Celery beat to send the nightly usage report emails.",
+      "entities": [
+        {"name": "Priya", "type": "person"},
+        {"name": "Tomas", "type": "person"},
+        {"name": "customer portal", "type": "project", "aliases": ["the portal"]},
+        {"name": "Stripe", "type": "company"},
+        {"name": "Celery", "type": "product"}
+      ]
+    },
+    {
+      "key": "release_update",
+      "tags": ["project management", "security", "software deployment"],
+      "messages": [
+        ["user", "Change of plans on the portal. My manager Priya pushed the launch to December 5."],
+        ["assistant", "What caused the delay?"],
+        ["user", "The client's security team wants an external penetration test before go-live, and Securalis can't start before November 17."],
+        ["assistant", "So the new date leaves a bit over two weeks between the start of the audit and launch for fixes."],
+        ["user", "Right. And we're dropping Celery beat for the nightly reports. On Monday every customer got the usage email twice because two beat processes were running after the deploy."],
+        ["assistant", "That's the classic beat pitfall: the scheduler must run as exactly one instance. What replaces it?"],
+        ["user", "A plain cron entry on the app server that runs a send_usage_reports management command at 2am."],
+        ["assistant", "Simple, and only one instance by construction. Noted: launch on December 5, nightly reports via cron and send_usage_reports."]
+      ],
+      "summary": "Priya moved the customer portal launch from November 14 to December 5 to fit a Securalis penetration test starting November 17; the nightly usage reports moved from Celery beat, which sent duplicates, to a 2am cron job running the send_usage_reports command.",
+      "entities": [
+        {"name": "Priya", "type": "person", "aliases": ["my manager"]},
+        {"name": "Securalis", "type": "company"},
+        {"name": "customer portal", "type": "project", "aliases": ["the portal"]},
+        {"name": "Celery", "type": "product"}
+      ]
+    },
+    {
+      "key": "ines_review",
+      "tags": ["programming", "api", "database"],
+      "messages": [
+        ["user", "Ines from the mobile team wants me to look at her pull request on the public API pagination by Wednesday."],
+        ["assistant", "What does the change do?"],
+        ["user", "It switches the orders endpoint from page numbers to cursor pagination, so the app stops showing the same order twice when new ones arrive while you scroll."],
+        ["assistant", "Cursor pagination fixes that shifting window problem. Anything that worries you in the code?"],
+        ["user", "The cursor orders by created_at alone, and that column isn't unique. Bulk imports create hundreds of orders in the same millisecond."],
+        ["assistant", "Then suggest ordering by the pair (created_at, id) so ties are broken deterministically and no row is skipped between pages."],
+        ["user", "Will do. Also, she'd much rather go over feedback on a quick video call than read a wall of written comments."],
+        ["assistant", "Noted: Ines prefers to discuss review feedback on a call."]
+      ],
+      "summary": "Ines from the mobile team asked for a review of her cursor pagination pull request on the orders API by Wednesday; the user will suggest ordering by (created_at, id) since created_at isn't unique, and Ines prefers feedback on a quick call.",
+      "entities": [
+        {"name": "Ines", "type": "person"}
+      ]
+    },
+    {
+      "key": "cerveau_design",
+      "tags": ["memory management", "prompt engineering", "retrieval systems"],
+      "messages": [
+        ["user", "Let me dump my thinking on how Cerveau should decide what goes into the prompt, and tell me if it holds up. Every user message gets embedded, and I search two places: the raw messages and the episode summaries. Messages are precise but noisy; summaries are vaguer, but they stay useful long after the details stop mattering. So both go into one candidate list. Then I filter: anything under the similarity threshold is dropped, because a weak hit is worse than no hit. The model treats whatever lands in the prompt as true, and a half relevant memory makes it confidently wrong. After that I deduplicate: if a summary and a message from the same episode both pass, I keep the message when it carries a concrete detail like a name, a date or a number, and the summary otherwise. Entities help with recall too. When the user names a person or a project, every episode that mentions that entity becomes a candidate even if its embedding is far away, because names embed badly. Then there's ordering. The prompt lists memories oldest first so the model reads them like a timeline, which matters when a later decision overrides an earlier one, and each one is tagged with its date so the model can tell what is current. The last piece is the budget. I thought about a token budget, but summaries are short and messages are already capped by the chunker, so a plain count is simpler to reason about and to test. So the one thing I'm settling today: no matter how many candidates pass the threshold, Cerveau puts at most 6 memories into the prompt for a single turn."],
+        ["assistant", "It holds up. A fixed cap protects the context window and keeps latency predictable. The one risk is that a hard cap can cut a relevant fact when several weaker hits outrank it, so the ranking before the cut matters more than the cap itself."],
+        ["user", "The ranking is a blend: similarity plus a small boost for recent episodes."],
+        ["assistant", "Keep the recency boost small, or old but important decisions will never surface again."],
+        ["user", "Agreed, I'll cap the recency boost at 0.05."],
+        ["assistant", "That's small enough that it only breaks near ties."]
+      ],
+      "summary": "For Cerveau's recall, the user designed a pipeline that merges message and summary hits, filters by a similarity threshold, ranks by similarity plus a recency boost of at most 0.05, and puts at most 6 memories into the prompt per turn.",
+      "entities": [
+        {"name": "Cerveau", "type": "project"}
+      ]
+    },
+    {
+      "key": "staging_deploy",
+      "tags": ["devops", "infrastructure", "logging"],
+      "messages": [
+        ["user", "El despliegue del viernes a staging volvió a fallar."],
+        ["assistant", "¿Qué error dio?"],
+        ["user", "No space left on device. El disco del servidor estaba lleno."],
+        ["assistant", "¿Sabes qué estaba ocupando el espacio?"],
+        ["user", "Los logs de gunicorn: casi 40 GB, porque nadie había configurado la rotación."],
+        ["assistant", "Con logrotate diario, compresión y conservando siete días, no debería volver a pasar."],
+        ["user", "Andrés, de infraestructura, ya lo dejó así y además puso una alerta cuando el disco pase del 80 por ciento."],
+        ["assistant", "Perfecto. Entonces el próximo despliegue debería pasar sin problemas."],
+        ["user", "Sí, lo relancé el lunes y salió bien."]
+      ],
+      "summary": "El despliegue a staging del viernes falló porque los logs de gunicorn (casi 40 GB) llenaron el disco; Andrés, de infraestructura, configuró logrotate diario con siete días y una alerta al 80 por ciento de disco, y el despliegue pasó el lunes.",
+      "entities": [
+        {"name": "Andrés", "type": "person"}
+      ]
+    },
+    {
+      "key": "admin_slow",
+      "tags": ["django", "database-optimization", "performance"],
+      "messages": [
+        ["user", "The invoices page in the Django admin on the billing project takes about 11 seconds to load. The table has around 40 million rows."],
+        ["assistant", "An 11 second changelist on a big table usually comes from a handful of separate costs, so it is worth checking them one at a time. First, related lookups. If list_display shows fields from a foreign key, such as the customer's name, Django runs one extra query per row unless you set list_select_related to the relations you display. With 100 rows per page that is 100 extra round trips. Second, search. search_fields with a contains lookup on a text column forces a sequential scan; on a big table, restrict search to indexed columns, or use an exact match on the invoice number with the '=' prefix. Third, filters. Each list_filter on a foreign key loads every related object to build the sidebar, and on a large customers table that alone can take seconds. An autocomplete filter or a custom SimpleListFilter avoids it. Fourth, ordering. The default ordering from the model Meta applies to the whole query; if it sorts on a column without an index, Postgres sorts millions of rows just to return the first page. Add an index on that column or override ordering in the ModelAdmin. Fifth, the paginator. To build the page links the admin counts the filtered queryset, and when a search or filter is active it runs a second count over the whole table to print the total next to the result count. Postgres can't answer a count from metadata, it has to scan, so on tens of millions of rows each count costs several seconds. In your case, with 40 million rows and no per row queries showing up, the single biggest win is setting show_full_result_count = False on the InvoiceAdmin: it removes the full table count entirely, and it is one line."],
+        ["user", "Turning off show_full_result_count took it from 11 seconds to under one. I didn't even need the other changes yet."],
+        ["assistant", "Nice. Keep list_select_related in mind if you add customer columns to the list later."],
+        ["user", "I also want a date_hierarchy on issued_at at some point, but not this sprint."],
+        ["assistant", "date_hierarchy runs its own queries on that column, so add an index on issued_at before you turn it on."]
+      ],
+      "entities": [
+        {"name": "billing project", "type": "project"},
+        {"name": "Django", "type": "product"}
+      ]
+    },
+    {
+      "key": "runbook_doc",
+      "attachments": [{"key": "runbook", "file": "files/billing_runbook.md"}],
+      "messages": [
+        ["user", "Saving the billing service runbook here so we can look things up later."],
+        ["assistant", "Saved. I'll use it when you ask about billing operations."]
+      ]
+    }
+  ],
+  "queries": [
+    {"text": "How do I push billing to production?", "expect": ["runbook/deploy-billing-prod"]},
+    {"text": "How many Celery workers does billing run?", "expect": ["runbook/eight in total"]},
+    {"text": "When do the billing database backups run?", "expect": ["runbook/every night at 03:30"]},
+    {"text": "Who do I page if invoices stop going out at night?", "expect": ["runbook/page the primary on-call engineer"]},
+    {"text": "Where is the Stripe secret key kept?", "expect": ["runbook/billing/prod"]},
+    {"text": "Can I deploy on a Friday afternoon?", "expect": ["runbook/not allowed on Fridays after 14:00"]},
+    {"text": "How do I roll back a bad billing release?", "expect": ["runbook/re-run the production deploy job"]},
+    {"text": "How do I rotate the Kubernetes certificates?", "expect": []},
+    {"text": "What happened with INV-2026-00417?", "expect": ["dup_invoice:0", "dup_invoice"]},
+    {"text": "Where do I call invoice_number_seq?", "expect": ["dup_invoice:4"]},
+    {"text": "Should I turn show_full_result_count back on?", "expect": ["admin_slow:2", "admin_slow:1"]},
+    {"text": "What was SESSION_COOKIE_DOMAIN set to?", "expect": ["portal_login:4", "portal_login:3"]},
+    {"text": "Is logrotate set up on staging?", "expect": ["staging_deploy", "staging_deploy:5"]},
+    {"text": "When can I add date_hierarchy?", "expect": ["admin_slow:4", "admin_slow:5"]},
+    {"text": "What's in migration 0004?", "expect": ["migration:2", "migration"]},
+    {"text": "What is INV-2025-99999?", "expect": []},
+    {"text": "How did I fix the circular migration?", "expect": ["migration:2", "migration"]},
+    {"text": "What was wrong with the billing project?", "expect": ["migration:0", "migration"]},
+    {"text": "When is Marta's review due?", "expect": ["marta:0", "marta"]},
+    {"text": "How does Marta like to get feedback?", "expect": ["marta:2", "marta:3", "marta"]},
+    {"text": "Which database did we pick for Cerveau?", "expect": ["postgres:0", "postgres"]},
+    {"text": "Why not use Pinecone or another vector store?", "expect": ["postgres:0", "postgres"]},
+    {"text": "Where does the database run?", "expect": ["postgres:2", "postgres"]},
+    {"text": "What's a good recipe for banana bread?", "expect": []},
+    {"text": "Who won the World Cup in 2010?", "expect": []},
+    {"text": "Translate 'good morning' into Japanese.", "expect": []},
+    {"text": "Which invoice number set off the unique constraint failure?", "expect": ["dup_invoice:0", "dup_invoice"]},
+    {"text": "Why did two processes end up with the same bill number?", "expect": ["dup_invoice:2", "dup_invoice:3", "dup_invoice"]},
+    {"text": "How did I stop the numbering collisions in billing?", "expect": ["dup_invoice:4", "dup_invoice"], "reject": ["migration:2", "migration"]},
+    {"text": "How many invoices came out of the job once it was fixed?", "expect": ["dup_invoice:8", "dup_invoice"]},
+    {"text": "Why were people bounced back to the sign-in screen over and over?", "expect": ["portal_login:4", "portal_login:5"]},
+    {"text": "Which cookie setting did I correct after the framework upgrade?", "expect": ["portal_login:4", "portal_login:6"]},
+    {"text": "When does the customer portal go live?", "expect": ["release_update:0", "release_update"], "reject": ["release_plan:2"]},
+    {"text": "What date did Priya originally give for the launch?", "expect": ["release_plan:2", "release_plan", "release_update"]},
+    {"text": "Why did the go-live slip?", "expect": ["release_update:2", "release_update"]},
+    {"text": "Who is wiring up the payment provider?", "expect": ["release_plan:4", "release_plan"]},
+    {"text": "How are the nightly usage emails scheduled now?", "expect": ["release_update:6", "release_update"], "reject": ["release_plan:6"]},
+    {"text": "Why did customers receive the usage report twice?", "expect": ["release_update:4", "release_update"]},
+    {"text": "When can the outside auditors begin?", "expect": ["release_update:2", "release_update"]},
+    {"text": "By when does Ines need my review?", "expect": ["ines_review:0", "ines_review"], "reject": ["marta:0", "marta"]},
+    {"text": "What's the best way to give Ines feedback?", "expect": ["ines_review:6", "ines_review:7", "ines_review"], "reject": ["marta:2", "marta:3"]},
+    {"text": "What sort key was I going to propose for the orders endpoint?", "expect": ["ines_review:5", "ines_review"]},
+    {"text": "How many memories can Cerveau put into a single prompt?", "expect": ["cerveau_design:0", "cerveau_design"]},
+    {"text": "How much weight does recency get when ranking recalled memories?", "expect": ["cerveau_design:4", "cerveau_design"]},
+    {"text": "Why did Friday's staging release break?", "expect": ["staging_deploy:2", "staging_deploy:4", "staging_deploy"]},
+    {"text": "Who set up the log rotation on the server?", "expect": ["staging_deploy:6", "staging_deploy"]},
+    {"text": "¿A partir de qué porcentaje salta la alerta del disco?", "expect": ["staging_deploy:6", "staging_deploy"]},
+    {"text": "What made the admin invoice list fast again?", "expect": ["admin_slow:1", "admin_slow:2"]},
+    {"text": "How slow was the back office invoices screen before the fix?", "expect": ["admin_slow:0", "admin_slow:2"]},
+    {"text": "What do I need to do before enabling date drill-down on invoices?", "expect": ["admin_slow:5"]},
+    {"text": "What did Carlos say about the API?", "expect": []},
+    {"text": "When is the mobile app's next release?", "expect": []},
+    {"text": "How do I write a custom Django middleware?", "expect": []},
+    {"text": "How do I configure throttling in Django REST framework?", "expect": []},
+    {"text": "Did Priya approve my vacation days?", "expect": []},
+    {"text": "What's the Redis password for production?", "expect": []},
+    {"text": "Which Kubernetes version does the team run?", "expect": []}
+  ]
+}

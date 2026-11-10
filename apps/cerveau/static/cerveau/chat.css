@@ -1,0 +1,420 @@
+/* The chat page: a quiet transcript. Your words are short, marked lines; Cerveau's
+   replies read as open prose, with the recall trace above them when it searched its
+   memory. Shared fonts, colors, and header live in base.css. */
+
+/* -- Frame ------------------------------------------------------------------------ */
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100dvh;
+}
+
+.log {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.log-inner {
+  max-width: var(--column);
+  margin: 0 auto;
+  padding: 1.5rem 2rem 2.5rem;
+}
+
+/* -- Turns ------------------------------------------------------------------------ */
+.turn { margin: 0 0 1.9rem; animation: rise 320ms ease-out both; }
+
+.turn-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0 0 0.3rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.turn-label time {
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+.turn--user .turn-body {
+  padding: 0.15rem 0 0.15rem 0.95rem;
+  border-left: 2px solid var(--accent);
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.turn--user .turn-label { color: var(--accent); }
+
+.turn--assistant .turn-body {
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  overflow-wrap: anywhere;
+}
+
+/* Waiting for the first word. */
+.turn--waiting .turn-body::after {
+  content: "";
+  display: inline-block;
+  width: 2.4rem;
+  height: 0.5rem;
+  background:
+    radial-gradient(circle, var(--muted) 45%, transparent 50%) 0 50% / 0.8rem 0.5rem repeat-x;
+  animation: dots 1.2s steps(4) infinite;
+  vertical-align: middle;
+}
+
+.turn--error .turn-body {
+  padding: 0.6rem 0.9rem;
+  border-left: 2px solid var(--danger);
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+  border-radius: 0 8px 8px 0;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+.turn--error .turn-label { color: var(--danger); }
+
+/* -- The recall trace: what Cerveau looked up before answering -------------------- */
+.trace {
+  margin: 0.15rem 0 0.6rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--signal);
+}
+.trace:empty { display: none; }
+.trace li {
+  position: relative;
+  padding-left: 1.05rem;
+  animation: rise 240ms ease-out both;
+}
+.trace li::before {
+  content: "";
+  position: absolute;
+  left: 0.15rem;
+  top: 0.5em;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--signal);
+}
+.trace li + li::after {
+  content: "";
+  position: absolute;
+  left: calc(0.35rem - 0.5px);
+  top: -0.55em;
+  height: 0.95em;
+  border-left: 1px solid var(--signal-soft);
+}
+.trace .active::before { animation: breathe 1s ease-in-out infinite; }
+.trace q { quotes: "\201C" "\201D"; color: var(--ink-soft); }
+.trace .detail { color: var(--muted); }
+.turn--done .trace { color: var(--muted); }
+.turn--done .trace li::before { background: var(--muted); opacity: 0.7; }
+
+/* -- Episode divider -------------------------------------------------------------- */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.5rem 0 1.9rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid var(--rule); }
+
+/* -- Empty state ------------------------------------------------------------------- */
+.empty {
+  margin: 14vh auto 0;
+  max-width: 30rem;
+  text-align: center;
+  animation: rise 500ms ease-out both;
+}
+.empty-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 6vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.empty-text { margin: 0 auto 1.6rem; max-width: 26rem; color: var(--ink-soft); }
+.suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+.suggestion {
+  padding: 0.45rem 0.85rem;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+.suggestion:hover { border-color: var(--signal); color: var(--ink); }
+
+/* -- Composer ---------------------------------------------------------------------- */
+.composer {
+  width: 100%;
+  max-width: calc(var(--column) + 4rem);
+  margin: 0 auto;
+  padding: 0.4rem 2rem 1rem;
+}
+.composer-box {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.45rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: border-color 160ms ease;
+}
+.composer-box:focus-within { border-color: color-mix(in srgb, var(--accent) 45%, var(--rule)); }
+
+.composer textarea {
+  flex: 1;
+  max-height: 14rem;
+  padding: 0.4rem 0;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: none;
+  resize: none;
+}
+.composer textarea::placeholder { color: var(--muted); }
+
+.send {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--bg);
+  background: var(--ink);
+  border: 0;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: transform 120ms ease, opacity 160ms ease;
+}
+.send:hover { transform: translateY(-1px); }
+.send:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+.hint { margin: 0.45rem 0 0; text-align: center; font-size: 0.75rem; color: var(--muted); }
+
+/* Under the box: the Think switch on the left, the hint beside it. */
+.composer-foot { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+.composer-foot .hint { flex: 1; text-align: right; }
+
+/* Think first: a small switch, off by default; on, its track takes the accent. */
+.think {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.think input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.think-track {
+  position: relative;
+  flex: none;
+  width: 1.7rem;
+  height: 0.95rem;
+  border-radius: 999px;
+  background: var(--rule);
+  transition: background 0.15s ease;
+}
+.think-track::after {
+  content: "";
+  position: absolute;
+  top: 0.12rem;
+  left: 0.12rem;
+  width: 0.71rem;
+  height: 0.71rem;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 25%, transparent);
+  transition: transform 0.15s ease;
+}
+.think input:checked + .think-track { background: var(--accent); }
+.think input:checked + .think-track::after { transform: translateX(0.75rem); }
+.think input:checked ~ span:last-child { color: var(--ink); }
+.think input:focus-visible + .think-track { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .think-track, .think-track::after { transition: none; } }
+
+/* -- Pins ------------------------------------------------------------------------- */
+/* A pin by the time: there when you look for it (hover, focus), always when it's set. */
+.pin {
+  display: inline-grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-left: -0.15rem;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 140ms ease, color 140ms ease, background 140ms ease;
+}
+.turn:hover .pin, .pin:focus-visible, .pin[aria-pressed="true"] { opacity: 1; }
+.pin:hover { color: var(--ink); background: var(--rule); }
+.pin[aria-pressed="true"] { color: var(--signal); }
+.pin[aria-pressed="true"] svg path { fill: var(--signal-soft); }
+.turn[data-pinned].turn--user .turn-body { border-left-color: var(--signal); }
+@media (hover: none) { .pin { opacity: 0.5; } }
+
+/* -- Files ------------------------------------------------------------------------- */
+/* The paperclip: quiet until hovered, like the rest of the composer. */
+.attach {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--muted);
+  border-radius: 11px;
+  cursor: pointer;
+  transition: color 140ms ease, background 140ms ease;
+}
+.attach:hover { color: var(--ink); background: var(--rule); }
+#files:focus-visible + .attach { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Files chosen but not sent yet, above the box; and files on a sent message. */
+.pending-files, .turn-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.45rem;
+  padding: 0;
+  list-style: none;
+}
+.turn-files { margin: 0.5rem 0 0 0.95rem; }
+.file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.25rem 0.35rem 0.25rem 0.65rem;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--rule);
+}
+.file-chip a, .file-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: inherit; text-decoration: none; }
+.file-chip a:hover { color: var(--accent); }
+.file-chip-remove {
+  display: grid;
+  place-items: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.file-chip-remove:hover { color: var(--ink); background: var(--rule); }
+/* Reading state: a small dot that breathes while Cerveau reads, steady once read. */
+.file-chip-state {
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.3rem;
+  border-radius: 50%;
+  background: var(--rule);
+}
+.file-chip[data-status="pending"] .file-chip-state,
+.file-chip[data-summarizing] .file-chip-state { background: var(--signal); animation: breathe 1.6s ease-in-out infinite; }
+.file-chip[data-status="done"]:not([data-summarizing]) .file-chip-state { background: var(--signal); opacity: 0.55; }
+.file-chip[data-status="failed"], .file-chip[data-status="unsupported"] { color: var(--danger); }
+.file-chip[data-status="failed"] .file-chip-state,
+.file-chip[data-status="unsupported"] .file-chip-state { background: var(--danger); }
+
+.composer-error { margin: 0.45rem 0 0; text-align: center; font-size: 0.8125rem; color: var(--danger); }
+
+/* Dropping files anywhere on the page: the composer lights up as the target. */
+.app[data-dropping] .composer-box {
+  border-color: var(--signal);
+  box-shadow: 0 0 0 4px var(--signal-soft), var(--shadow);
+}
+@media (prefers-reduced-motion: reduce) {
+  .file-chip[data-status="pending"] .file-chip-state,
+  .file-chip[data-summarizing] .file-chip-state { animation: none; }
+}
+
+/* -- Markdown in replies ----------------------------------------------------------- */
+.turn-body > :first-child { margin-top: 0; }
+.turn-body > :last-child { margin-bottom: 0; }
+.turn-body p { margin: 0 0 0.85em; }
+.turn-body h1, .turn-body h2, .turn-body h3, .turn-body h4 {
+  margin: 1.3em 0 0.45em;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+.turn-body h1 { font-size: 1.3rem; }
+.turn-body h2 { font-size: 1.15rem; }
+.turn-body h3, .turn-body h4 { font-size: 1.0rem; }
+.turn-body ul, .turn-body ol { margin: 0 0 0.85em; padding-left: 1.35em; }
+.turn-body li { margin: 0.2em 0; }
+.turn-body li::marker { color: var(--muted); }
+.turn-body strong { font-weight: 650; }
+.turn-body a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+.turn-body blockquote {
+  margin: 0 0 0.85em;
+  padding: 0.1em 0 0.1em 0.95em;
+  border-left: 2px solid var(--rule);
+  color: var(--ink-soft);
+}
+.turn-body code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  padding: 0.1em 0.35em;
+  background: var(--rule);
+  border-radius: 5px;
+}
+.turn-body pre {
+  margin: 0 0 0.95em;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  background: var(--code-bg);
+  color: var(--code-ink);
+  border-radius: 10px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.turn-body pre code { padding: 0; background: none; font-size: inherit; color: inherit; }
+.turn-body table { margin: 0 0 0.95em; border-collapse: collapse; font-size: 0.9375rem; display: block; overflow-x: auto; }
+.turn-body th, .turn-body td { padding: 0.35rem 0.7rem; border-bottom: 1px solid var(--rule); text-align: left; }
+.turn-body th { font-weight: 650; }
+.turn-body hr { border: 0; border-top: 1px solid var(--rule); margin: 1.2em 0; }
+
+/* -- Motion ------------------------------------------------------------------------- */
+@keyframes dots { from { width: 0; } to { width: 2.4rem; } }
+
+/* -- Small screens ------------------------------------------------------------------ */
+@media (max-width: 40rem) {
+  .log-inner { padding: 1rem 1rem 2rem; }
+  .composer { padding: 0.3rem 0.75rem 0.75rem; }
+  .hint { display: none; }
+  .empty { margin-top: 8vh; }
+}

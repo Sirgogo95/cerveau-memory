@@ -1,0 +1,14 @@
+{
+    "typeCheckingMode": "basic", // Options: "off", "basic", "strict"
+    // Template code (environments, kernel) predates type checking; don't report it.
+    "ignore": [
+        "core",
+        "kernel"
+    ],
+    "exclude": [
+        "**/node_modules",
+        "**/__pycache__"
+    ],
+    "reportMissingTypeStubs": false,
+    "reportMissingImports": true
+}

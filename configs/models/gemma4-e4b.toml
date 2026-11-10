@@ -1,0 +1,18 @@
+# Thinking is off by default and a switch on the chat page (2026-11-07, the user's decision): on the
+# personal chats it answered 48 of 60 against 44 without, but on LoCoMo it accepted false premises
+# more often (trick questions 38 of 50 against 42). The switch answers one turn with thinking on
+# (brain.config.with_thinking: thinking on, a 4,096-token reserve).
+
+name = "gemma4:e4b"
+provider = "ollama"
+context_window = 16384
+output_reserve = 1536
+memory_budget = 8000
+chars_per_token = 4.0
+supports_tools = true
+# Thinking is off for speed, as for qwen3.5:4b.
+think = false
+
+[options]
+# Google recommends 1.0 for chat; replies stay conversational.
+temperature = 1.0
