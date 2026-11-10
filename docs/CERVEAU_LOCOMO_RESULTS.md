@@ -647,7 +647,7 @@ On the user's own chats, the measure that matters for the app: fully local 44 of
 
 ## 8. Published numbers, for comparison
 
-All published runs use **GPT-4o-mini** to answer and (where judged) to grade, on all questions of categories 1 to 4. Cerveau's runs use a 200-question sample, a local 4B model to answer, and gpt-oss:120b to grade, so comparisons are rough.
+All published runs use **GPT-4o-mini** to answer and (where judged) to grade, on all questions of categories 1 to 4. Cerveau's final runs (section 6.6) use all 1,536 gradable questions, a local 4B model (or gpt-oss:120b) to answer, and deepseek-v4-pro to grade with its own strict and lenient prompts, so comparisons are rough. The scoreboard leaves these figures out for that reason; they are kept here, with the spread below, so the choice can be checked.
 
 | System | Score | How measured | Source |
 |---|---|---|---|

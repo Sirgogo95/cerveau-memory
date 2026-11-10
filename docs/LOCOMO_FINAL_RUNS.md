@@ -194,7 +194,7 @@ Files: `evals/locomo_data/final/audit-verdicts-*.json`, the page `evals/locomo_d
 - [x] The same review for F4c (best case), 2026-11-03: 744 answers checked, the user agreed with all 37 verdicts that overrule both graders; human-reviewed 76.4% on normal questions against 76.2% by deepseek-v4-pro, so the human-reviewed gap between local and cloud is about 10 points. On the way: empty replies from gpt-oss:120b asked again (F0 82.7%, F3c 75.2%, F4c 76.2%), dates shown in UTC when answering, and invented facts on trick questions counted wrong (CERVEAU_LOCOMO_RESULTS.md section 6.8).
 
 **How to report it (agreed 2026-10-24):**
-- Three layers side by side, none replacing another: the automatic scores (strict and lenient, comparable with others); the human-reviewed score, with the method; and the caveat that LoCoMo is not the use case (two friends talking, synthetic conversations, trick questions built on mixing up the speakers, about 6% of the key wrong, scores moving 10 points with the grader's rule). Like a school test: not the truest measure, but the shared exam that makes comparison with Mem0 and Zep possible.
+- Three layers side by side, none replacing another: the automatic scores (strict, and lenient by a rule written to match the published papers' description; other systems' published scores still aren't directly comparable: other judges, prompts and answering models); the human-reviewed score, with the method; and the caveat that LoCoMo is not the use case (two friends talking, synthetic conversations, trick questions built on mixing up the speakers, about 6% of the key wrong, scores moving 10 points with the grader's rule). Like a school test: not the truest measure, but the shared exam that makes comparison with Mem0 and Zep possible.
 - Say who reviewed: "verdicts by an AI following a fixed rule, reviewed by the author", with the share the author checked and the disagreement rate. State the rule next to the number: it is closer to the lenient grader than to the strict one (most of a list with nothing false counts).
 - Supported by the symmetric audit: deepseek-v4-pro matches the human-reviewed score on normal questions (65.3% against 65.6% +/-2.3), so the review validates it rather than raising the score; gpt-oss:120b understates by about 4 points. Not supported: that the graders understate Cerveau in general. Supported too: on trick questions the difference is a definition (a true fact instead of the trap), not accuracy; the key has real errors; and gemma4:e4b rarely invents: most real misses are "I don't remember" when the answer existed (about 40% in the first 77), the safe failure for a personal assistant, then partial lists (about 17%), dates (13%), wrong or vague facts (22%).
 - Not supported, so not claimed: that it "mostly" gives true or partial answers (partial is one part of the misses), or that a prompt making it search would recover the rest (tried, item 23: 23 searches instead of 1, no gain; better recall or a stronger answering model are the likelier levers).
@@ -252,13 +252,13 @@ For F1 vs F2, F3 vs F4, and F2 vs F4: answers turned right and turned wrong on t
 
 ## 9. Checklist
 
-- [ ] Phase 1 changes, each measured on the tuning split
-- [ ] Follow-up from the review (section 2b): re-grades, inspections, answer-in-notes metric, save and resume, multi-hop set, person fact blocks, entity profiles
-- [ ] Own evals re-checked after Phase 1
+- [x] Phase 1 changes, each measured on the tuning split (items 1, 3 and 4; 2 deferred, 5 not run)
+- [x] Follow-up from the review (section 2b): re-grades, inspections, answer-in-notes metric, save and resume, multi-hop set, person fact blocks (R1 to R7; entity profiles R8 to R10 not needed for the final runs)
+- [x] Own evals re-checked after Phase 1
 - [x] Runner: category 5 included and reported separately (gold answer fixed, 2026-10-19)
 - [x] Runner: memory built once per conversation and copied per question; cloud consolidation side by side (`--workers`); tool searches counted; 95% intervals and 90th-percentile time in the report; `--compare` with a sign test
 - [x] Hand-labelled answers (100, 2026-11-02)
-- [ ] Candidate graders run on them (not run; deepseek-v4-pro reported, gpt-oss:120b second)
+- [x] Candidate graders run on them (2026-11-02: deepseek-v4-pro agrees with the hand labels on 85 of 100, gpt-oss:120b on 70; deepseek-v4-pro reported, gpt-oss:120b second)
 - [x] Configuration frozen and committed (2026-10-24, section 4b)
 - [x] Local consolidation built (gemma4:e4b, L5)
 - [x] Cloud consolidation rebuilt (group facts, temperature 0, 2026-10-24)
@@ -268,4 +268,4 @@ For F1 vs F2, F3 vs F4, and F2 vs F4: answers turned right and turned wrong on t
 - [x] A lenient regrade (`--regrade --lenient`) of all five runs
 - [x] Results written up in CERVEAU_LOCOMO_RESULTS.md (section 6.5)
 - [x] Reproduction commands updated (section 5.3)
-- [ ] Human review of the misses (section 5.4): the user's review of the 572 verdicts, then a "Human review" section in the results file and on the scoreboard
+- [x] Human review of the misses (section 5.4): the user's review of the verdicts, then a "Human review" section in the results file and on the scoreboard (2026-11-02)

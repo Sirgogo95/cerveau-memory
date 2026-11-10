@@ -366,5 +366,5 @@ Also:
 - [x] Runs P1 and P0 (2026-11-06, `python manage.py personal_chats_eval`, gemma4:e4b at temperature 0; P2 skipped for this round)
 - [x] Graded for now by deepseek-v4-pro at the user's request (2026-11-06): P1 23 of 30, P0 5 of 30 (section 6b)
 - [x] The user's own blind grading (2026-11-06): P1 24 right, 4 partial, 2 wrong; P0 6, 2, 22 (section 6b)
-- [x] Results recorded (sections 6b to 6e); examples anonymized in the committed docs (2026-11-07: product, school and game names from the chats replaced by descriptions). Before publishing: older commits still hold the earlier wording
+- [x] Results recorded (sections 6b to 6e); examples anonymized in the committed docs (2026-11-07: product, school and game names from the chats replaced by descriptions).
 - [x] Purge path tested (2026-11-07, on the throwaway `cerveau_chats_qwen`): every episode, fact, entity and tag forgotten, then `purge_memory --status Z --older-than 0`: 77 episodes, 610 messages, 58 facts, 96 tags, 121 entities, 614 import records, their embeddings, mentions and tag links all erased, no audit snapshot left. Left behind: 26 rows of the embedding cache (a text hash and its vector, no text); a true "delete everything" should clear them too (embeddings can be partly inverted). **Fixed 2026-11-09:** every purge now empties the whole embedding cache (GUIDE 6.7, `purge.py`)

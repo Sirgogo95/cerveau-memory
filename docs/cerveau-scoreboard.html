@@ -86,7 +86,7 @@ td.key { font-weight: 700; }
 
 <main>
   <header style="display:grid; gap:12px">
-    <span class="kicker">LoCoMo memory exam · final results · October 2026</span>
+    <span class="kicker">LoCoMo memory exam · final results · November 2026</span>
     <h1>How Cerveau's memory stacks up</h1>
     <p class="lede">Cerveau is an AI memory system built by one person at home, running on a laptop. Here it takes the standard public memory exam, on every question, measured carefully: what a small model on a 6 GB laptop graphics card can do, next to a big cloud model.</p>
   </header>
@@ -196,6 +196,7 @@ td.key { font-weight: 700; }
       <li><span><strong>A small model writes notes almost as well as a big one.</strong> With the same big AI answering, notes written by the laptop model cost only about 1 point against notes written by the cloud model 30 times its size.</span></li>
       <li><span><strong>What the small model loses is reading the notes.</strong> On the same notes, the laptop model answers about 8 points below the big one, mostly on questions that need several notes put together. That's the next thing to improve.</span></li>
       <li><span><strong>A memory is harder to trick.</strong> Asked about things that never happened, Cerveau says it doesn't remember about 8 times in 10. A big AI reading the whole history at once goes along with the false premise half the time.</span></li>
+      <li><span><strong>Pushing a small model to try harder makes it invent.</strong> Letting it think before answering helped on my own chats, but on a sample of 50 of the exam's trick questions it went along with 5 false premises it had declined before (38 right against 42). Prompts asking it to dig deeper did the same, and a second small model that answered better on normal questions did worse on trick ones. So thinking is a switch you turn on per question, off by default. The sample is small, but the pattern in what went wrong was consistent.</span></li>
       <li><span><strong>Running at home means privacy.</strong> In the fully local setup nothing leaves the computer: no company sees your conversations, it works offline, and it costs nothing to use.</span></li>
       <li><span><strong>What's still hard:</strong> questions that need pieces from several different conversations at once, like <q>What activities has Melanie done with her family?</q>, when each activity came up on a different day. The laptop setup gets about 5 in 10 of those right, against 7 in 10 when a big AI reads everything.</span></li>
     </ul>
