@@ -10,7 +10,7 @@ Cerveau is model-agnostic: the memory lives in your own Postgres database, and a
 
 **Results at a glance**
 
-- **LoCoMo** (a public long-conversation memory benchmark, all 1,982 questions, graded strictly by deepseek-v4-pro): **66.9% fully local** (66.3% after a human review of the grades), **75.8%** with a cloud model (gpt-oss:120b) answering from the same memory. Details and caveats: [CERVEAU_LOCOMO_RESULTS.md](docs/CERVEAU_LOCOMO_RESULTS.md).
+- **LoCoMo** (a public long-conversation memory benchmark, all 1,982 questions, graded strictly by deepseek-v4-pro): **66.9% fully local** (66.3% after a human review of the grades), **76.2%** with a cloud model (gpt-oss:120b) answering from the same memory (76.4% after a human review); graded generously, as published scores usually are, 76.4% and 82.6%. Details and caveats: [CERVEAU_LOCOMO_RESULTS.md](docs/CERVEAU_LOCOMO_RESULTS.md).
 - **The author's own chat history** (25 imported ChatGPT conversations, 60 questions written before running): **44 of 60 right with the memory, 10 without it** (graded by deepseek-v4-pro); it declined every question about something never said. Details: [PERSONAL_CHATS_EVAL.md](docs/PERSONAL_CHATS_EVAL.md).
 
 **Where to start:** [the scoreboard](docs/cerveau-scoreboard.html), a one-page plain-language summary of the results (GitHub shows it as code: download it and open it in a browser); then this README for the design; then [GUIDE.md](docs/GUIDE.md), a tour of the code. [STATUS.md](docs/STATUS.md) is the detailed working log.
