@@ -2,7 +2,7 @@
 
 What happens, step by step, from the moment a user message arrives until the reply is stored, plus the background consolidation that runs when an episode closes.
 
-See [README.md](../README.md) for the architecture, [DJANGO_SETUP.md](DJANGO_SETUP.md) for how it maps onto Django, [EMBEDDINGS.md](EMBEDDINGS.md) for how vectors are stored, and [SEARCH_MEMORY_TOOL.md](SEARCH_MEMORY_TOOL.md) for deliberate recall on top of this pipeline.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the architecture, [DJANGO_SETUP.md](DJANGO_SETUP.md) for how it maps onto Django, [EMBEDDINGS.md](EMBEDDINGS.md) for how vectors are stored, and [SEARCH_MEMORY_TOOL.md](SEARCH_MEMORY_TOOL.md) for deliberate recall on top of this pipeline.
 
 **Phases.** Every step and sub-step is labeled with the roadmap phase that builds it (**v1**, **v2**, **v3**). v1 is the time-gap, embeddings-and-lexical pipeline; anything labeled later is designed here but must not creep into v1.
 

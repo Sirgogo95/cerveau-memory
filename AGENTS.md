@@ -4,7 +4,7 @@ Instructions for any AI coding agent working in this repository. This file is to
 
 ## Project
 
-**The Cerveau Project**: a brain-inspired, model-agnostic memory system for an AI assistant (one continuous conversation, automatic episodes, long-term memory in Postgres + pgvector). See [README.md](README.md) for the architecture and [docs/STATUS.md](docs/STATUS.md) for what is built and the decisions made so far.
+**The Cerveau Project**: a brain-inspired, model-agnostic memory system for an AI assistant (one continuous conversation, automatic episodes, long-term memory in Postgres + pgvector). See [README.md](README.md) for the introduction and results, [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the architecture, [docs/STATUS.md](docs/STATUS.md) for what is built and the decisions made so far.
 
 It is built on the `base_django_setup` template (environment profiles, soft-delete models, audit trail, request profiling, utilities), documented in [docs/base_django_setup.md](docs/base_django_setup.md). How Cerveau uses that template is in [docs/DJANGO_SETUP.md](docs/DJANGO_SETUP.md).
 

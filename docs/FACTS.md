@@ -1,9 +1,9 @@
 # Facts (v2): the plan, and the decisions to start from
 
 **Status:** built (2026-10-17)
-**Builds on:** [README: Facts](../README.md#facts) (the design), [PIPELINE.md](PIPELINE.md) step 6 and consolidation step 4, [SEARCH_MEMORY_TOOL.md](SEARCH_MEMORY_TOOL.md) (`fact` kind, `include_history`)
+**Builds on:** [ARCHITECTURE.md: Facts](ARCHITECTURE.md#facts) (the design), [PIPELINE.md](PIPELINE.md) step 6 and consolidation step 4, [SEARCH_MEMORY_TOOL.md](SEARCH_MEMORY_TOOL.md) (`fact` kind, `include_history`)
 
-This note records what was recommended on 2026-10-17, before building, so the work starts from decisions already made. The README remains the design; this note adds what was learned since (bge-m3, the 4B model's attribution limits, the memory viewer and tools).
+This note records what was recommended on 2026-10-17, before building, so the work starts from decisions already made. [ARCHITECTURE.md](ARCHITECTURE.md) remains the design; this note adds what was learned since (bge-m3, the 4B model's attribution limits, the memory viewer and tools).
 
 ---
 
@@ -64,5 +64,5 @@ Keep `source = user_stated` only; leave `inferred` facts out of v2's first versi
 ## Open questions for the build
 
 - **Fact types:** a short fixed list (`person`, `preference`, `plan`, `project_state`, `health`, `place`, `other`) or free text? A fixed list helps the viewer's filters and the model's consistency.
-- **Budget share:** how much of the memory budget facts get versus messages and episodes; start with the README's example (facts 30%) and measure with the eval set extended with fact cases.
+- **Budget share:** how much of the memory budget facts get versus messages and episodes; start with ARCHITECTURE.md's example (facts 30%) and measure with the eval set extended with fact cases.
 - **Reinforcement:** `last_used_at` and `times_confirmed` are in the schema; using them for ranking belongs with activation (v2), not the first version.

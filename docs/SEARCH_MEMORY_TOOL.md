@@ -2,7 +2,7 @@
 
 **Status:** built for episodes and messages (2026-10-17); the rest waits for v2 memory kinds
 **Target phase:** v2 (after the v1 retrieval engine and prompt assembly exist)
-**Related:** [PIPELINE.md](PIPELINE.md) steps 4 to 9, [README.md](../README.md#the-retrieval-engine) retrieval engine, [EMBEDDINGS.md](EMBEDDINGS.md)
+**Related:** [PIPELINE.md](PIPELINE.md) steps 4 to 9, [ARCHITECTURE.md](ARCHITECTURE.md#the-retrieval-engine) retrieval engine, [EMBEDDINGS.md](EMBEDDINGS.md)
 
 ---
 

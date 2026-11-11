@@ -1,0 +1,21 @@
+# Postgres 17 with pgvector for Cerveau: `docker compose up -d`.
+# The same settings as the `docker run` command in docs/ARCHITECTURE.md (Development
+# setup), so .env.example's DATABASE_URL values work unchanged. The named volume keeps
+# memory across restarts; `docker compose down -v` would erase it.
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: cerveau-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cerveau
+      POSTGRES_PASSWORD: cerveau
+      POSTGRES_DB: cerveau
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    name: cerveau-pgdata

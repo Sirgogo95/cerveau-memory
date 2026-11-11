@@ -3,7 +3,7 @@
 How Cerveau stores embeddings: in separate tables, one per kind of memory, so several embedding models can coexist without touching the content tables.
 
 **Status:** design decided, not yet implemented.
-**Supersedes:** the inline `embedding` / `summary_embedding` / `embedding_model` columns in the [README schema](../README.md#database-schema). Content tables no longer carry vectors.
+**Supersedes:** the inline `embedding` / `summary_embedding` / `embedding_model` columns in the [architecture's schema](ARCHITECTURE.md#database-schema). Content tables no longer carry vectors.
 **Related:** [PIPELINE.md](PIPELINE.md) steps 1, 4, and 6, and [DJANGO_SETUP.md](DJANGO_SETUP.md).
 
 ---

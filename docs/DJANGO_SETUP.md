@@ -2,7 +2,7 @@
 
 How the Cerveau Project maps onto the reusable `base_django_setup` template: what to reuse as-is, what to apply selectively, what to change, and what to add.
 
-See the [root README](../README.md) for the Cerveau architecture itself, and [base_django_setup.md](base_django_setup.md) for the template reference.
+See the [ARCHITECTURE.md](ARCHITECTURE.md) for the Cerveau architecture itself, and [base_django_setup.md](base_django_setup.md) for the template reference.
 
 ---
 
@@ -251,7 +251,7 @@ eval_environment = Environment(
 
 The separate `eval` environment, on its own port and database, lets benchmark runs and experiments happen without touching real memory.
 
-For local Postgres with pgvector preinstalled, use the official pgvector Docker image; the exact command is under "Development setup" in the [root README](../README.md#development-setup).
+For local Postgres with pgvector preinstalled, use the official pgvector Docker image; the exact command is under "Development setup" in the [ARCHITECTURE.md](ARCHITECTURE.md#development-setup).
 
 ### Cerveau-specific settings
 

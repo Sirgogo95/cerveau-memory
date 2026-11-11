@@ -1,6 +1,6 @@
 # base_django_setup
 
-> Reference for the Django starter template that Cerveau is built on. For the Cerveau project itself, see the [root README](../README.md); for how Cerveau uses this template, see [DJANGO_SETUP.md](DJANGO_SETUP.md).
+> Reference for the Django starter template that Cerveau is built on. For the Cerveau project itself, see the [ARCHITECTURE.md](ARCHITECTURE.md); for how Cerveau uses this template, see [DJANGO_SETUP.md](DJANGO_SETUP.md).
 
 A pre-wired Django 6 starter template with the boilerplate I reach for on every project already built in: environment configs, an audit trail, soft-delete models, per-request profiling, IP throttling, optional social authentication (OIDC lockdown, or Google and Microsoft sign-in), and a database cloning tool. Clone it, rename the project, and start building the domain instead of re-writing plumbing.
 

@@ -2738,7 +2738,7 @@ return {n: v for n, v in values.items() if v >= FLOOR}
 
 1. **Fade.** Each node loses `activation_turn_decay` (0.3) per turn and halves every `activation_half_life_hours` (6): coming back the next morning starts nearly fresh.
 2. **Boost.** What the message matched: each named entity at 1.0, each matched tag (4.8) at its similarity.
-3. **Spread.** Half the boost (`activation_spread` 0.5) flows to the neighbours, divided by how many neighbours the node has. That's the README's **fan effect**: a broad tag like `work`, linked to everything, passes little to each.
+3. **Spread.** Half the boost (`activation_spread` 0.5) flows to the neighbours, divided by how many neighbours the node has. That's the **fan effect** of [ARCHITECTURE.md](ARCHITECTURE.md#activation): a broad tag like `work`, linked to everything, passes little to each.
 4. **Floor.** Under 0.01, a node has faded from mind and is dropped.
 
 Two simplifications of the README, both written in the module's docstring: values are **capped at 1** instead of squashed by a sigmoid (the sigmoid lifts every node to about 0.08, so nothing would ever fade out), and energy spreads **only from the nodes boosted this turn** (spreading from everything lets two linked nodes keep each other warm forever).
@@ -2760,7 +2760,7 @@ A + activation, no B     84%         2      1.0
 
 Alone it works: follow-ups from 62% to 81%, and first messages gain a little recall too (89% to 91%), since the topics a message matches boost their messages at once. On top of the conversation-aware search and carry-over it adds less: one follow-up, for one more old subject dragged into a topic change and twice the noise on unrelated questions. Faster fading and less spread changed nothing; the noise comes from the topic change itself.
 
-**On since 2026-10-18** at `w_act = 0.05` for every source (your decision: the README's design, and a trade small either way). With it, the single-question eval also runs activation, as for a first message (activation from the question's own names and topics), and the two evals read:
+**On since 2026-10-18** at `w_act = 0.05` for every source (your decision: ARCHITECTURE.md's design, and a trade small either way). With it, the single-question eval also runs activation, as for a first message (activation from the question's own names and topics), and the two evals read:
 
 ```text
                     single questions             follow-ups  drags
@@ -4826,7 +4826,7 @@ gpt-oss:120b    116 wrong:  13 none,  78 part,  25 all
 - **Embeddings**: bge-m3 on Ollama, next to qwen on the GPU (0.66 GB; both stay loaded, 5.2 of 6 GB). sentence-transformers with PyTorch remains for the CPU profile; its weights live in the Hugging Face cache (`%USERPROFILE%\.cache\huggingface\hub`).
 - **Dependencies**: `requirements.txt` for the app; `requirements-dev.txt` adds `pyright` and `django-types`.
 
-Daily start: Docker Desktop and Ollama running, then `python manage.py runserver` and, in a second terminal, `python manage.py db_worker` ([README: Development setup](../README.md#development-setup)).
+Daily start: Docker Desktop and Ollama running, then `python manage.py runserver` and, in a second terminal, `python manage.py db_worker` ([ARCHITECTURE.md: Development setup](ARCHITECTURE.md#development-setup)). A first install (2026-11-10): `docker compose up -d` creates the same container from [docker-compose.yml](../docker-compose.yml) (`cerveau-pg`, the `cerveau-pgdata` volume, the credentials `.env.example` expects); the README's quick start lists the rest.
 
 ---
 

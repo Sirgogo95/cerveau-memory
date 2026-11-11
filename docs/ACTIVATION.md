@@ -1,9 +1,9 @@
 # Activation (v2): the plan, and how to know it helps
 
 **Status:** built (2026-10-18): the eval, A, B, and C, all on (C at weight 0.05)
-**Builds on:** [README: Activation](../README.md#activation) and [The tag graph](../README.md#the-tag-graph) (the design), [PIPELINE.md](PIPELINE.md) steps 5, 6 and 10, the tag signal ([GUIDE](GUIDE.md) 4.8)
+**Builds on:** [ARCHITECTURE.md: Activation](ARCHITECTURE.md#activation) and [The tag graph](ARCHITECTURE.md#the-tag-graph) (the design), [PIPELINE.md](PIPELINE.md) steps 5, 6 and 10, the tag signal ([GUIDE](GUIDE.md) 4.8)
 
-This note records what was recommended before building, the same way [FACTS.md](FACTS.md) did. The README remains the design. This note adds what Cerveau has learned since: tags and entities exist and are reliable enough to use, a tag signal measured as a small win, and every new signal has to earn its place on an eval.
+This note records what was recommended before building, the same way [FACTS.md](FACTS.md) did. [ARCHITECTURE.md](ARCHITECTURE.md) remains the design. This note adds what Cerveau has learned since: tags and entities exist and are reliable enough to use, a tag signal measured as a small win, and every new signal has to earn its place on an eval.
 
 ---
 

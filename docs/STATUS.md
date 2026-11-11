@@ -1,8 +1,8 @@
 # Implementation status
 
-What exists in the code today, as opposed to what the [README](../README.md) designs. Update this file in the same commit as the work it describes.
+What exists in the code today, as opposed to what the [ARCHITECTURE.md](ARCHITECTURE.md) designs. Update this file in the same commit as the work it describes.
 
-Last updated: 2026-11-09, on branch `feature/cerveau-v4`.
+Last updated: 2026-11-10, on branch `feature/launch-plan`.
 
 **Phase:** v3 done (2026-11-09): the LoCoMo report final, a first eval on the author's own chat history, and the fixes it found. Cerveau is a chat with long-term memory in the browser at `/`, fully local by default on gemma4:e4b (Ollama, a 6 GB laptop GPU): each conversation is consolidated into summaries, facts, tags, and entities; recall brings back past messages, summaries, facts, and a named person's facts as a block; the model can search its memory itself; a viewer at `/memory/` shows and edits what it knows. On LoCoMo's full question set (strict, deepseek-v4-pro): 66.9% fully local (66.3% after a human review of the grades), 76.2% with a cloud model answering ([CERVEAU_LOCOMO_RESULTS.md](CERVEAU_LOCOMO_RESULTS.md) section 6.5). On 60 questions about the author's own ChatGPT chats: 44 right with the memory, 10 without ([PERSONAL_CHATS_EVAL.md](PERSONAL_CHATS_EVAL.md)). What's built is in **Done**; how it works is in the [GUIDE](GUIDE.md).
 
@@ -10,6 +10,7 @@ Last updated: 2026-11-09, on branch `feature/cerveau-v4`.
 
 | Document | Covers | Status |
 |---|---|---|
+| [ARCHITECTURE.md](ARCHITECTURE.md) | The design in full (memory model, consolidation, recall, activation, prompt budgets, schema, roadmap); the project's README until 2026-11-10 | Kept; the new README is the short introduction, results, quick start and limits, with a docs index in [docs/README.md](README.md) |
 | [GUIDE.md](GUIDE.md) | A guided tour of the code as built: one message and one consolidation followed end to end, then every module and function, with code excerpts and examples; readable on a phone without the project | Kept current with the code, updated in the same commit as each change (last 2026-11-09); the contents list every section |
 | [PIPELINE.md](PIPELINE.md) | Every step of a turn and of consolidation, each labeled v1 / v2 / v3 | Accepted; the build order follows its phase labels |
 | [EMBEDDINGS.md](EMBEDDINGS.md) | Per-kind embedding tables, several models side by side, staleness, indexing, purge | Accepted; partly implemented (its section 12 checklist tracks what) |
@@ -32,7 +33,7 @@ Last updated: 2026-11-09, on branch `feature/cerveau-v4`.
 
 | Item | Where | Notes |
 |---|---|---|
-| Postgres 17 + pgvector 0.8.7 in Docker | container `cerveau-pg` (restart policy `unless-stopped`), volume `cerveau-pgdata` | Command in [README: Development setup](../README.md#development-setup). Docker Desktop must be running; the container then starts with it |
+| Postgres 17 + pgvector 0.8.7 in Docker | container `cerveau-pg` (restart policy `unless-stopped`), volume `cerveau-pgdata` | Command in [ARCHITECTURE.md: Development setup](ARCHITECTURE.md#development-setup). Docker Desktop must be running; the container then starts with it |
 | Databases `cerveau` (dev) and `cerveau_eval` (eval) | same container | Both fully migrated |
 | Extensions `vector`, `pg_trgm`, `unaccent` | [0001_postgres_extensions.py](../apps/cerveau/migrations/0001_postgres_extensions.py) | Enabled in both databases |
 | Git: one squashed commit of the private repository the project was developed in (v1 to v3) | | |
@@ -112,7 +113,7 @@ Last updated: 2026-11-09, on branch `feature/cerveau-v4`.
 | `python -m evals`: hit rate, recall, precision, noise, rejected; `--embedding NAME` picks a profile (default bge-m3); `--misses` lists failures; `--sweep` tries `min_score` around the profile's (`--grid` to choose) | [evals/\_\_main\_\_.py](../evals/__main__.py) | Real embedding model, no Django, no database; about 35 s with bge-m3 on Ollama |
 | Near-miss rule in the system prompt: when the notes cover the subject but not the detail asked for, say the detail isn't in them; `near_miss` questions in the tool eval (`wrong` words catch inventions), `--kinds` to run some kinds | [brain/prompt.py](../brain/prompt.py), [evals/tool_eval.py](../evals/tool_eval.py) | Invented details 2/8 to 0/8 on the hardest question; the confidence gate stays unbuilt, since no eval shows weak matches being trusted |
 | LoCoMo runner: `python -m evals.locomo` (`--download` once into git-ignored `evals/locomo_data/`): each session a closed episode at its date, each turn a message; retrieval (evidence turns recalled, by category) or `--answer` (a real turn per question on a fresh memory, graded by the background model; token F1 too); vectors kept on disk | [evals/locomo.py](../evals/locomo.py) | Measured 2026-10-18: messages `max_items` 5 to 10 took 200 sampled answers from 57% to 67% judged right (23 gained, 3 lost), retrieval turn hit 52% to 62% over 1,532 questions; now the default (GUIDE 9.2). With gpt-oss:120b on Ollama Cloud (`configs/models/gpt-oss-120b-cloud.toml`, evaluation only): several graders (`--judge-model a,b`), the whole conversation instead of memory (`--full-context`), answers saved (`--out`). Graded by gpt-oss: 57% (qwen answering from memory), 62% (gpt-oss from memory), 80% (gpt-oss, whole conversation); the 4B grader is 13 points lenient; recall is the limit, multi-hop most (28% against 68%) |
-| Lateral inhibition (README v2): `inhibit` picks each source's memories one at a time, a candidate lowered by `inhibition` x its closest similarity to those already picked, from `inhibition_pool` x `max_items`; vectors from `stored_vectors` (store contract) | [brain/retrieval.py](../brain/retrieval.py) | Off by default. LoCoMo turn hit 62% to 65% (multi-hop 55% to 63%) at 0.5, answers unchanged (60% and 59% at temperature 0); our own cases unchanged |
+| Lateral inhibition (ARCHITECTURE.md v2): `inhibit` picks each source's memories one at a time, a candidate lowered by `inhibition` x its closest similarity to those already picked, from `inhibition_pool` x `max_items`; vectors from `stored_vectors` (store contract) | [brain/retrieval.py](../brain/retrieval.py) | Off by default. LoCoMo turn hit 62% to 65% (multi-hop 55% to 63%) at 0.5, answers unchanged (60% and 59% at temperature 0); our own cases unchanged |
 | LoCoMo diagnosis and consolidation: of 77 wrong answers, 28 had the evidence crowded out, 14 had part of it, 19 had it below the threshold, 16 had it all; `--consolidate PROFILE` consolidates each session as the app does, replies kept on disk (`DiskLLM`); `--temperature 0` for repeatable runs (two runs at 0.7: 57% and 56%, 32 verdicts changed) | [evals/locomo.py](../evals/locomo.py) | Consolidated with gpt-oss:120b (2026-10-19, 2 hours, 1.7% of a Pro week); qwen answering at temperature 0: 60% (messages only), 64% (consolidated), 66% (plus inhibition); multi-hop 20% to 40%, temporal 56% to 40% (summaries and facts lose dates) |
 | Ollama Cloud and JSON: Ollama Cloud ignores `format`, so remote profiles put the schema in the prompt and `json_in` takes the JSON out of the reply | [adapters/llm/ollama.py](../adapters/llm/ollama.py) | Measured on six cloud models: none kept to the schema; all four tried with it in the prompt returned valid JSON |
 | Consolidation and facts with several speakers: lines starting with a name ("Caroline: ...") get each person named instead of "the user" | [brain/consolidation.py](../brain/consolidation.py), [brain/facts.py](../brain/facts.py) | Found consolidating LoCoMo |
@@ -278,9 +279,9 @@ Everything needed to pick this up without the conversation that produced it.
 | 13 | Status-aware upserts and `purge_memory` | Done (`purge_memory`, 2026-10-18) |
 | 14 | Personal eval set | Done: harness, starter set, and the personal chats eval (25 real chats, 60 questions, 2026-11-07) |
 
-### v1 roadmap ([README](../README.md#v1-useful-from-day-one))
+### v1 roadmap ([ARCHITECTURE.md](ARCHITECTURE.md#v1-useful-from-day-one))
 
-The README's roadmap checkboxes were brought up to date on 2026-10-18 (v1 done but the personal eval set; in v2, facts, tag edges, activation, drift, purging, pinned messages, and episode carry-over done). "Episode carry-over" in the README is a closed episode's last messages staying in the prompt after a split (built 2026-10-18, GUIDE 4.7); carry-over of recalled memories (ACTIVATION.md idea B) is a different thing.
+The README's roadmap checkboxes were brought up to date on 2026-10-18 (v1 done but the personal eval set; in v2, facts, tag edges, activation, drift, purging, pinned messages, and episode carry-over done). "Episode carry-over" in ARCHITECTURE.md is a closed episode's last messages staying in the prompt after a split (built 2026-10-18, GUIDE 4.7); carry-over of recalled memories (ACTIVATION.md idea B) is a different thing.
 
 | Feature | Status |
 |---|---|
@@ -299,7 +300,7 @@ The README's roadmap checkboxes were brought up to date on 2026-10-18 (v1 done b
 
 | Decision | Date | Reference |
 |---|---|---|
-| One Django app (`apps/cerveau`); all Protocols in `brain/ports.py`; pure-Python implementations in `adapters/` | 2026-10-13 | [README: Project structure](../README.md#project-structure) |
+| One Django app (`apps/cerveau`); all Protocols in `brain/ports.py`; pure-Python implementations in `adapters/` | 2026-10-13 | [ARCHITECTURE.md: Project structure](ARCHITECTURE.md#project-structure) |
 | Postgres everywhere (no SQLite) | 2026-10-13 | [DJANGO_SETUP.md section 4](DJANGO_SETUP.md#4-environments) |
 | Single user: no owner field on memory tables | 2026-10-13 | |
 | Embeddings by bge-m3, served by Ollama on the GPU (replaces `all-MiniLM-L6-v2`; chosen on the eval set); each embedding model has a profile carrying its calibrated `min_score` | 2026-10-17 | [configs/embeddings/](../configs/embeddings/) |
@@ -345,7 +346,7 @@ The README's roadmap checkboxes were brought up to date on 2026-10-18 (v1 done b
 - **The chat page and the memory viewer have no login.** Fine for a single local user (`runserver` listens on 127.0.0.1 only). The viewer can make Cerveau forget, so add authentication to both before exposing them on a network.
 - **Hardware:** RTX 3060 Laptop, 6 GB VRAM, 16 GB RAM. `qwen3.5:4b` uses 3.6 GB at 16,384 context (32,768 spills to the CPU) and bge-m3 0.66 GB: both stay loaded on the GPU (5.2 GB in use).
 - **Type checking** is `basic` ([pyrightconfig.json](../pyrightconfig.json)), with Django stubs from `django-types`; dev tools are in [requirements-dev.txt](../requirements-dev.txt).
-- **The worker is a second process:** `python manage.py db_worker` must run for consolidation; without it, closed episodes wait (the sweep queues them at the next server start). Commands are in [README: Development setup, step 5](../README.md#development-setup).
+- **The worker is a second process:** `python manage.py db_worker` must run for consolidation; without it, closed episodes wait (the sweep queues them at the next server start). Commands are in [ARCHITECTURE.md: Development setup, step 5](ARCHITECTURE.md#development-setup).
 - **Consolidation and chat share the GPU model:** a job running while you chat makes the next reply wait for it (Ollama serves one request at a time by default). The sweep at server start keeps most consolidation out of chat time.
 - **Consolidation quality depends on the 4B model:** in the live check, attribution was right after the prompt fix, but tags still drifted toward topics Cerveau raised ("compliance"). Near-duplicate tags are merged by meaning at 0.83; pairs below that (home/housing 0.71, doctor/medical 0.77) stay two tags.
 - **Relative dates in memory** ("next week") stay relative to when they were said; the memory lines carry dates, but the model may not adjust them.
