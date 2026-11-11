@@ -65,25 +65,26 @@ Measured on an RTX 3060 Laptop GPU (6 GB) with gemma4:e4b:
 
 | What | Time |
 |---|---|
-| A short reply | about 2.5 s |
+| First word of a reply | about 3 s |
+| A short reply, complete | about 3.5 s |
+| A long reply (about 300 words) | about 10 s |
 | With **Think first** on | first word after 4 to 6 s, about 9 s per answer |
-| The first message after starting | about 30 s, while the models load |
-| Consolidating a conversation (in the background) | 10 to 30 s |
+| The first message after starting | 30 to 45 s, while the models load |
+| Consolidating a conversation (in the background) | 10 to 30 s (about 20 s for a short one) |
 
 Memory on the GPU: about 4.9 GB for both models (gemma4:e4b at a 16,384-token context and bge-m3), so both stay loaded on a 6 GB card. gemma4:e4b supports 128K tokens; Cerveau runs it at 16K because a larger window slows every reply even when the prompt is the same (generation on an 8K-token prompt: about 90 tokens/s at 16K, 55 at 32K, 44 at 64K), and memory only needs 8,000 tokens of it.
 
 ## Requirements
 
-<!-- Check each line against a clean install. -->
 - Python 3.12+
 - Docker (for Postgres 17 with pgvector)
 - [Ollama](https://ollama.com)
-- A GPU with 6 GB of memory (tested on an NVIDIA RTX 3060 Laptop GPU), and disk space for the two models
+- A GPU with 6 GB of memory (tested on an NVIDIA RTX 3060 Laptop GPU)
+- About 10 GB of disk: 7.8 GB for the two models, 1.2 GB for the Python packages
 - Tested on Windows 11; Linux and macOS should work, reports welcome
 
 ## Quick start
 
-<!-- Replace with the exact commands from the clean-install test. -->
 ```bash
 git clone https://github.com/Sirgogo95/cerveau-memory.git
 cd cerveau-memory
@@ -98,8 +99,8 @@ ollama pull bge-m3
 # App
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env
+pip install -r requirements.txt  # about 10 minutes the first time, mostly PyTorch
+cp .env.example .env             # Windows cmd: copy .env.example .env
 python manage.py migrate
 python manage.py runserver
 
@@ -108,7 +109,7 @@ python manage.py runserver
 python manage.py db_worker
 ```
 
-Open http://localhost:8000 to chat, and http://localhost:8000/memory/ to see what it remembers.
+Open http://127.0.0.1:8000 to chat, and http://127.0.0.1:8000/memory/ to see what it remembers (on Windows, `localhost` is slower: it tries IPv6 first).
 
 ## Useful commands
 
