@@ -107,6 +107,31 @@ Configuration (models, thresholds, budgets) lives in `configs/`: see [the GUIDE]
 - **One user, one machine.** No accounts or multi-user support yet.
 - LoCoMo is two friends chatting, not one person with an assistant; my own chat eval is 60 questions on one person's history.
 
+## Roadmap
+
+Ideas for what comes next, not commitments. The full list, with what's already built, is in [ARCHITECTURE.md](docs/ARCHITECTURE.md#roadmap).
+
+- **More model providers.** Today the chat model runs through Ollama, locally or on Ollama Cloud. Next: any OpenAI-compatible server, which covers OpenAI itself, LM Studio, llama.cpp's server and vLLM; and the Claude API. The memory stays local whichever model answers.
+- **More importers.** ChatGPT exports are supported; a Claude export importer is next, so memory can start from either history.
+- **Voice, with [Pipecat](https://github.com/pipecat-ai/pipecat).** Pipecat is an open-source framework for real-time voice agents; memory plugs in as a processor before the model, as its existing memory integrations do. Cerveau as that processor would give a voice assistant a long-term memory that stays on your machine, storing transcripts, not audio.
+- **Memory for other assistants**, through an MCP server: other tools could search and add to the same memory.
+- **Better answering on a small model**: the 8-point gap with a 120B model, mostly on questions that combine several memories, and telling suggestions from decisions.
+- **Accounts**: more than one user on one server.
+
+## Related work
+
+Cerveau was designed from how human memory works, and recent research has converged on several of the same mechanisms:
+
+- **SYNAPSE** (Jiang et al., Findings of ACL 2026): an episodic-semantic memory graph with spreading activation and lateral inhibition, evaluated on LoCoMo. Cerveau's activation borrows from it openly.
+- **HeLa-Mem** (Zhu et al., ACL 2026): Hebbian association and reflective consolidation into semantic memory.
+- **MemGPT / Letta** (Packer et al., 2024): the context window treated like RAM, with memory paged in and out.
+- **Generative Agents** (Park et al., 2023): memory streams scored by recency, importance and relevance, with periodic reflection.
+- **Mem0** (Chhikara et al., 2025) and **Zep** (Rasmussen et al., 2025): memory layers for developers, both reporting LoCoMo scores ([why they aren't compared here](docs/CERVEAU_LOCOMO_RESULTS.md)).
+- **LoCoMo** (Maharana et al., 2024): the benchmark used here.
+- **Cognitive science**: spreading activation (Collins and Loftus, 1975) and the fan effect from ACT-R (Anderson, 1983).
+
+What Cerveau adds: one continuous conversation split into episodes automatically, rather than retrieval over separate sessions; activation carried across turns, deciding what stays in mind; a tag and entity layer you can browse and correct; and a self-hosted assistant measured end to end on a laptop, not a developer SDK. More in [ARCHITECTURE.md](docs/ARCHITECTURE.md#related-work).
+
 ## Docs
 
 [The docs index](docs/README.md): results, how it works, and the development log.

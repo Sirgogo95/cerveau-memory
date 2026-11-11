@@ -732,7 +732,11 @@ Added one at a time, each measured:
 ### Later
 
 - [ ] **Evolving personality.** Trait parameters (verbosity, formality, humor, depth) that start from a chosen preset and adapt slowly with experience. Style adapts; substance does not: core traits such as honesty and willingness to disagree are locked, changes are small and bounded, and every change is logged and reversible. The design explicitly guards against drifting toward an assistant that simply tells the user what they want to hear.
-- [ ] Voice input with transcript-only storage
+- [ ] Voice input with transcript-only storage, through [Pipecat](https://github.com/pipecat-ai/pipecat) (an open-source voice agent framework; Cerveau as its memory processor, recalling before the model and recording after)
+- [ ] More model providers: an OpenAI-compatible adapter (OpenAI, LM Studio, llama.cpp's server, vLLM) and the Claude API, next to Ollama
+- [ ] A Claude export importer, next to ChatGPT's
+- [ ] An MCP server, so other assistants can search and add to the same memory
+- [ ] Accounts: more than one user on one server
 - [ ] Multimodal memory
 
 ## Design principles
@@ -776,7 +780,7 @@ Cerveau was designed independently, starting from how human memory works. During
 
 ## Contributing
 
-The project is in its design phase. Ideas, critiques, and questions are welcome through issues. Contribution guidelines will follow once v1 is in place.
+Ideas, critiques, bug reports and install reports (especially on Linux and macOS) are welcome through issues.
 
 ## License
 
