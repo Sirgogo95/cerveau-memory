@@ -8,7 +8,7 @@
 
 ## Results
 
-<!-- The scoreboard image goes here (docs/img/scoreboard.png), above the table that carries the same numbers. -->
+![LoCoMo scores, graded generously: a big AI reading the whole history 87% (strict 83%); Cerveau with a big cloud model 83% (strict 76%); Cerveau fully on a laptop 76% (strict 67%)](docs/img/scoreboard.png)
 
 Measured on [LoCoMo](https://arxiv.org/abs/2402.17753), a widely used long-term memory benchmark: all 1,536 gradable questions, plus 446 trick questions about things never said. Graded by deepseek-v4-pro, the trick-question column included; "generous" counts an answer on the right topic, as published scores usually do. A human review of the grades gave 66.3% strict and 90.7% on trick questions for the fully local run, 76.4% and 84.8% for the cloud one.
 
@@ -22,7 +22,7 @@ Measured on [LoCoMo](https://arxiv.org/abs/2402.17753), a widely used long-term 
 - **Memory resists false premises**; reading the whole history doesn't (about 80% against 48% on trick questions).
 - **The grader was checked by hand**: a review of 833 answers put the fully local run at 66.3%, where the grader said 66.9%.
 
-Scores aren't comparable with other systems' published numbers, which use other judges and setups. Full method, limits and every run: [the scoreboard](docs/cerveau-scoreboard.html) (download it and open it in a browser) · [LoCoMo results](docs/CERVEAU_LOCOMO_RESULTS.md).
+Scores aren't comparable with other systems' published numbers, which use other judges and setups. Full method, limits and every run: [LoCoMo results](docs/CERVEAU_LOCOMO_RESULTS.md), and the [scoreboard page](docs/cerveau-scoreboard.html) the image comes from (HTML, to open locally).
 
 ### On my own chat history
 
