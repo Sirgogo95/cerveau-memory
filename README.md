@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/Sirgogo95/cerveau-memory/actions/workflows/tests.yml/badge.svg)](https://github.com/Sirgogo95/cerveau-memory/actions/workflows/tests.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**Long-term memory for a local LLM, on a laptop.** One continuous conversation that remembers what you told it weeks ago: after each conversation, Cerveau writes itself summaries and facts, and when you ask something later, it brings back the few memories that matter. Fully local by default: a 4B model on a 6 GB GPU, nothing leaves your computer.
+**Long-term memory for a local LLM, on a laptop.** One continuous conversation that remembers what you told it weeks ago: after each conversation, Cerveau writes itself summaries and facts, and when you ask something later, it brings back the few memories that matter. Fully local by default: a small model (gemma4:e4b, about 4B effective parameters) on a 6 GB GPU, nothing leaves your computer.
 
 <!-- Screenshot or short GIF here, once taken: the chat recalling something from an earlier conversation, then the memory viewer. -->
 
@@ -70,7 +70,7 @@ Measured on an RTX 3060 Laptop GPU (6 GB) with gemma4:e4b:
 | The first message after starting | about 30 s, while the models load |
 | Consolidating a conversation (in the background) | 10 to 30 s |
 
-Memory on the GPU: about 4.7 GB for gemma4:e4b at a 16,384-token context, plus 0.66 GB for bge-m3, so both stay loaded on a 6 GB card.
+Memory on the GPU: about 4.9 GB for both models (gemma4:e4b at a 16,384-token context and bge-m3), so both stay loaded on a 6 GB card. gemma4:e4b supports 128K tokens; Cerveau runs it at 16K because a larger window slows every reply even when the prompt is the same (generation on an 8K-token prompt: about 90 tokens/s at 16K, 55 at 32K, 44 at 64K), and memory only needs 8,000 tokens of it.
 
 ## Requirements
 
@@ -131,7 +131,7 @@ Configuration (models, thresholds, budgets) lives in `configs/`: see [the GUIDE]
 
 ## FAQ
 
-**Why not just put the whole history in the model's context?** Two reasons. On a laptop it doesn't fit: the model runs with 16,384 tokens, and a year of conversations is far more. And where it does fit, it fails differently: on LoCoMo, a 120B model reading the whole history scored higher on normal questions (82.7%), but went along with false premises half the time (48% right on trick questions, against about 80% with Cerveau's memory).
+**Why not just put the whole history in the model's context?** Two reasons. On a laptop it doesn't fit: gemma4:e4b supports 128K tokens (Cerveau runs it at 16K, see Speed and hardware), and a year of conversations is far more than 128K. And where it does fit, it fails differently: on LoCoMo, a 120B model reading the whole history scored higher on normal questions (82.7%), but went along with false premises half the time (48% right on trick questions, against about 80% with Cerveau's memory).
 
 **How is this different from ChatGPT's memory?** It runs on your machine, you can see every memory and why it was recalled, edit it and really delete it, it works with whichever model you plug in, and it's measured in the open, with the method and the misses published.
 

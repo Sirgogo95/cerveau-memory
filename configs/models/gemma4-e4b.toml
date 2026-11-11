@@ -5,6 +5,10 @@
 
 name = "gemma4:e4b"
 provider = "ollama"
+# The model supports 131,072 tokens; 16,384 is a speed choice (2026-11-10, Ollama 0.40.16, RTX 3060
+# Laptop 6 GB): the same 8K-token prompt generates at about 90 tokens/s at 16K, 55 at 32K, 44 at 64K,
+# with GPU memory flat (about 4.9 GB with bge-m3, sliding-window attention), and memory_budget
+# uses 8,000 tokens of it.
 context_window = 16384
 output_reserve = 1536
 memory_budget = 8000
