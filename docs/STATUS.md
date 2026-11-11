@@ -2,7 +2,7 @@
 
 What exists in the code today, as opposed to what the [ARCHITECTURE.md](ARCHITECTURE.md) designs. Update this file in the same commit as the work it describes.
 
-Last updated: 2026-11-10, on branch `feature/launch-plan`.
+Last updated: 2026-11-11, on branch `feature/demo-gif`.
 
 **Phase:** v3 done (2026-11-09): the LoCoMo report final, a first eval on the author's own chat history, and the fixes it found. Cerveau is a chat with long-term memory in the browser at `/`, fully local by default on gemma4:e4b (Ollama, a 6 GB laptop GPU): each conversation is consolidated into summaries, facts, tags, and entities; recall brings back past messages, summaries, facts, and a named person's facts as a block; the model can search its memory itself; a viewer at `/memory/` shows and edits what it knows. On LoCoMo's full question set (strict, deepseek-v4-pro): 66.9% fully local (66.3% after a human review of the grades), 76.2% with a cloud model answering ([CERVEAU_LOCOMO_RESULTS.md](CERVEAU_LOCOMO_RESULTS.md) section 6.5). On 60 questions about the author's own ChatGPT chats: 44 right with the memory, 10 without ([PERSONAL_CHATS_EVAL.md](PERSONAL_CHATS_EVAL.md)). What's built is in **Done**; how it works is in the [GUIDE](GUIDE.md).
 
@@ -330,6 +330,8 @@ The README's roadmap checkboxes were brought up to date on 2026-10-18 (v1 done b
 | The reply language is set by a hint at the end of the newest message, not by the system prompt (which a small model ignores in mixed-language context) | 2026-10-17 | [brain/language.py](../brain/language.py) |
 
 ## Known gaps and notes
+
+- **"This Saturday" stayed relative at consolidation** (seen 2026-11-11, recording the demo): a conversation saying "my friend turns 30 this Saturday", consolidated three weeks later, kept "this Saturday" in its summary and facts instead of a date, though consolidation is meant to make relative dates absolute (the date rules). Not yet investigated: whether the rule misses "this <weekday>" or the model ignored it.
 
 - **Warm start asks Ollama to load the chat model and bge-m3** in parallel after `runserver`; with bge-m3 on Ollama the server no longer imports PyTorch. Messages sent meanwhile wait for it. Every code change reloads the server and runs it again in the background.
 - **A relevant message can be crowded out**: "did my brother like the drawing?" doesn't recall "he loved it, says thanks" (reworded from a real conversation) (0.555, above the threshold) because five closer messages fill the 5 message slots; the summary carries the answer, but the model quoted the wrong message as its reason in 2 of 3 runs. Embedding messages with the one before them was measured four ways (2026-10-18) and not kept: it cost recall on real conversations and didn't raise this message (GUIDE 9.2). Short user messages ("hello", "programming") also add noise; dropping them from the search by meaning was measured and not kept (GUIDE 9.2).
