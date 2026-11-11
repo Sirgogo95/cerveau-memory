@@ -41,7 +41,12 @@ class CrossEncoderReranker:
         if self._model is None:
             with self._lock:
                 if self._model is None:
-                    from sentence_transformers import CrossEncoder
+                    try:
+                        from sentence_transformers import CrossEncoder  # pyright: ignore[reportMissingImports]
+                    except ModuleNotFoundError as error:
+                        raise ModuleNotFoundError(
+                            "This needs PyTorch and sentence-transformers: pip install -r requirements-optional.txt"
+                        ) from error
 
                     self._model = CrossEncoder(self.model, device=self.device, max_length=self.max_length)
         return self._model

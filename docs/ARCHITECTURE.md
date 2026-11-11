@@ -586,6 +586,7 @@ python -m venv .venv
 .venv\Scripts\activate            # Windows
 # source .venv/bin/activate       # macOS / Linux
 pip install -r requirements-dev.txt   # the app plus type-checking tools (requirements.txt for the app alone)
+# pip install -r requirements-optional.txt   # only for the reranker or the CPU embedding profile (PyTorch, about 1 GB)
 cp .env.example .env              # its DATABASE_URL__* values match the Docker command above
 ```
 

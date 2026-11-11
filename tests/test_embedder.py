@@ -47,6 +47,11 @@ class SentenceTransformerEmbedderTests(unittest.TestCase):
         patcher.start()
         self.addCleanup(patcher.stop)
 
+    def test_without_the_optional_packages_it_says_what_to_install(self):
+        with patch.dict(sys.modules, {"sentence_transformers": None}):     # not installed
+            with self.assertRaisesRegex(ModuleNotFoundError, "requirements-optional.txt"):
+                SentenceTransformerEmbedder("m").load()
+
     def test_nothing_loads_until_needed(self):
         SentenceTransformerEmbedder("m")
         self.assertEqual(FakeModel.instances, 0)

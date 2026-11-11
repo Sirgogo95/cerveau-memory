@@ -4,6 +4,7 @@ Start with the [project README](../README.md): what Cerveau is, the results, and
 
 ## Results
 
+- [WRITEUP.md](WRITEUP.md): the project's story, how it was measured, and what it taught about small models; the place to start.
 - [cerveau-scoreboard.html](cerveau-scoreboard.html): the results on one page, in plain language (download it and open it in a browser; GitHub shows it as code).
 - [CERVEAU_LOCOMO_RESULTS.md](CERVEAU_LOCOMO_RESULTS.md): every LoCoMo run, the final grid, the human review of the grades, and the published numbers with why they don't compare directly.
 - [LOCOMO_FINAL_RUNS.md](LOCOMO_FINAL_RUNS.md): how the final runs were planned (graders checked against hand labels, a frozen configuration, all questions).

@@ -1,0 +1,11 @@
+# Optional: PyTorch for the two features that run a model inside Python instead of
+# through Ollama. Neither is on by default; the default setup (bge-m3 through Ollama)
+# doesn't need these.
+#   - the reranker (CERVEAU_RERANKER in .env), which rereads recall's shortlist;
+#   - the CPU embedding profile (CERVEAU_EMBEDDING_MODEL = all-MiniLM-L6-v2).
+# About 1 GB and several minutes to install. On Linux, the default torch build brings
+# CUDA libraries; for the CPU build:
+#   pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+-r requirements.txt
+sentence-transformers==6.1.0
+torch==2.14.1

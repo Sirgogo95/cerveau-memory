@@ -176,7 +176,7 @@ e5 compresses similarities (unrelated text scores ~0.75), so its threshold sits 
 | Suite | Count | Run with |
 |---|---|---|
 | [tests/test_ollama_provider.py](../tests/test_ollama_provider.py): adapter against a fake HTTP session, including tools; a remote model's schema in the prompt, its JSON taken out of the reply, asked again once | 14 | `python -m unittest discover -s tests -t .` (no database) |
-| [tests/test_embedder.py](../tests/test_embedder.py): embedder with a fake library (lazy, single load under concurrency, prefix) | 8 | same |
+| [tests/test_embedder.py](../tests/test_embedder.py): embedder with a fake library (lazy, single load under concurrency, prefix, what to install when the library is missing) | 9 | same |
 | [tests/test_ollama_embedder.py](../tests/test_ollama_embedder.py): Ollama embedder against a fake HTTP session; the embedder factory | 9 | same |
 | [tests/test_hashing.py](../tests/test_hashing.py) | 4 | same |
 | [tests/test_store_contract.py](../tests/test_store_contract.py): shared store rules (conversation, search, cache, tags, entities, names, consolidation bookkeeping, running summary, time windows, one message by id, the tool-call log, facts, active entities, similar tags, episode tags, carried memories, the activation graph, keyword candidates, attachments, drift state and moving messages, pins, stored vectors, entity fact links, imported chats), run per implementation | 89 | same (in-memory) |
@@ -224,7 +224,7 @@ e5 compresses similarities (unrelated text scores ~0.75), so its threshold sits 
 | [apps/cerveau/tests/test_personal_chats_eval.py](../apps/cerveau/tests/test_personal_chats_eval.py): questions answered from the memory (P1) or without it (P0), the memory left as it was, "today" after the last message, a rerun skipping saved answers, an empty database refused, `--think` with room for the reasoning, `--min-score` and `--set` applied and recorded | 6 | same |
 | [apps/cerveau/tests/test_recall_sweep.py](../apps/cerveau/tests/test_recall_sweep.py): recall replayed at each threshold, scored against the evidence's episodes, the memory left as it was | 1 | same |
 
-Total: 698 tests (`python manage.py test` runs all). Test doubles live in [tests/fakes.py](../tests/fakes.py). Type checking: `pyright` reports 0 errors (template code in `core/` and `kernel/` is skipped).
+Total: 699 tests (`python manage.py test` runs all). Test doubles live in [tests/fakes.py](../tests/fakes.py). Type checking: `pyright` reports 0 errors (template code in `core/` and `kernel/` is skipped).
 
 ---
 

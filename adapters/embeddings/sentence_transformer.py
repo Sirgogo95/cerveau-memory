@@ -36,7 +36,12 @@ class SentenceTransformerEmbedder:
         if self._model is None:
             with self._lock:
                 if self._model is None:
-                    from sentence_transformers import SentenceTransformer
+                    try:
+                        from sentence_transformers import SentenceTransformer  # pyright: ignore[reportMissingImports]
+                    except ModuleNotFoundError as error:
+                        raise ModuleNotFoundError(
+                            "This needs PyTorch and sentence-transformers: pip install -r requirements-optional.txt"
+                        ) from error
 
                     self._model = SentenceTransformer(self.model, device=self.device)
         return self._model

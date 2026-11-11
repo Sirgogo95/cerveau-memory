@@ -80,7 +80,7 @@ Memory on the GPU: about 4.9 GB for both models (gemma4:e4b at a 16,384-token co
 - Docker (for Postgres 17 with pgvector)
 - [Ollama](https://ollama.com)
 - A GPU with 6 GB of memory (tested on an NVIDIA RTX 3060 Laptop GPU)
-- About 10 GB of disk: 7.8 GB for the two models, 1.2 GB for the Python packages
+- About 8 GB of disk: 7.8 GB for the two models, 0.1 GB for the Python packages (PyTorch, about 1 GB more, only for the optional reranker: `pip install -r requirements-optional.txt`)
 - Tested on Windows 11; Linux and macOS should work, reports welcome
 
 ## Quick start
@@ -99,7 +99,7 @@ ollama pull bge-m3
 # App
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt  # about 10 minutes the first time, mostly PyTorch
+pip install -r requirements.txt  # about 2 minutes
 cp .env.example .env             # Windows cmd: copy .env.example .env
 python manage.py migrate
 python manage.py runserver
@@ -169,7 +169,7 @@ What's different here: one continuous conversation split into episodes automatic
 
 ## Docs
 
-[The docs index](docs/README.md): results, how it works, and the development log.
+[The write-up](docs/WRITEUP.md): the story of the project, how it was measured, and what it taught about small models (about 8 minutes). [The docs index](docs/README.md): results, how it works, and the development log.
 
 ## Built with
 

@@ -4433,7 +4433,7 @@ It uses `crc32` rather than Python's `hash()`, which changes between runs.
 
 **Type checking**: `pyright` in `basic` mode, with the `django-types` stubs; template code in `core/` and `kernel/` is skipped.
 
-**On GitHub** (2026-11-10): [.github/workflows/tests.yml](../.github/workflows/tests.yml) runs the whole suite and `pyright` on every push and pull request, on Python 3.12 (the minimum the README states) and 3.14 (the version it's developed on). Postgres 17 with pgvector runs as a service; nothing needs Ollama, since every model in the tests is a fake. `requirements.txt` pins torch, whose default Linux build brings several GB of CUDA libraries, so the workflow installs the same version from PyTorch's CPU index first. The README's badge shows the latest result.
+**On GitHub** (2026-11-10): [.github/workflows/tests.yml](../.github/workflows/tests.yml) runs the whole suite and `pyright` on every push and pull request, on Python 3.12 (the minimum the README states) and 3.14 (the version it's developed on). Postgres 17 with pgvector runs as a service; nothing needs Ollama, since every model in the tests is a fake. PyTorch isn't installed there at all: it lives in `requirements-optional.txt`, and the tests fake sentence-transformers. The README's badge shows the latest result.
 
 ### 9.2 The eval harness: evals/
 
@@ -4826,7 +4826,7 @@ gpt-oss:120b    116 wrong:  13 none,  78 part,  25 all
 - **Docker Desktop**, container `cerveau-pg`: Postgres 17 with pgvector 0.8.7, data in the `cerveau-pgdata` volume, restart policy `unless-stopped`, user and password `cerveau`.
 - **Ollama**: `qwen3.5:4b` on the GPU at `http://127.0.0.1:11434`, thinking off, 16,384 tokens of context.
 - **Embeddings**: bge-m3 on Ollama, next to qwen on the GPU (0.66 GB; both stay loaded, 5.2 of 6 GB). sentence-transformers with PyTorch remains for the CPU profile; its weights live in the Hugging Face cache (`%USERPROFILE%\.cache\huggingface\hub`).
-- **Dependencies**: `requirements.txt` for the app; `requirements-dev.txt` adds `pyright` and `django-types`.
+- **Dependencies**: `requirements.txt` for the app (about 2 minutes and 0.1 GB to install); `requirements-dev.txt` adds `pyright` and `django-types`; `requirements-optional.txt` adds PyTorch and sentence-transformers (about 1 GB), needed only for the reranker and the CPU embedding profile (2026-11-10: moved out of `requirements.txt`, where every install paid about 10 minutes and 1.2 GB for features off by default). Without them, both say what to install instead of failing on a bare import error.
 
 Daily start: Docker Desktop and Ollama running, then `python manage.py runserver` and, in a second terminal, `python manage.py db_worker` ([ARCHITECTURE.md: Development setup](ARCHITECTURE.md#development-setup)). A first install (2026-11-10): `docker compose up -d` creates the same container from [docker-compose.yml](../docker-compose.yml) (`cerveau-pg`, the `cerveau-pgdata` volume, the credentials `.env.example` expects); the README's quick start lists the rest.
 
