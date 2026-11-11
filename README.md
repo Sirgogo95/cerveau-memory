@@ -1,5 +1,7 @@
 # Cerveau
 
+[![tests](https://github.com/Sirgogo95/cerveau-memory/actions/workflows/tests.yml/badge.svg)](https://github.com/Sirgogo95/cerveau-memory/actions/workflows/tests.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **Long-term memory for a local LLM, on a laptop.** One continuous conversation that remembers what you told it weeks ago: after each conversation, Cerveau writes itself summaries and facts, and when you ask something later, it brings back the few memories that matter. Fully local by default: a 4B model on a 6 GB GPU, nothing leaves your computer.
 
 <!-- Screenshot or short GIF here, once taken: the chat recalling something from an earlier conversation, then the memory viewer. -->
@@ -49,6 +51,26 @@ your message ──► recall ──► prompt (recent messages + summary + memo
 - **You stay in control**: a memory viewer to see, edit or forget what it knows, and a purge command that really deletes.
 
 The design in full: [ARCHITECTURE.md](docs/ARCHITECTURE.md). How the code does it: [the GUIDE](docs/GUIDE.md), a guided tour.
+
+## Privacy
+
+- **Everything stays on your machine in the default setup**: the chat model and the embedding model run in Ollama, memory lives in your own Postgres, and files you share are stored in a local folder.
+- **What would leave it**: only what you opt into. Choosing a cloud model (a profile for gpt-oss:120b on Ollama Cloud is included) sends that model the prompts, which include the recalled memories. The optional reranker downloads its model from Hugging Face once.
+- **You can see and change everything**: the memory viewer at `/memory/` shows every summary, fact, person and topic, and why a memory was recalled; you can edit, pin or forget any of it. Forgetting can be undone; `purge_memory` erases forgotten memory for good, with its audit copies and cached vectors. Database backups and copies you make are not reached.
+- **No login**: the server listens on `127.0.0.1` only. Don't expose it to a network as it is.
+
+## Speed and hardware
+
+Measured on an RTX 3060 Laptop GPU (6 GB) with gemma4:e4b:
+
+| What | Time |
+|---|---|
+| A short reply | about 2.5 s |
+| With **Think first** on | first word after 4 to 6 s, about 9 s per answer |
+| The first message after starting | about 30 s, while the models load |
+| Consolidating a conversation (in the background) | 10 to 30 s |
+
+Memory on the GPU: about 4.7 GB for gemma4:e4b at a 16,384-token context, plus 0.66 GB for bge-m3, so both stay loaded on a 6 GB card.
 
 ## Requirements
 
@@ -106,6 +128,18 @@ Configuration (models, thresholds, budgets) lives in `configs/`: see [the GUIDE]
 - **Pushing a small model to try harder makes it invent.** Thinking mode and prompt nudges both lowered trick-question scores, so thinking is an opt-in switch.
 - **One user, one machine.** No accounts or multi-user support yet.
 - LoCoMo is two friends chatting, not one person with an assistant; my own chat eval is 60 questions on one person's history.
+
+## FAQ
+
+**Why not just put the whole history in the model's context?** Two reasons. On a laptop it doesn't fit: the model runs with 16,384 tokens, and a year of conversations is far more. And where it does fit, it fails differently: on LoCoMo, a 120B model reading the whole history scored higher on normal questions (82.7%), but went along with false premises half the time (48% right on trick questions, against about 80% with Cerveau's memory).
+
+**How is this different from ChatGPT's memory?** It runs on your machine, you can see every memory and why it was recalled, edit it and really delete it, it works with whichever model you plug in, and it's measured in the open, with the method and the misses published.
+
+**Can I use a bigger or different model?** Any model Ollama serves, by adding a profile in `configs/models/` (its context window, reply reserve, and whether it supports tools); a 120B cloud model profile is included as an example. Other providers are on the roadmap.
+
+**Which languages?** English, Spanish and French are tested: the embedding model (bge-m3) is multilingual, a question in one language usually finds memories written in another (some words don't cross, like "best man" and *padrino*), and Cerveau replies in the language you write in.
+
+**Do I need a GPU?** It was built and measured on a 6 GB laptop GPU. Ollama also runs on a CPU alone, but expect much slower replies.
 
 ## Roadmap
 

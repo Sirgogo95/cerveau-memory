@@ -1,0 +1,56 @@
+# The test suite and the type check on every push and pull request: no Ollama needed
+# (the tests use fakes), Postgres 17 with pgvector as a service, PyTorch's CPU build
+# (requirements.txt pins torch, whose default Linux build brings several GB of CUDA).
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.14"]   # the README's minimum, and the version it's developed on
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: cerveau
+          POSTGRES_PASSWORD: cerveau
+          POSTGRES_DB: cerveau
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cerveau"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DJANGO_ENV: dev
+      DATABASE_URL__DEV: postgres://cerveau:cerveau@localhost:5432/cerveau
+      SECRET_KEY: ci-only-not-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install "$(grep '^torch==' requirements.txt)" --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-dev.txt
+
+      - name: Tests
+        run: python manage.py test --noinput
+
+      - name: Type check
+        run: pyright

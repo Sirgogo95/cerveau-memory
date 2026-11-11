@@ -4433,6 +4433,8 @@ It uses `crc32` rather than Python's `hash()`, which changes between runs.
 
 **Type checking**: `pyright` in `basic` mode, with the `django-types` stubs; template code in `core/` and `kernel/` is skipped.
 
+**On GitHub** (2026-11-10): [.github/workflows/tests.yml](../.github/workflows/tests.yml) runs the whole suite and `pyright` on every push and pull request, on Python 3.12 (the minimum the README states) and 3.14 (the version it's developed on). Postgres 17 with pgvector runs as a service; nothing needs Ollama, since every model in the tests is a fake. `requirements.txt` pins torch, whose default Linux build brings several GB of CUDA libraries, so the workflow installs the same version from PyTorch's CPU index first. The README's badge shows the latest result.
+
 ### 9.2 The eval harness: evals/
 
 Unit tests check that the code does what it says. The eval harness checks something else: **does Cerveau recall the right things?** It runs pretend histories through the real retrieval with the real embedding model and scores the result.
