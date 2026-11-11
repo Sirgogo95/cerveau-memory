@@ -766,12 +766,12 @@ Cerveau was designed independently, starting from how human memory works. During
 
 - **SYNAPSE** (Jiang et al., Findings of ACL 2026): episodic-semantic memory graph with spreading activation, fan effect, lateral inhibition, and uncertainty-aware rejection, evaluated on LoCoMo. Cerveau's activation formulas, default parameters, and confidence gate draw directly on this paper.
 - **HeLa-Mem** (Zhu et al., ACL 2026): Hebbian association, reflective consolidation into semantic memory, and spreading activation.
-- **MemGPT / Letta** (Packer et al., 2024): the context window treated like RAM, with memory paged in and out.
+- **MemGPT / Letta** (Packer et al., 2023): the context window treated like RAM, with memory paged in and out.
 - **Generative Agents** (Park et al., 2023): memory streams scored by recency, importance, and relevance, with periodic reflection.
 - **Mem0** (Chhikara et al., 2025), **Zep** (Rasmussen et al., 2025), **MemMachine**: model-agnostic memory layers for developers.
 - **Cognitive science foundations**: spreading activation (Collins and Loftus, 1975) and the fan effect from ACT-R (Anderson, 1983).
 
-**What Cerveau adds:**
+**What's different here:**
 
 - A **single continuous conversation** with automatic episode segmentation, rather than retrieval over separate sessions.
 - **Persistent working memory**: activation carried across turns and time, deciding what stays loaded in the prompt.
