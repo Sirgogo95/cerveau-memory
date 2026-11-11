@@ -111,9 +111,9 @@ names that only Cerveau brought up.
 # evals can rebuild memory consolidated without dates from cached replies.
 DATE_RULE = (
     'When the conversation says when something happened or will happen ("yesterday", "last '
-    'week", "next month"), write the date it means, worked out from the conversation\'s date '
-    'given above it ("on 7 May 2023", "in the week before 8 May 2023"). Keep those dates in '
-    'the long summary.\n'
+    'week", "next month", "this Saturday", "on Friday"), write the date it means, worked out '
+    'from the conversation\'s date given above it ("on 7 May 2023", "on Saturday 13 May 2023", '
+    '"in the week before 8 May 2023"). Keep those dates in the long summary.\n'
 )
 
 CONDENSE = """\

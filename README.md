@@ -4,9 +4,9 @@
 
 **Long-term memory for a local LLM, on a laptop.** One continuous conversation that remembers what you told it weeks ago: after each conversation, Cerveau writes itself summaries and facts, and when you ask something later, it brings back the few memories that matter. Fully local by default: a small model (gemma4:e4b, about 4B effective parameters) on a 6 GB GPU, nothing leaves your computer.
 
-![Cerveau answering a question from a conversation three weeks earlier (a friend's birthday: the lemon cake to bring and her brother flying in as a surprise), then the memory viewer's page for that friend](docs/img/demo.gif)
+![Cerveau answering a question from a conversation three weeks earlier (a friend's birthday: the lemon cake to bring and her brother flying in as a surprise), then the facts consolidation wrote, with "this Saturday" turned into a date, then the Lens showing which memories recall brought back and their scores](docs/img/demo.gif)
 
-*An invented example, recorded on a fresh database: the birthday conversation was three weeks earlier and had already been consolidated.*
+*An invented example, recorded on a fresh database: the birthday conversation was three weeks earlier and had already been consolidated. Then the facts it learned, and the Lens: the memories recall brings back for the question, with their scores.*
 
 ## Results
 

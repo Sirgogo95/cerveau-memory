@@ -77,7 +77,8 @@ FACT_SYSTEM = (
 FACT_DATE_RULE = (
     'When a fact says when something happened or will happen, write the date it means, worked '
     'out from the conversation\'s date given above it: "Caroline went to an LGBTQ support group '
-    'on 7 May 2023", not "yesterday".\n\n'
+    'on 7 May 2023", not "yesterday"; "the user\'s race is on Saturday 13 May 2023", not "this '
+    'Saturday".\n\n'
 )
 
 FACT_INSTRUCTIONS = """\

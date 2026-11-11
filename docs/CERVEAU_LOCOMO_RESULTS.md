@@ -632,6 +632,8 @@ The final LoCoMo numbers above were measured before four changes found by the pe
 - **Earlier replies in the notes are clipped and grouped last** under their own heading. LoCoMo's turns are all stored as the user's, so this doesn't reach it.
 - **The fallback search**: a reply that only declines becomes a search on the question and a second answer. gemma4:e4b never searched on LoCoMo (item 23), so this could change its fully local score; on Cerveau's tool-use eval it gave 55 of 56 against 52 of 56.
 
+- **Weekday names in the date rules** (2026-11-11): "this Saturday" and "on Friday" are now worked out into dates at consolidation, as "yesterday" already was. It changes the consolidation prompts; checked on the temporal questions of conversations 1, 3 and 5 (gemma4:e4b consolidating and answering, deepseek-v4-pro grading, `evals/locomo_data/dev/weekday/`): 76% before and after, 4 turned right and 4 wrong (p = 1.0).
+
 On the user's own chats, the measure that matters for the app: fully local 44 of 60 against 47 of 60 with gpt-oss:120b consolidating and answering in the cloud, a gap of 3 where LoCoMo's is about 10 (PERSONAL_CHATS_EVAL.md 6e).
 
 ## 7. Cerveau's own evaluations (checks against regressions)
