@@ -1,6 +1,6 @@
 # LoCoMo: plan for the final runs
 
-**Status:** final runs done (2026-10-24 and 25; results in CERVEAU_LOCOMO_RESULTS.md sections 6.5 and 6.6); the hand labels chose deepseek-v4-pro as the reported grader (2026-11-02, section 6.7 there)
+**Status:** final runs done (2026-10-24 and 25; results in CERVEAU_LOCOMO_RESULTS.md sections 6.5 and 6.6); the hand labels chose deepseek-v4-pro as the reported grader (2026-11-02, section 6.7 there); the human review is done for the fully local and best-case runs (66.3% and 76.4% on normal questions, 2026-11-02 and 03, section 5.4 here)
 **Builds on:** [CERVEAU_LOCOMO_RESULTS.md](CERVEAU_LOCOMO_RESULTS.md) (runs A1 to A11, 2026-10-18 and 19)
 **Purpose:** produce LoCoMo numbers solid enough to publish: fully local, best case, and the two mixed cases, on the full question set, graded reliably.
 
@@ -172,7 +172,7 @@ After a crash, the same command with `--resume`. F3, F4 and F0 answer in the clo
 
 Category 5 (adversarial) is included with `--categories 1,2,3,4,5`; it is reported on its own row and kept out of the "all (1-4)" row. Its gold answer is "Not mentioned in the conversation"; the grader counts declining, or rejecting the false premise, as correct.
 
-## 5.4 Human review of the misses (to finish before the report is final)
+## 5.4 Human review of the misses (done 2026-11-03)
 
 An important part of the final report: the automatic graders are stricter than a person, and LoCoMo's answer key has errors, so the report also gives a human-reviewed score.
 
@@ -186,7 +186,7 @@ An important part of the final report: the automatic graders are stricter than a
 
 Files: `evals/locomo_data/final/audit-verdicts-*.json`, the page `evals/locomo_data/audit-review.html` (git-ignored with the dataset).
 
-**To do:**
+**Steps (all done):**
 - [x] Finish the symmetric half (150 judged right, 127 disagreements) and compute the estimate by group (65.6% +/-2.3 on normal questions, 91.7% on trick questions).
 - [x] The user reviews the verdicts (on the Grading Desk, F1c's 833); the user's view replaces Claude's where they differ. Scope (2026-11-02): the 58 verdicts that overrule both graders on normal questions, the only ones that move the score. Checked 69 (all 58 and 11 others), disagreed with 1; human-reviewed F1c 66.3% (+/-2.4) on normal questions, 91.1% on trick questions (CERVEAU_LOCOMO_RESULTS.md section 6.7).
 - [x] The user's hand labels choose the reported grader (section 3.3): deepseek-v4-pro, 85 of 100 against 70 (2026-11-02). Measured on the **random 100** only (a symmetric sample); the 699 answers at least one grader judged wrong are for studying where the graders disagree, not for measuring which is more accurate.
