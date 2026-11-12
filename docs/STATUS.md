@@ -2,7 +2,7 @@
 
 What exists in the code today, as opposed to what the [ARCHITECTURE.md](ARCHITECTURE.md) designs. Update this file in the same commit as the work it describes.
 
-Last updated: 2026-11-11, on branch `fix/demo-gif-start`.
+Last updated: 2026-11-12, on branch `fix/reinforcement-claims`.
 
 **Phase:** v3 done (2026-11-09): the LoCoMo report final, a first eval on the author's own chat history, and the fixes it found. Cerveau is a chat with long-term memory in the browser at `/`, fully local by default on gemma4:e4b (Ollama, a 6 GB laptop GPU): each conversation is consolidated into summaries, facts, tags, and entities; recall brings back past messages, summaries, facts, and a named person's facts as a block; the model can search its memory itself; a viewer at `/memory/` shows and edits what it knows. On LoCoMo's full question set (strict, deepseek-v4-pro): 66.9% fully local (66.3% after a human review of the grades), 76.2% with a cloud model answering ([CERVEAU_LOCOMO_RESULTS.md](CERVEAU_LOCOMO_RESULTS.md) section 6.5). On 60 questions about the author's own ChatGPT chats: 44 right with the memory, 10 without ([PERSONAL_CHATS_EVAL.md](PERSONAL_CHATS_EVAL.md)). What's built is in **Done**; how it works is in the [GUIDE](GUIDE.md).
 
@@ -22,6 +22,7 @@ Last updated: 2026-11-11, on branch `fix/demo-gif-start`.
 | [LOCOMO_FINAL_RUNS.md](LOCOMO_FINAL_RUNS.md) | The plan for publishable LoCoMo runs: system changes first, graders checked against hand labels, a frozen configuration, the full question set, fully local and cloud grids | Done (2026-10-26; the grader chosen and the human review 2026-11-02): the results are in CERVEAU_LOCOMO_RESULTS.md |
 | [features/ENTITY_PROFILES.md](features/ENTITY_PROFILES.md) | Entity blocks and entity profiles, against the multi-hop gap: facts linked to the entities they're about (by their statement); a named entity brings its facts as a block, ranked by the question, in date order; optionally a written profile per entity at consolidation | Step 1 built and measured: multi-hop +8 and +7 points (graded by deepseek-v4-pro), on by default since 2026-10-22 |
 | [PERSONAL_CHATS_EVAL.md](PERSONAL_CHATS_EVAL.md) | An eval on the author's own chat history: an `import_chats` command (a product feature too: no empty memory on day one), privacy rules, questions written before running, fully local runs | First round done (2026-11-03 to 09): 25 ChatGPT chats, 60 questions, four faults found and fixed, models and thinking compared, recall's threshold checked (sections 6b to 6g) |
+| [NEXT_FEATURES.md](NEXT_FEATURES.md) | What comes after the launch, in order: a docs site, an MCP server, `brain/` as a library, bi-temporal facts, and three experiments (predict-calibrate extraction, rank fusion in recall, reinforcement of used memories), with the sources credited (memv, Nemori, Graphiti, ACT-R, Engram) | Proposed (2026-11-11) |
 | [COMPACTION_EVAL.md](COMPACTION_EVAL.md) | An eval of recoverable compaction: details a running summary loses, and how many Cerveau still answers through recall; conditions from window-only to full context, planted details and distractors, recovery rate as the headline | Proposed (2026-10-20); first step: time on same-day memory lines, then folded-message recall behind a setting |
 | [ATTACHMENTS.md](ATTACHMENTS.md) | Sharing files: storage by hash, background extraction, chunking sized to the embedder, chunk retrieval, forgetting and purge | Built (2026-10-18): storage, reading, summarizing, purge, recall, tools, upload, and pages; images, scans, and audio later |
 
@@ -330,6 +331,8 @@ The README's roadmap checkboxes were brought up to date on 2026-10-18 (v1 done b
 | The reply language is set by a hint at the end of the newest message, not by the system prompt (which a small model ignores in mixed-language context) | 2026-10-17 | [brain/language.py](../brain/language.py) |
 
 ## Known gaps and notes
+
+- **No long-term reinforcement** (checked 2026-11-12, after a review): a memory recalled 50 times over months ranks no higher than one recalled once. What exists is short-term: activation on topics and people (×0.7 per turn, halving every 6 hours, spreading to those that come up together) and carry-over of recalled memories (90% per turn while on subject). Long-term strength from past uses (PIPELINE step 10, "v2") was designed, never built; the README and ARCHITECTURE.md no longer imply it, and NEXT_FEATURES.md 9 proposes it as an experiment.
 
 - **Weekday names in summaries stay relative** (seen 2026-11-11, recording the demo): the date rules now name "this Saturday" and "on Friday" (fixed the same day; the facts get the date, "Ana turns 30 on Saturday, October 24, 2026"), but the summaries of that conversation still said "this Saturday". LoCoMo's temporal questions unchanged by the fix (76% before and after on three held-out conversations, GUIDE 9.2 "Weekday names").
 

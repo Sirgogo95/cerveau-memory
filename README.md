@@ -48,7 +48,7 @@ your message ──► recall ──► prompt (recent messages + summary + memo
 
 - **Episodes**: the conversation splits itself into episodes by time gaps and changes of subject.
 - **Consolidation**: when an episode closes, the model writes a summary and extracts facts, people and tags, with dates made absolute.
-- **Recall**: by meaning, names, exact words and activation (memories used together strengthen each other), within a token budget.
+- **Recall**: by meaning, names, exact words and activation (people and topics from the last few turns stay in mind, warming up the ones that often come up with them), within a token budget.
 - **Search**: the model can also search its memory itself, with `search_memory` and `read_memory`.
 - **You stay in control**: a memory viewer to see, edit or forget what it knows, and a purge command that really deletes.
 
@@ -165,6 +165,8 @@ Cerveau was designed from how human memory works, and recent research has conver
 - **[Generative Agents](https://arxiv.org/abs/2304.03442)** (Park et al., 2023): memory streams scored by recency, importance and relevance, with periodic reflection.
 - **[Mem0](https://arxiv.org/abs/2504.19413)** (Chhikara et al., 2025) and **[Zep](https://arxiv.org/abs/2501.13956)** (Rasmussen et al., 2025): memory layers for developers, both reporting LoCoMo scores ([why they aren't compared here](docs/CERVEAU_LOCOMO_RESULTS.md)).
 - **[LoCoMo](https://arxiv.org/abs/2402.17753)** (Maharana et al., 2024): the benchmark used here.
+- **[Engram](https://pypi.org/project/engramai/)** (engramai): a memory library for agents built on the same cognitive science, ACT-R activation that strengthens with use, Hebbian links between memories recalled together, and Ebbinghaus forgetting that prunes weak memories; with an MCP server. Its page reports no answer-accuracy results.
+- **[basic-memory](https://github.com/basicmachines-co/basic-memory)**: a local-first knowledge base of Markdown files that AI tools read and write through MCP; no published benchmarks.
 - **Cognitive science**: spreading activation (Collins and Loftus, 1975) and the fan effect from ACT-R (Anderson, 1983).
 
 What's different here: one continuous conversation split into episodes automatically, rather than retrieval over separate sessions; activation carried across turns, deciding what stays in mind; a tag and entity layer you can browse and correct; and a self-hosted assistant measured end to end on a laptop, not a developer SDK. More in [ARCHITECTURE.md](docs/ARCHITECTURE.md#related-work).

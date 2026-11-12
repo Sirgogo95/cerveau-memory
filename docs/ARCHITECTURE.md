@@ -73,11 +73,11 @@ Cerveau gives an AI the same structure:
 | Hippocampus (episodic memory) | Episodes and messages, indexed by embeddings |
 | Neocortex (semantic memory) | Facts, entities, and the tag graph |
 | Associations | Tag edges learned from co-occurrence |
-| Priming | Prefetching related memories into the cache |
+| Priming | Prefetching related memories into the cache (planned, not built) |
 | Event segmentation | Automatic episode boundaries |
 | Sleep consolidation | Summaries, fact and entity extraction at episode close |
-| Forgetting | Time and turn-based decay of unused memories |
-| Retrieval strengthens memory | Facts reinforced each time they are used |
+| Forgetting | Activation fades over turns and hours; memories themselves are kept until you forget them |
+| Retrieval strengthens memory | Facts reinforced each time they are used (planned, not built: [NEXT_FEATURES.md](NEXT_FEATURES.md) 9) |
 | Procedural memory | Skills, loaded on demand |
 | Gist vs detail | Short and long summaries, raw messages only when needed |
 
@@ -147,7 +147,7 @@ flowchart TD
 5. **Retrieve and score** candidates from every memory source with one shared engine.
 6. **Fill the token budget** for the current model.
 7. **Assemble the prompt** and call the model.
-8. **Record** which memories were actually used, to reinforce them later.
+8. **Record** which memories were actually used, to reinforce them later (planned, not built).
 
 ## Consolidation: the sleep cycle
 
@@ -363,9 +363,9 @@ Most latency and cost comes from model calls, not database lookups, so caching t
 
 1. **Embedding cache**: `(model, text hash)` to vector. The same text always yields the same vector.
 2. **Prompt prefix caching**: the conversation comes before per-turn memory, so repeated turns reuse the prefix cheaply (see [Prompt assembly](#prompt-assembly-and-token-budgets)).
-3. **Working memory cache**: loaded summaries and facts kept warm in memory, with eviction driven by activation decay rather than generic LRU.
-4. **Priming**: when a tag's activation rises, prefetch the top episodes of its neighbors.
-5. **Usage as a learning signal**: memories that get used are reinforced; never-used ones fade.
+3. **Working memory cache** (planned): loaded summaries and facts kept warm in memory, with eviction driven by activation decay rather than generic LRU.
+4. **Priming** (planned): when a tag's activation rises, prefetch the top episodes of its neighbors.
+5. **Usage as a learning signal** (planned, not built): memories that get used are reinforced; never-used ones fade in ranking (never deleted).
 
 Cache keys include a version or `updated_at`, so rewritten summaries and superseded facts are never served stale.
 
@@ -770,6 +770,8 @@ Cerveau was designed independently, starting from how human memory works. During
 - **MemGPT / Letta** (Packer et al., 2023): the context window treated like RAM, with memory paged in and out.
 - **Generative Agents** (Park et al., 2023): memory streams scored by recency, importance, and relevance, with periodic reflection.
 - **Mem0** (Chhikara et al., 2025), **Zep** (Rasmussen et al., 2025), **MemMachine**: model-agnostic memory layers for developers.
+- **[Engram](https://pypi.org/project/engramai/)** (engramai): a memory library for agents built on the same cognitive science, ACT-R activation that strengthens with use, Hebbian links between memories recalled together, and Ebbinghaus forgetting that prunes weak memories; with an MCP server. Its page reports no answer-accuracy results.
+- **[basic-memory](https://github.com/basicmachines-co/basic-memory)**: a local-first knowledge base of Markdown files that AI tools read and write through MCP; no published benchmarks.
 - **Cognitive science foundations**: spreading activation (Collins and Loftus, 1975) and the fan effect from ACT-R (Anderson, 1983).
 
 **What's different here:**

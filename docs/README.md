@@ -24,6 +24,7 @@ Start with the [project README](../README.md): what Cerveau is, the results, and
 - [EMBEDDINGS.md](EMBEDDINGS.md): how vectors are stored, several models side by side, purge.
 - [ATTACHMENTS.md](ATTACHMENTS.md): sharing files in the chat.
 - [features/ENTITY_PROFILES.md](features/ENTITY_PROFILES.md): a person's facts as one block.
+- [NEXT_FEATURES.md](NEXT_FEATURES.md): what comes next, in order: a docs site, an MCP server, the engine as a library, bi-temporal facts, and three experiments (predict-calibrate extraction, rank fusion, reinforcement of used memories).
 - [COMPACTION_EVAL.md](COMPACTION_EVAL.md): a proposed eval of what a running summary loses.
 
 ## The Django side
