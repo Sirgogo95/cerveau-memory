@@ -160,6 +160,8 @@ When an episode closes, a background job processes it, using a small, cheap mode
 5. Update **tag edge weights** from co-occurrence.
 6. Link the episode to related earlier episodes.
 
+**As built:** steps 1 to 4 run as described, with dates made absolute and the summary language set in code (GUIDE 4.11). Steps 5 and 6 don't exist as separate steps: links between tags and people are computed from the episodes they share whenever activation needs them, not stored (`brain/activation.py`), and episodes aren't linked to each other.
+
 Consolidation never blocks the chat.
 
 ## Episodes and segmentation
@@ -275,9 +277,11 @@ def sigmoid(x, gamma=5.0, theta=0.5):
     return 1 / (1 + math.exp(-gamma * (x - theta)))
 ```
 
-**Confidence gate.** If the top activation is below a threshold, the assistant says it has no record of something rather than guessing. This is the main defense against confidently recalling things that never happened.
+**Confidence gate** (designed, not built). If the top activation is below a threshold, the assistant says it has no record of something rather than guessing. This is the main defense against confidently recalling things that never happened.
 
-Default values above are taken from SYNAPSE (see [Related work](#related-work)) as starting points and will be re-tuned on Cerveau's own evaluations.
+Default values above are taken from SYNAPSE (see [Related work](#related-work)) as starting points; what was built and tuned on Cerveau's own evaluations follows.
+
+**As built** (`brain/activation.py`, GUIDE 4.18; the design above is kept as its history): nodes are tags and people. Each turn every node fades (keeping 70%, and halving every 6 hours), the ones the message names or is about are boosted, and half of that boost spreads one hop to the nodes that share episodes with them, weighted by how often (Jaccard) and divided by the node's number of neighbours (the fan effect). Energy spreads only from nodes boosted this turn, values are capped at 1 instead of passed through a sigmoid, and the links are computed when needed, not kept in a table. In scoring, a memory whose episode carries an active node gets a small boost (`w_act` 0.05). Lateral inhibition exists in retrieval but is off by default (`inhibition = 0`). There is no confidence gate: invented details were fixed by a prompt rule instead (see the roadmap).
 
 ## The retrieval engine
 
@@ -598,7 +602,7 @@ DJANGO_ENV=eval python manage.py migrate      # eval database (bash; in PowerShe
 python manage.py createsuperuser              # once: your login for /admin/
 ```
 
-**4. Local models.** Pull the chat model and the embedding model the default profiles use: `ollama pull qwen3.5:4b` and `ollama pull bge-m3` (or set `CERVEAU_CHAT_MODEL` and `CERVEAU_EMBEDDING_MODEL` in `.env` to other profiles in `configs/models/` and `configs/embeddings/`).
+**4. Local models.** Pull the chat model and the embedding model the default profiles use: `ollama pull gemma4:e4b` and `ollama pull bge-m3` (or set `CERVEAU_CHAT_MODEL` and `CERVEAU_EMBEDDING_MODEL` in `.env` to other profiles in `configs/models/` and `configs/embeddings/`).
 
 **5. Run Cerveau.** Docker Desktop and Ollama must be running. Then, in two terminals (each with the virtual environment active):
 
@@ -630,7 +634,7 @@ from adapters.llm.factory import provider_from_profile
 from brain.config import load_model_profile
 from brain.types import ChatMessage, Role
 
-llm = provider_from_profile(load_model_profile("configs/models/qwen3.5-4b.toml"))
+llm = provider_from_profile(load_model_profile("configs/models/gemma4-e4b.toml"))
 print(llm.chat([ChatMessage(Role.USER, "Hello")]).content)
 ```
 
@@ -646,12 +650,14 @@ print(llm.chat([ChatMessage(Role.USER, "Hello")]).content)
 | Vector search | pgvector | Embeddings inside the same database, HNSW indexes |
 | Text matching | pg_trgm, unaccent | Fuzzy and accent-insensitive entity matching |
 | Embeddings | bge-m3 on Ollama (local) | Free, private, multilingual, swappable |
-| Background jobs | Celery or django-q2 | Consolidation outside the request cycle |
+| Background jobs | Django's tasks with django-tasks-db (a queue in Postgres, run by `python manage.py db_worker`) | Consolidation outside the request cycle |
 | LLM | Any capable provider or local model | Model-agnostic by design |
 
 ## Configuration
 
 Retrieval and activation are fully driven by configuration, so experiments are reproducible and per-model presets are easy.
+
+The configuration as built is in [configs/default.toml](../configs/default.toml) (the engine), `configs/models/` (one file per chat model) and `configs/embeddings/` (one per embedding model, with its calibrated thresholds); [GUIDE section 8](GUIDE.md) explains every value. The sketch below is the original design: some names and defaults changed, and `confidence_gate` was never built.
 
 ```python
 @dataclass
@@ -681,7 +687,7 @@ class EngineConfig:
 
 Claims get measured, not asserted.
 
-**1. LoCoMo benchmark.** LoCoMo (Maharana et al., 2024) tests memory over long, multi-session conversations with question categories for single-hop, multi-hop, temporal, open-domain, and adversarial (questions about things never said). It is the benchmark used by most recent memory systems, so Cerveau's results will be directly comparable.
+**1. LoCoMo benchmark.** LoCoMo (Maharana et al., 2024) tests memory over long, multi-session conversations with question categories for single-hop, multi-hop, temporal, open-domain, and adversarial (questions about things never said). It is widely used by recent memory systems. Cerveau's results are in [CERVEAU_LOCOMO_RESULTS.md](CERVEAU_LOCOMO_RESULTS.md); other systems' published scores use other judges, prompts and answering models, so they aren't directly comparable.
 
 **2. Personal eval set.** A growing set of real cases: "given this message, these episodes and facts should be recalled." This measures what actually matters for daily use.
 
