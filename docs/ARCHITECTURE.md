@@ -179,6 +179,8 @@ Drift detection details:
 - **Returning to an old topic** starts a new episode **linked** to the old one, keeping the timeline honest while still letting retrieval pull the earlier episode in.
 - **Carry-over**: the last few messages of the previous episode stay in the prompt for a couple of turns after a split, decaying out.
 
+**As built** (`brain/segmentation.py`, GUIDE 4.7): a time gap of 2 hours starts a new episode. For drift, a message is a strike when its similarity to the average of the **last 2 messages** is below 0.48, and two strikes in a row split the episode at the first of them; messages under 5 words, and episodes with fewer than 3 messages from you, never count. The gray-zone model check isn't built, and episodes aren't linked: returning to an old topic starts a new episode, and recall finds the old one by meaning. An episode that just closed and isn't summarized yet appears in the prompt through its last messages.
+
 ## Facts
 
 A fact must pass three tests:
@@ -691,7 +693,7 @@ Claims get measured, not asserted.
 
 **2. Personal eval set.** A growing set of real cases: "given this message, these episodes and facts should be recalled." This measures what actually matters for daily use.
 
-**3. Ablations.** Because everything is configuration, each mechanism (fan effect, inhibition, drift detection, confidence gate) can be switched off to measure its contribution.
+**3. Ablations.** Because everything is configuration, each mechanism (fan effect, inhibition, drift detection, activation) can be switched off to measure its contribution.
 
 Metrics tracked: retrieval accuracy, answer quality, tokens per turn, latency, and cost.
 
@@ -771,7 +773,7 @@ Note that the LLM provider you choose still sees whatever is placed in the promp
 
 Cerveau was designed independently, starting from how human memory works. During design it became clear that recent research has converged on several of the same mechanisms, and Cerveau builds on that work openly.
 
-- **SYNAPSE** (Jiang et al., Findings of ACL 2026): episodic-semantic memory graph with spreading activation, fan effect, lateral inhibition, and uncertainty-aware rejection, evaluated on LoCoMo. Cerveau's activation formulas, default parameters, and confidence gate draw directly on this paper.
+- **SYNAPSE** (Jiang et al., Findings of ACL 2026): episodic-semantic memory graph with spreading activation, fan effect, lateral inhibition, and uncertainty-aware rejection, evaluated on LoCoMo. Cerveau's activation formulas and starting parameters drew on this paper (its confidence gate was designed but not built).
 - **HeLa-Mem** (Zhu et al., ACL 2026): Hebbian association, reflective consolidation into semantic memory, and spreading activation.
 - **MemGPT / Letta** (Packer et al., 2023): the context window treated like RAM, with memory paged in and out.
 - **Generative Agents** (Park et al., 2023): memory streams scored by recency, importance, and relevance, with periodic reflection.
